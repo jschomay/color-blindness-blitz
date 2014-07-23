@@ -45,22 +45,10 @@ GameState.prototype.rainBlocks = function() {
 };
 
 GameState.prototype.addBlockToPool = function(){
-    var block = this.game.add.sprite(0, 0, 'block');
+    var Block = require('../entities/block');
+    var block = new Block(this.game, 0, 0);
     block.name = 'block'+this.blockPool.length;
-    block.scale.x = 1;
-    block.scale.y = 1;
     this.blockPool.add(block);
-
-    // Enable physics on the block
-    this.game.physics.enable(block, Phaser.Physics.ARCADE);
-
-    // Set its initial state to "dead".
-    block.kill();
-
-    block.body.bounce.y = 0.1;
-    block.body.checkWorldBounds = true;
-    block.body.outOfBoundsKill = true;
-
     return block;
 };
 
