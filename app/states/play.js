@@ -13,7 +13,7 @@ GameState.prototype.create = function() {
     this.GRAVITY = 300; // pixels/second/second
     this.game.physics.arcade.gravity.y = this.GRAVITY;
 
-    this.BLOCKSIZE = 60;
+    this.BLOCKSIZE = 64;
 
     this.blockPool = this.game.add.group();
 
