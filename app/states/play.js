@@ -1,4 +1,3 @@
-BLOCKSIZE = 32;
 
 module.exports = GameState = function(game) {
 };
@@ -14,6 +13,8 @@ GameState.prototype.create = function() {
     this.GRAVITY = 300; // pixels/second/second
     this.game.physics.arcade.gravity.y = this.GRAVITY;
 
+    this.BLOCKSIZE = 60;
+
     this.blockPool = this.game.add.group();
 
     // start block pool with 100 pieces
@@ -22,8 +23,8 @@ GameState.prototype.create = function() {
     }
 
     // lay ground
-    for(var x = 0; x < this.game.width; x += BLOCKSIZE) {
-        var block = this.placeBlock(x, this.game.height - BLOCKSIZE);
+    for(var x = 0; x < this.game.width; x += this.BLOCKSIZE) {
+        var block = this.placeBlock(x, this.game.height - this.BLOCKSIZE);
         block.body.immovable = true;
         block.body.allowGravity = false;
     }
@@ -38,15 +39,15 @@ GameState.prototype.create = function() {
 };
 
 GameState.prototype.rainBlocks = function() {
-    var slots = this.game.width/BLOCKSIZE;
-    var x = (this.game.rnd.integerInRange(0,slots)) * BLOCKSIZE;
-    this.placeBlock(x, -BLOCKSIZE);
+    var slots = this.game.width/this.BLOCKSIZE;
+    var x = (this.game.rnd.integerInRange(0,slots)) * this.BLOCKSIZE;
+    this.placeBlock(x, -this.BLOCKSIZE);
     this.game.time.events.add(1000, this.rainBlocks, this);
 };
 
 GameState.prototype.addBlockToPool = function(){
     var Block = require('../entities/block');
-    var block = new Block(this.game, 0, 0);
+    var block = new Block(this.game, this, 0, 0);
     block.name = 'block'+this.blockPool.length;
     this.blockPool.add(block);
     return block;
@@ -72,7 +73,7 @@ GameState.prototype.placeBlock = function (x, y) {
 //     var bitmap = this.game.add.bitmapData(this.game.width, this.game.height);
 
 //     // These functions use the canvas context to draw lines using the canvas API
-//     for(y = this.game.height-BLOCKSIZE; y >= 64; y -= BLOCKSIZE) {
+//     for(y = this.game.height-this.BLOCKSIZE; y >= 64; y -= this.BLOCKSIZE) {
 //         bitmap.context.beginPath();
 //         bitmap.context.strokeStyle = 'rgba(255, 255, 255, 0.2)';
 //         bitmap.context.moveTo(0, y);
