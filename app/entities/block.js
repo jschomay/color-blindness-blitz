@@ -7,6 +7,7 @@ module.exports = Block = function(game, gameState, x, y) {
     Phaser.Sprite.call(this, game, x, y, this.bitmap);
 
     this.color = game.rnd.pick(['red','orange','yellow','green','blue','purple']);
+    this.drawColor = game.rnd.pick(['red','orange','yellow','green','blue','purple']);
     this.drawBlock();
     
     this.scale.x = 1;
@@ -40,11 +41,11 @@ Block.prototype.drawBlock = function() {
       this.bitmap.context.strokeRect(0, 0, this.BLOCKSIZE, this.BLOCKSIZE);
     }
 
-    strokeBlock.call(this, this.color, 6);
+    strokeBlock.call(this, this.drawColor, 6);
     strokeBlock.call(this, "#333", 1);
 
     // write color
-    this.bitmap.context.fillStyle = this.color;
+    this.bitmap.context.fillStyle = this.drawColor;
     this.bitmap.context.font = "14px Arial";
     this.bitmap.context.fillText(this.color, this.BLOCKSIZE / 4, this.BLOCKSIZE / 2);
 
