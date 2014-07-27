@@ -46,8 +46,10 @@ Block.prototype.drawBlock = function() {
 
     // write color
     this.bitmap.context.fillStyle = this.drawColor;
-    this.bitmap.context.font = "14px Arial";
-    this.bitmap.context.fillText(this.color, this.BLOCKSIZE / 4, this.BLOCKSIZE / 2);
+    this.bitmap.context.font = "16px Arial";
+    this.bitmap.context.textAlign = 'center';
+    this.bitmap.context.textBaseline = 'middle';
+    this.bitmap.context.fillText(this.color, this.BLOCKSIZE / 2, this.BLOCKSIZE / 2);
 
     this.bitmap.dirty = true;
 };
