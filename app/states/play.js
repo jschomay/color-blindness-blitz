@@ -23,11 +23,10 @@ GameState.prototype.create = function() {
     }
 
     // lay ground
-    for(var x = 0; x < this.game.width; x += this.BLOCKSIZE) {
-        var block = this.placeBlock(x, this.game.height - this.BLOCKSIZE);
-        block.body.immovable = true;
-        block.body.allowGravity = false;
-    }
+    var Ground = require('../entities/ground');
+    this.ground = new Ground(this.game, GameState, this.game.height - 30);
+    this.ground.name = 'ground';
+    this.game.add.existing(this.ground);
 
     this.rainBlocks();
 
@@ -85,7 +84,7 @@ GameState.prototype.placeBlock = function (x, y) {
 // };
 
 // TODO move this into block.js
-onCollide = function(block1, block2){
+blockCollide = function(block1, block2){
     // hacky way to let a block bounce once then stop
     // gets around bug(?) where stacked blocks bounce slightly
     // and fall through when stacks get to "heavy"
@@ -96,13 +95,20 @@ onCollide = function(block1, block2){
     } else {
         block2.bounced = true;
     }
+
+
+    if (block1.name === 'ground'){
+      // hit ground
+    }
 };
+
 
 GameState.prototype.update = function() {
     if (this.game.time.fps !== 0) {
         this.fpsText.setText(this.game.time.fps + ' FPS');
     }
-    this.game.physics.arcade.collide(this.blockPool, this.blockPool, onCollide);
+    this.game.physics.arcade.collide(this.blockPool, this.blockPool, blockCollide);
+    this.game.physics.arcade.collide(this.blockPool, this.ground, blockCollide);
 
 };
 
