@@ -28,7 +28,7 @@ Ground.prototype.drawGround = function() {
       this.bitmap.context.strokeRect(0, 0, this.game.width, this.height);
     }
 
-    strokeBlock.call(this, this.color, 6);
+    strokeBlock.call(this, this.color, 15);
     strokeBlock.call(this, "#333", 1);
 
     this.bitmap.dirty = true;
@@ -38,3 +38,6 @@ Ground.prototype.drawGround = function() {
 Ground.prototype.update = function() {
 
 };
+
+
+

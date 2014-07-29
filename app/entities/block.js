@@ -8,7 +8,7 @@ module.exports = Block = function(game, gameState, x, y) {
 
     this.color = game.rnd.pick(['red','orange','yellow','green','blue','purple']);
     this.drawColor = game.rnd.pick(['red','orange','yellow','green','blue','purple']);
-    this.drawBlock();
+    this.drawBlock(this.drawColor, this.color);
     
     this.scale.x = 1;
     this.scale.y = 1;
@@ -29,7 +29,7 @@ module.exports = Block = function(game, gameState, x, y) {
 Block.prototype = Object.create(Phaser.Sprite.prototype);
 Block.prototype.constructor = Block;
 
-Block.prototype.drawBlock = function() {
+Block.prototype.drawBlock = function(drawColor, text) {
     this.bitmap.context.fillStyle = "black";
     this.bitmap.context.fillRect(0,0,this.BLOCKSIZE,this.BLOCKSIZE);
 
@@ -39,15 +39,15 @@ Block.prototype.drawBlock = function() {
       this.bitmap.context.strokeRect(0, 0, this.BLOCKSIZE, this.BLOCKSIZE);
     }
 
-    strokeBlock.call(this, this.drawColor, 6);
+    strokeBlock.call(this, drawColor, 6);
     strokeBlock.call(this, "#333", 1);
 
     // write color
-    this.bitmap.context.fillStyle = this.drawColor;
+    this.bitmap.context.fillStyle = drawColor;
     this.bitmap.context.font = "16px Arial";
     this.bitmap.context.textAlign = 'center';
     this.bitmap.context.textBaseline = 'middle';
-    this.bitmap.context.fillText(this.color, this.BLOCKSIZE / 2, this.BLOCKSIZE / 2);
+    this.bitmap.context.fillText(text, this.BLOCKSIZE / 2, this.BLOCKSIZE / 2);
 
     this.bitmap.dirty = true;
 };
@@ -56,3 +56,26 @@ Block.prototype.drawBlock = function() {
 Block.prototype.update = function() {
 
 };
+
+
+Block.prototype.land = function() {
+  // hacky way to let a block bounce once then stop
+  // gets around bug(?) where stacked blocks bounce slightly
+  // and fall through when stacks get to "heavy"
+  if (this.bounced) {
+      this.body.velocity.y = 0;
+      this.body.immovable = true;
+      this.body.allowGravity = false;
+  } else {
+      this.bounced = true;
+      this.drawBlock('gray', '');
+  }
+};
+
+Block.prototype.hitGround = function(ground) {
+  if (this.color === ground.color) {
+    this.land();
+  } else {
+    this.kill();
+  }
+}

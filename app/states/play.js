@@ -65,40 +65,12 @@ GameState.prototype.placeBlock = function (x, y) {
     return block;
 };
 
-
-// This function draws horizontal lines across the stage
-// GameState.prototype.drawHeightMarkers = function() {
-//     // Create a bitmap the same size as the stage
-//     var bitmap = this.game.add.bitmapData(this.game.width, this.game.height);
-
-//     // These functions use the canvas context to draw lines using the canvas API
-//     for(y = this.game.height-this.BLOCKSIZE; y >= 64; y -= this.BLOCKSIZE) {
-//         bitmap.context.beginPath();
-//         bitmap.context.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-//         bitmap.context.moveTo(0, y);
-//         bitmap.context.lineTo(this.game.width, y);
-//         bitmap.context.stroke();
-//     }
-
-//     this.game.add.image(0, 0, bitmap);
-// };
-
-// TODO move this into block.js
 blockCollide = function(block1, block2){
-    // hacky way to let a block bounce once then stop
-    // gets around bug(?) where stacked blocks bounce slightly
-    // and fall through when stacks get to "heavy"
-    if (block2.bounced) {
-        block2.body.velocity.y = 0;
-        block2.body.immovable = true;
-        block2.body.allowGravity = false;
-    } else {
-        block2.bounced = true;
-    }
-
 
     if (block1.name === 'ground'){
-      // hit ground
+      block2.hitGround(block1);
+    } else {
+      block2.land();
     }
 };
 
