@@ -71,12 +71,15 @@ GameState.prototype.placeBlock = function (x, y) {
 blockCollide = function(block1, block2){
 
     if (block1.name === 'ground'){
-      block2.hitGround(block1);
+      block2.hitGround();
     } else {
       block2.land();
     }
 };
 
+GameState.prototype.assignRandomeColor = function(){
+  return this.rnd.pick(this.blockColors);
+}
 
 GameState.prototype.update = function() {
     if (this.game.time.fps !== 0) {

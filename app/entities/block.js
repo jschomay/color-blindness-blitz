@@ -20,6 +20,8 @@ module.exports = Block = function(game, gameState, x, y) {
 
     this.MAX_SPEED = 50; // pixels/second
 
+    this.inputEnabled = true;
+    this.events.onInputDown.add(this.tapBlock, this);
 
 };
 
@@ -27,15 +29,12 @@ module.exports = Block = function(game, gameState, x, y) {
 Block.prototype = Object.create(Phaser.Sprite.prototype);
 Block.prototype.constructor = Block;
 
-Block.prototype.assignRandomeColor = function(){
-  return this.game.rnd.pick(this.gameState.blockColors);
-}
 
 Block.prototype.init = function() {
     // color is the actual color
-    this.color = this.assignRandomeColor();
+    this.color = this.gameState.assignRandomeColor();
     // decoyColor is the is the rendered color
-    this.decoyColor = this.assignRandomeColor();
+    this.decoyColor = this.gameState.assignRandomeColor();
     
     this.renderBlockTexture(this.decoyColor, this.color);
 }
@@ -85,10 +84,26 @@ Block.prototype.land = function() {
   }
 };
 
-Block.prototype.hitGround = function(ground) {
-  if (this.color === ground.color) {
+Block.prototype.hitGround = function() {
+  if (this.color === this.gameState.ground.color) {
     this.land();
   } else {
     this.kill();
+  }
+}
+
+Block.prototype.tapBlock = function(){
+  if (!this.body.allowGravity) {
+      // can't tab blocks that have already landed
+      return;
+  } else {
+    this.kill();
+  }
+  if (this.body.allowGravity && this.color === this.gameState.ground.color) {
+    // correct
+  } else {
+   // wrong!
+    this.gameState.ground.color = this.color;
+    this.gameState.ground.drawGround();
   }
 }
