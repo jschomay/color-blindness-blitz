@@ -15,6 +15,8 @@ GameState.prototype.create = function() {
 
     this.BLOCKSIZE = 64;
 
+    this.blockColors = ['red','orange','yellow','green','blue','purple'];
+
     this.blockPool = this.game.add.group();
 
     // start block pool with 100 pieces
@@ -59,6 +61,7 @@ GameState.prototype.placeBlock = function (x, y) {
         console.log("increasing block pool to", this.blockPool.length);
         block = this.addBlockToPool();
     }
+    block.init();
     block.revive();
     block.reset(x, y);
 
