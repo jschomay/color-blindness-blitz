@@ -13,6 +13,7 @@ module.exports = Ground = function(game, gameState, y) {
 
     this.body.immovable = true;
     this.body.allowGravity = false;
+    this.body.enable = false;
 };
 
 Ground.prototype = Object.create(Phaser.Sprite.prototype);

@@ -80,6 +80,8 @@ GameState.prototype.blockCollide = function(block1, block2){
       block2.hitGround();
     } else {
       block2.land();
+      // don't need physics anymore on the block underneath
+      block1.body.enable = false;
     }
 };
 
