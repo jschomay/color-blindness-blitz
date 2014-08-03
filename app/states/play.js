@@ -5,9 +5,15 @@ module.exports = GameState = function(game) {
 // Load images and sounds
 GameState.prototype.preload = function() {
     this.game.load.image('block', '/assets/block.png');
+
+    this.game.scale.startFullScreen();
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; //resize your window to see the stage resize too
+    // this.game.scale.forceOrientation(false, true, '/portrait-only.jpg');
+    this.game.scale.refresh();
 };
 
 GameState.prototype.create = function() {
+    
     this.game.stage.backgroundColor = '#aaa';
 
     this.GRAVITY = 300; // pixels/second/second
