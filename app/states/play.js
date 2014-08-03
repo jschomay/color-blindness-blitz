@@ -74,7 +74,7 @@ GameState.prototype.placeBlock = function (x, y) {
     return block;
 };
 
-blockCollide = function(block1, block2){
+GameState.prototype.blockCollide = function(block1, block2){
 
     if (block1.name === 'ground'){
       block2.hitGround();
@@ -91,8 +91,8 @@ GameState.prototype.update = function() {
     if (this.game.time.fps !== 0) {
         this.fpsText.setText(this.game.time.fps + ' FPS');
     }
-    this.game.physics.arcade.collide(this.blockPool, this.blockPool, blockCollide);
-    this.game.physics.arcade.collide(this.blockPool, this.ground, blockCollide);
+    this.game.physics.arcade.collide(this.blockPool, this.blockPool, this.blockCollide);
+    this.game.physics.arcade.collide(this.blockPool, this.ground, this.blockCollide);
 
 };
 
