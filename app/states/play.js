@@ -75,14 +75,29 @@ GameState.prototype.placeBlock = function (x, y) {
     return block;
 };
 
+GameState.prototype.checkIsGameOver = function(block) {
+  if (block.body.y <= 0) {
+    this.doGameOver();
+  }
+};
+
+GameState.prototype.doGameOver = function() {
+  this.blockPool.forEach(function(block){
+    // temporary game over condition - reset all blocks
+    if (block.name !== 'ground') {
+      block.kill();
+    }
+  });
+};
+
 GameState.prototype.blockCollide = function(block1, block2){
 
-    if (block1.name === 'ground'){
-      block2.hitGround();
+    if (block2.name === 'ground') {
+      block1.hitGround()
     } else {
+      // stack
+      this.checkIsGameOver(block2);
       block2.land();
-      // don't need physics anymore on the block underneath
-      block1.body.enable = false;
     }
 };
 

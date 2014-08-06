@@ -17,6 +17,7 @@ module.exports = Block = function(game, gameState, x, y) {
     this.kill();
 
     this.body.bounce.y = 0.1;
+    this.body.minBounceVelocity = 0;
 
     this.MAX_SPEED = 50; // pixels/second
 
