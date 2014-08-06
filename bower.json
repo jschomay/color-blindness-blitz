@@ -2,6 +2,8 @@
   "name": "/color-blocks-blitz",
   "version": "0.0.1",
   "main": "public/app.js",
-  "dependencies": {},
+  "dependencies": {
+    "phaser": "~2.0.7"
+  },
   "overrides": {}
 }
