@@ -5,7 +5,7 @@ module.exports = Ground = function(game, gameState, y) {
 
     Phaser.Sprite.call(this, game, 0, y, this.bitmap);
 
-    this.color = game.rnd.pick(['red','orange','yellow','green','blue','purple']);
+    this.color = gameState.assignRandomeColor();
     this.drawGround();
     
     // Enable physics on the block

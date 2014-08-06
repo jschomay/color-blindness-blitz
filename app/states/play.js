@@ -32,9 +32,10 @@ GameState.prototype.create = function() {
 
     // lay ground
     var Ground = require('../entities/ground');
-    this.ground = new Ground(this.game, GameState, this.game.height - 30);
+    this.ground = new Ground(this.game, this, this.game.height - 30);
     this.ground.name = 'ground';
-    this.game.add.existing(this.ground);
+    //this.game.add.existing(this.ground);
+    this.blockPool.add(this.ground);
 
     this.rainBlocks();
 
@@ -93,8 +94,8 @@ GameState.prototype.update = function() {
     if (this.game.time.fps !== 0) {
         this.fpsText.setText(this.game.time.fps + ' FPS');
     }
-    this.game.physics.arcade.collide(this.blockPool, this.blockPool, this.blockCollide);
-    this.game.physics.arcade.collide(this.blockPool, this.ground, this.blockCollide);
+    // group vs self (ground is part of blocks group to keep it simple)
+    this.game.physics.arcade.collide(this.blockPool, undefined, this.blockCollide, null, this);
 
 };
 
