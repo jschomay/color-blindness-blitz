@@ -25,10 +25,6 @@ GameState.prototype.create = function() {
 
     this.blockPool = this.game.add.group();
 
-    // start block pool with 100 pieces
-    for(var i = 0; i < 100; i++) {
-        this.addBlockToPool();
-    }
 
     // lay ground
     var Ground = require('../entities/ground');
@@ -36,7 +32,12 @@ GameState.prototype.create = function() {
     this.ground.name = 'ground';
     //this.game.add.existing(this.ground);
     this.blockPool.add(this.ground);
+    this.blockPool.sendToBack(this.ground);
 
+    // start block pool with 100 pieces
+    for(var i = 0; i < 100; i++) {
+        this.addBlockToPool();
+    }
     this.rainBlocks();
 
     // Show FPS
@@ -90,15 +91,16 @@ GameState.prototype.doGameOver = function() {
   });
 };
 
+
+GameState.prototype.testBlockCollide = function(block1, block2){
+  // stack or pass through?
+  return block2.color === this.ground.color;
+};
+
 GameState.prototype.blockCollide = function(block1, block2){
 
-    if (block2.name === 'ground') {
-      block1.hitGround()
-    } else {
-      // stack
-      this.checkIsGameOver(block2);
-      block2.land();
-    }
+  this.checkIsGameOver(block2);
+  block2.land();
 };
 
 GameState.prototype.assignRandomeColor = function(){
@@ -110,7 +112,7 @@ GameState.prototype.update = function() {
         this.fpsText.setText(this.game.time.fps + ' FPS');
     }
     // group vs self (ground is part of blocks group to keep it simple)
-    this.game.physics.arcade.collide(this.blockPool, undefined, this.blockCollide, null, this);
+    this.game.physics.arcade.collide(this.blockPool, undefined, this.blockCollide, this.testBlockCollide, this);
 
 };
 
