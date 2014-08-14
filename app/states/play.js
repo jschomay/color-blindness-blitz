@@ -94,7 +94,7 @@ GameState.prototype.doGameOver = function() {
 
 GameState.prototype.testBlockCollide = function(block1, block2){
   // stack or pass through?
-  return block2.color === this.ground.color;
+  return block2.stacked || block2.color === this.ground.color;
 };
 
 GameState.prototype.blockCollide = function(block1, block2){

@@ -7,8 +7,6 @@ module.exports = Block = function(game, gameState, x, y) {
     this.bitmap = game.add.bitmapData(this.BLOCKSIZE,this.BLOCKSIZE);
 
     Phaser.Sprite.call(this, game, x, y, this.bitmap);
-    
-    this.init();
 
     // Enable physics on the block
     game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -24,6 +22,7 @@ module.exports = Block = function(game, gameState, x, y) {
     this.inputEnabled = true;
     this.events.onInputDown.add(this.tapBlock, this);
 
+    this.init();
 };
 
 
@@ -38,6 +37,11 @@ Block.prototype.init = function() {
     this.decoyColor = this.gameState.assignRandomeColor();
     
     this.renderBlockTexture(this.decoyColor, this.color);
+    
+    this.body.bounce.y = 0.1;
+    this.body.enable = undefined;
+    this.stacked = undefined;
+    this.bounced = false;
 }
 
 Block.prototype.renderBlockTexture = function(decoyColor, text) {
@@ -79,32 +83,35 @@ Block.prototype.land = function() {
       this.body.velocity.y = 0;
       this.body.immovable = true;
       this.body.allowGravity = false;
+      this.body.enable = false;
       this.renderBlockTexture('gray', this.color);
   } else {
       this.bounced = true;
+      this.stacked = true;
   }
 };
 
-Block.prototype.hitGround = function() {
-  if (this.color === this.gameState.ground.color) {
-    this.land();
-  } else {
-    this.kill();
-  }
-}
 
 Block.prototype.tapBlock = function(){
-  if (!this.body.allowGravity) {
-      // can't tab blocks that have already landed
-      return;
-  } else {
-    this.kill();
-  }
-  if (this.body.allowGravity && this.color === this.gameState.ground.color) {
-    // correct
-  } else {
-   // wrong!
-    this.gameState.ground.color = this.color;
-    this.gameState.ground.drawGround();
+  // you can't tap a block once it has landed
+  if (!this.stacked) {
+    if (this.checkTap()) {
+      // correct
+      this.kill();
+    } else {
+      // wrong!
+      this.stacked = true;
+
+      // speed drop up
+      this.body.velocity.y *= 3;
+      this.body.bounce.y = 0.05;
+      
+      // change ground color
+      // this.gameState.ground.color = this.color;
+      this.gameState.ground.drawGround();
+    }
   }
 }
+Block.prototype.checkTap = function() {
+  return this.color === this.gameState.ground.color;
+};
