@@ -4,7 +4,6 @@ module.exports = GameState = function(game) {
 
 // Load images and sounds
 GameState.prototype.preload = function() {
-    this.game.load.image('block', '/assets/block.png');
 
     this.game.scale.startFullScreen();
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; //resize your window to see the stage resize too
@@ -16,12 +15,12 @@ GameState.prototype.create = function() {
     
     this.game.stage.backgroundColor = '#aaa';
 
-    this.GRAVITY = 300; // pixels/second/second
+    this.GRAVITY = 200; // pixels/second/second
     this.game.physics.arcade.gravity.y = this.GRAVITY;
 
     this.BLOCKSIZE = 64;
 
-    this.blockColors = ['red','orange','yellow','green','blue','purple'];
+    this.blockColors = ['red','orange','green','blue','purple'];
 
     this.blockPool = this.game.add.group();
 
@@ -51,7 +50,7 @@ GameState.prototype.rainBlocks = function() {
     var slots = this.game.width/this.BLOCKSIZE;
     var x = (this.game.rnd.integerInRange(0,slots)) * this.BLOCKSIZE;
     this.placeBlock(x, -this.BLOCKSIZE);
-    this.game.time.events.add(1000, this.rainBlocks, this);
+    this.game.time.events.add(900, this.rainBlocks, this);
 };
 
 GameState.prototype.addBlockToPool = function(){

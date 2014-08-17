@@ -20,7 +20,7 @@ Ground.prototype = Object.create(Phaser.Sprite.prototype);
 Ground.prototype.constructor = Ground;
 
 Ground.prototype.drawGround = function() {
-    this.bitmap.context.fillStyle = "black";
+    this.bitmap.context.fillStyle = this.color;
     this.bitmap.context.fillRect(0,0,this.game.width,this.height);
 
     function strokeBlock(color, lineWidth) {

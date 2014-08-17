@@ -44,8 +44,8 @@ Block.prototype.init = function() {
     this.bounced = false;
 }
 
-Block.prototype.renderBlockTexture = function(decoyColor, text) {
-    this.bitmap.context.fillStyle = "black";
+Block.prototype.renderBlockTexture = function(colorName, renderColor) {
+    this.bitmap.context.fillStyle = renderColor;
     this.bitmap.context.fillRect(0,0,this.BLOCKSIZE,this.BLOCKSIZE);
 
     function strokeBlock(color, lineWidth) {
@@ -54,15 +54,15 @@ Block.prototype.renderBlockTexture = function(decoyColor, text) {
       this.bitmap.context.strokeRect(0, 0, this.BLOCKSIZE, this.BLOCKSIZE);
     }
 
-    strokeBlock.call(this, decoyColor, 6);
-    strokeBlock.call(this, "#333", 1);
+    // strokeBlock.call(this, renderColor, 6);
+    strokeBlock.call(this, "#333", 4);
 
     // write color
-    this.bitmap.context.fillStyle = decoyColor;
-    this.bitmap.context.font = "16px Arial";
+    this.bitmap.context.fillStyle = 'white';
+    this.bitmap.context.font = "bold 18px Arial";
     this.bitmap.context.textAlign = 'center';
     this.bitmap.context.textBaseline = 'middle';
-    this.bitmap.context.fillText(text, this.BLOCKSIZE / 2, this.BLOCKSIZE / 2);
+    this.bitmap.context.fillText(colorName, this.BLOCKSIZE / 2, this.BLOCKSIZE / 2);
 
     this.bitmap.dirty = true;
     this.bitmap.render()
@@ -84,10 +84,10 @@ Block.prototype.land = function() {
       this.body.immovable = true;
       this.body.allowGravity = false;
       this.body.enable = false;
-      this.renderBlockTexture('gray', this.color);
   } else {
       this.bounced = true;
       this.stacked = true;
+      // this.renderBlockTexture(this.color, 'gray');
   }
 };
 
@@ -101,13 +101,14 @@ Block.prototype.tapBlock = function(){
     } else {
       // wrong!
       this.stacked = true;
+      // this.renderBlockTexture(this.color, 'gray');
 
       // speed drop up
       this.body.velocity.y *= 3;
       this.body.bounce.y = 0.05;
       
       // change ground color
-      // this.gameState.ground.color = this.color;
+      this.gameState.ground.color = this.color;
       this.gameState.ground.drawGround();
     }
   }
