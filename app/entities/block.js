@@ -31,12 +31,19 @@ Block.prototype.constructor = Block;
 
 
 Block.prototype.init = function() {
+    var that = this;
+    var getColor = function () {
+      return that.gameState.rnd.integerInRange(0,5) >= 5 ?
+        that.gameState.ground.color :
+        that.gameState.assignRandomeColor()
+    }
+
     // color is the actual color
-    this.color = this.gameState.assignRandomeColor();
+    this.color = getColor();
     // decoyColor is the is the rendered color
     this.decoyColor = this.gameState.assignRandomeColor();
-    
-    this.renderBlockTexture(this.decoyColor, this.color);
+
+    this.renderBlockTexture('#fff');
     
     this.body.bounce.y = 0.1;
     this.body.enable = undefined;
@@ -44,7 +51,7 @@ Block.prototype.init = function() {
     this.bounced = false;
 }
 
-Block.prototype.renderBlockTexture = function(colorName, renderColor) {
+Block.prototype.renderBlockTexture = function(backgroundColor, textColor) {
 
     function fillBlock (color) {
       this.bitmap.context.fillStyle = color;
@@ -66,13 +73,13 @@ Block.prototype.renderBlockTexture = function(colorName, renderColor) {
     }
 
     // block background
-    fillBlock.call(this, renderColor);
+    fillBlock.call(this, backgroundColor ? backgroundColor : '#aaa');
     
     // block border
-    strokeBlock.call(this, "#333", 4);
+    strokeBlock.call(this, "#000", 1);
 
     // block text
-    renderText.call(this, colorName, 'white');
+    renderText.call(this, this.decoyColor, textColor ? textColor : this.color);
 
     this.bitmap.dirty = true;
     this.bitmap.render()
@@ -97,7 +104,7 @@ Block.prototype.land = function() {
   } else {
       this.bounced = true;
       this.stacked = true;
-      // this.renderBlockTexture(this.color, 'gray');
+      this.renderBlockTexture(this.decoyColor, this.decoyColor);
   }
 };
 
@@ -108,18 +115,18 @@ Block.prototype.tapBlock = function(){
     if (this.checkTap()) {
       // correct
       this.kill();
+      // change ground color
+      this.gameState.ground.color = this.decoyColor;
+      this.gameState.ground.drawGround();
     } else {
       // wrong!
       this.stacked = true;
-      // this.renderBlockTexture(this.color, 'gray');
+      this.renderBlockTexture(this.decoyColor, this.decoyColor);
 
       // speed drop up
       this.body.velocity.y *= 3;
       this.body.bounce.y = 0.05;
       
-      // change ground color
-      this.gameState.ground.color = this.color;
-      this.gameState.ground.drawGround();
     }
   }
 }

@@ -13,7 +13,7 @@ GameState.prototype.preload = function() {
 
 GameState.prototype.create = function() {
     
-    this.game.stage.backgroundColor = '#aaa';
+    this.game.stage.backgroundColor = '#000';
 
     this.GRAVITY = 200; // pixels/second/second
     this.game.physics.arcade.gravity.y = this.GRAVITY;
@@ -38,6 +38,7 @@ GameState.prototype.create = function() {
         this.addBlockToPool();
     }
     this.rainBlocks();
+    this.game.time.events.add(300, this.rainBlocks, this);
 
     // Show FPS
     this.game.time.advancedTiming = true;
@@ -76,7 +77,7 @@ GameState.prototype.placeBlock = function (x, y) {
 };
 
 GameState.prototype.checkIsGameOver = function(block) {
-  if (block.body.y <= 0) {
+  if (block.body.y <= 10) {
     this.doGameOver();
   }
 };
