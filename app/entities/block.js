@@ -45,24 +45,34 @@ Block.prototype.init = function() {
 }
 
 Block.prototype.renderBlockTexture = function(colorName, renderColor) {
-    this.bitmap.context.fillStyle = renderColor;
-    this.bitmap.context.fillRect(0,0,this.BLOCKSIZE,this.BLOCKSIZE);
 
-    function strokeBlock(color, lineWidth) {
+    function fillBlock (color) {
+      this.bitmap.context.fillStyle = color;
+      this.bitmap.context.fillRect(0,0,this.BLOCKSIZE,this.BLOCKSIZE);
+    }
+
+    function strokeBlock (color, lineWidth) {
       this.bitmap.context.strokeStyle = color;
       this.bitmap.context.lineWidth = lineWidth;
       this.bitmap.context.strokeRect(0, 0, this.BLOCKSIZE, this.BLOCKSIZE);
     }
 
-    // strokeBlock.call(this, renderColor, 6);
+    function renderText (text, color){
+      this.bitmap.context.fillStyle = color;
+      this.bitmap.context.font = "bold 18px Arial";
+      this.bitmap.context.textAlign = 'center';
+      this.bitmap.context.textBaseline = 'middle';
+      this.bitmap.context.fillText(text, this.BLOCKSIZE / 2, this.BLOCKSIZE / 2);
+    }
+
+    // block background
+    fillBlock.call(this, renderColor);
+    
+    // block border
     strokeBlock.call(this, "#333", 4);
 
-    // write color
-    this.bitmap.context.fillStyle = 'white';
-    this.bitmap.context.font = "bold 18px Arial";
-    this.bitmap.context.textAlign = 'center';
-    this.bitmap.context.textBaseline = 'middle';
-    this.bitmap.context.fillText(colorName, this.BLOCKSIZE / 2, this.BLOCKSIZE / 2);
+    // block text
+    renderText.call(this, colorName, 'white');
 
     this.bitmap.dirty = true;
     this.bitmap.render()
