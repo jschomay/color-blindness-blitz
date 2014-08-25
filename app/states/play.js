@@ -52,6 +52,8 @@ GameState.prototype.placeWord = function(x, y) {
     word.revive();
     word.reset(x, y);
 
+    // console.log("placing word", word.name, word.text, x, y)
+
     return word;
 };
 
@@ -60,6 +62,20 @@ GameState.prototype.assignRandomColor = function(){
 }
 
 GameState.prototype.buildWordGrid = function() {
+  var stillSpace = true;
+  var lastWord;
+  var x = y = 0;
+  while (stillSpace) {
+    lastWord = this.placeWord(x, y);
+    x += lastWord.width;
+    if (x > this.game.width) {
+      x = 0;
+      y += lastWord.height;
+      if (y > this.game.height) {
+        stillSpace = false;
+      }
+    }
+  }
 };
 
 GameState.prototype.checkIsGameOver = function(word) {
@@ -76,5 +92,5 @@ GameState.prototype.update = function() {
 };
 
 GameState.prototype.render = function render() {
-    // this.wordsPool.forEach(function(word){this.game.debug.body(word);},this);
+    // this.wordsPool.forEach(function(word){this.game.debug.spriteBounds(word);window.word = word;},this);
 };
