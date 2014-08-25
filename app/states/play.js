@@ -3,10 +3,10 @@ module.exports = GameState = function(game) {
 
 // Load images and sounds
 GameState.prototype.preload = function() {
-    this.game.scale.startFullScreen();
-    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; //resize your window to see the stage resize too
+    // this.game.scale.startFullScreen();
+    // this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; //resize your window to see the stage resize too
     // this.game.scale.forceOrientation(false, true, '/portrait-only.jpg');
-    this.game.scale.refresh();
+    // this.game.scale.refresh();
 };
 
 // Set up the game and kick it off
