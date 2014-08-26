@@ -13,25 +13,27 @@ GameState.prototype.preload = function() {
 GameState.prototype.create = function() {
     this.game.stage.backgroundColor = '#000';
 
-    // constants
+    // game props
     this.COLORS = ['red','orange','green','blue','purple'];
+    this.roundDuration = 2500;
+    this.highlightDuration = 1500;
 
     this.wordsPool = this.game.add.group();
     // start words pool with 50 objects
     for(var i = 0; i < 100; i++) {
         this.addWordToPool();
     }
-    
-    // this.game.time.events.add(300, this.hightlighRandomWord, this);
-
-    // Show FPS
-    // this.game.time.advancedTiming = true;
-    // this.fpsText = this.game.add.text(
-    //     20, 20, '', { font: '16px Arial', fill: '#ffffff' }
-    // );
-
     this.buildWordGrid();
+    this.game.time.events.add(this.roundDuration, this.hightlighRandomWord, this);
 };
+
+GameState.prototype.colorMap = {
+  'red': 0xFF0000,
+  'orange': 0xFFCC00,
+  'green': 0x33FF00,
+  'blue': 0x33333FF,
+  'purple': 0x993399
+}
 
 GameState.prototype.addWordToPool = function() {
     var Word = require('../entities/word');
@@ -78,6 +80,18 @@ GameState.prototype.buildWordGrid = function() {
   }
 };
 
+GameState.prototype.hightlighRandomWord = function() {
+  var targetWord = this.wordsPool.getRandom();
+  var randomColor = this.colorMap[this.getRandomAvailableColor()];
+  targetWord.highlight(randomColor, this.highlightDuration);
+  this.game.time.events.add(this.roundDuration, this.hightlighRandomWord, this);
+};
+
+GameState.prototype.getRandomAvailableColor = function() {
+  // TODO pick color from remaining words map
+  return this.assignRandomColor();
+}
+
 GameState.prototype.checkIsGameOver = function(word) {
   return false;
 };
@@ -86,9 +100,6 @@ GameState.prototype.doGameOver = function() {
 };
 
 GameState.prototype.update = function() {
-    if (this.game.time.fps !== 0) {
-        this.fpsText.setText(this.game.time.fps + ' FPS');
-    }
 };
 
 GameState.prototype.render = function render() {

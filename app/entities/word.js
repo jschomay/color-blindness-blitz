@@ -50,25 +50,28 @@ Word.prototype.resizeToText = function() {
 
 Word.prototype.tapWord = function(){
   console.log("tapped on ", this.name, this.text);
-  this.renderWordTexture(this.text, this.text);
+  this.highlight(this.getHexColor(), -1);
+};
+
+Word.prototype.highlight= function(color, duration) {
+  if (typeof duration === 'undefined') {
+    duration = this.gameState.roundDuration;
+  }
+  var previousTint = this.tint;
   // FIXME tweening the tint doesn't work well at all
   // try doing it in the canvas with hsl and desaturation
-  var highlight = game.add.tween(this);
-  highlight.to({ tint: this.getHexColor()}, 100);
-  highlight.start();
+  var highlightTween = game.add.tween(this);
+  highlightTween.to({ tint: color}, 1);
+  highlightTween.start();
+  if (duration >= 0) {
+    this.game.time.events.add(duration, this.highlight, this, previousTint, -1);
+  }
 }
 
 Word.prototype.update = function() {
 };
 
 Word.prototype.getHexColor = function() {
-  return this.colorMap[this.text];
+  return this.gameState.colorMap[this.text];
 }
 
-Word.prototype.colorMap = {
-  'red': 0xFF0000,
-  'orange': 0xFFCC00,
-  'green': 0x33FF00,
-  'blue': 0x33333FF,
-  'purple': 0x993399
-}
