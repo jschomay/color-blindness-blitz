@@ -17,8 +17,9 @@ Word.prototype.constructor = Word;
 Word.prototype.init = function() {
     this.text = this.gameState.assignRandomColor();
     this.fontSize = 25;
+    this.tint = 0x444444;
     this.resizeToText();
-    this.renderWordTexture(this.text, '#444');
+    this.renderWordTexture(this.text, '#fff');
 }
 
 Word.prototype.renderWordTexture = function(text, color) {
@@ -50,8 +51,24 @@ Word.prototype.resizeToText = function() {
 Word.prototype.tapWord = function(){
   console.log("tapped on ", this.name, this.text);
   this.renderWordTexture(this.text, this.text);
+  // FIXME tweening the tint doesn't work well at all
+  // try doing it in the canvas with hsl and desaturation
+  var highlight = game.add.tween(this);
+  highlight.to({ tint: this.getHexColor()}, 100);
+  highlight.start();
 }
 
 Word.prototype.update = function() {
 };
 
+Word.prototype.getHexColor = function() {
+  return this.colorMap[this.text];
+}
+
+Word.prototype.colorMap = {
+  'red': 0xFF0000,
+  'orange': 0xFFCC00,
+  'green': 0x33FF00,
+  'blue': 0x33333FF,
+  'purple': 0x993399
+}

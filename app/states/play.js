@@ -45,7 +45,7 @@ GameState.prototype.placeWord = function(x, y) {
     // Get a dead word from the pool
     var word = this.wordsPool.getFirstDead();
     if (word === null) {
-        console.log("increasing word pool to", this.wordsPool.length);
+        // console.log("increasing word pool to", this.wordsPool.length);
         word = this.addWordToPool();
     }
     word.init();
@@ -92,5 +92,5 @@ GameState.prototype.update = function() {
 };
 
 GameState.prototype.render = function render() {
-    // this.wordsPool.forEach(function(word){this.game.debug.spriteBounds(word);window.word = word;},this);
+    // this.wordsPool.forEach(function(word){this.game.debug.spriteInfo(word);window.word = word;},this);
 };
