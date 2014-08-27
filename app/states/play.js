@@ -3,26 +3,35 @@ module.exports = GameState = function(game) {
 
 // Load images and sounds
 GameState.prototype.preload = function() {
-    // this.game.scale.startFullScreen();
-    // this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; //resize your window to see the stage resize too
+    this.game.scale.startFullScreen();
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; //resize your window to see the stage resize too
     // this.game.scale.forceOrientation(false, true, '/portrait-only.jpg');
-    // this.game.scale.refresh();
+    this.game.scale.refresh();
 };
 
 // Set up the game and kick it off
 GameState.prototype.create = function() {
-    this.game.stage.backgroundColor = '#000';
+    this.game.stage.backgroundColor = 0 * 0xFFFFFF;
 
     // game props
     this.COLORS = ['red','orange','green','blue','purple'];
-    this.roundDuration = 2500;
-    this.highlightDuration = 1500;
+    this.roundDuration = 2000;
+    this.highlightDuration = 1000;
+    this.targetColorHex = 0xFFFFFF;
+    this.targetColorWord = "white";
 
     this.wordsPool = this.game.add.group();
-    // start words pool with 50 objects
-    for(var i = 0; i < 100; i++) {
+    // start words pool with 10 objects
+    for(var i = 0; i < 10; i++) {
         this.addWordToPool();
     }
+    
+    // Show FPS
+    // this.game.time.advancedTiming = true;
+    // this.fpsText = this.game.add.text(
+    //     20, 20, '', { font: '16px Arial', fill: '#ffffff' }
+    // );
+
     this.buildWordGrid();
     this.game.time.events.add(this.roundDuration, this.hightlighRandomWord, this);
 };
@@ -73,7 +82,7 @@ GameState.prototype.buildWordGrid = function() {
     if (x > this.game.width) {
       x = 0;
       y += lastWord.height;
-      if (y > this.game.height) {
+      if (y + lastWord.height > this.game.height) {
         stillSpace = false;
       }
     }
@@ -82,8 +91,9 @@ GameState.prototype.buildWordGrid = function() {
 
 GameState.prototype.hightlighRandomWord = function() {
   var targetWord = this.wordsPool.getRandom();
-  var randomColor = this.colorMap[this.getRandomAvailableColor()];
-  targetWord.highlight(randomColor, this.highlightDuration);
+  this.targetColorWord = this.getRandomAvailableColor();
+  this.targetColorHex = this.colorMap[this.targetColorWord];
+  targetWord.highlight(this.targetColorHex, this.highlightDuration);
   this.game.time.events.add(this.roundDuration, this.hightlighRandomWord, this);
 };
 
@@ -99,7 +109,15 @@ GameState.prototype.checkIsGameOver = function(word) {
 GameState.prototype.doGameOver = function() {
 };
 
+GameState.prototype.flashBackground = function() {
+  // FIXME this can be moved to where the background is defined
+  this.flashBackgroundTween = game.add.tween(this.game.stage);
+  this.flashBackgroundTween.to({backgroundColor: 0.8 * 0xFFFFFF}, 100, null, true, 0, 1, true);
+};
 GameState.prototype.update = function() {
+    if (this.game.time.fps !== 0) {
+        this.fpsText.setText(this.game.time.fps + ' FPS');
+    }
 };
 
 GameState.prototype.render = function render() {

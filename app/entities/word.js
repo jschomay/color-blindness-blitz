@@ -16,7 +16,7 @@ Word.prototype.constructor = Word;
 // set up instance props upon revive
 Word.prototype.init = function() {
     this.text = this.gameState.assignRandomColor();
-    this.fontSize = 25;
+    this.fontSize = 29;
     this.tint = 0x444444;
     this.resizeToText();
     this.renderWordTexture(this.text, '#fff');
@@ -49,8 +49,13 @@ Word.prototype.resizeToText = function() {
 }
 
 Word.prototype.tapWord = function(){
-  console.log("tapped on ", this.name, this.text);
-  this.highlight(this.getHexColor(), -1);
+  if (this.text.toLowerCase() === this.gameState.targetColorWord.toLowerCase()) {
+    // right
+    this.kill();
+  } else {
+    // wrong
+    this.gameState.flashBackground();
+  }
 };
 
 Word.prototype.highlight= function(color, duration) {
@@ -58,14 +63,16 @@ Word.prototype.highlight= function(color, duration) {
     duration = this.gameState.roundDuration;
   }
   var previousTint = this.tint;
+  this.tint = color;
+  this.game.time.events.add(duration, function(){this.tint = previousTint;}, this);
   // FIXME tweening the tint doesn't work well at all
   // try doing it in the canvas with hsl and desaturation
-  var highlightTween = game.add.tween(this);
-  highlightTween.to({ tint: color}, 1);
-  highlightTween.start();
-  if (duration >= 0) {
-    this.game.time.events.add(duration, this.highlight, this, previousTint, -1);
-  }
+  // var highlightTween = game.add.tween(this);
+  // highlightTween.to({ tint: color}, 1);
+  // highlightTween.start();
+  // if (duration >= 0) {
+  //   this.game.time.events.add(duration, this.highlight, this, previousTint, -1);
+  // }
 }
 
 Word.prototype.update = function() {
