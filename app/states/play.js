@@ -38,11 +38,25 @@ GameState.prototype.create = function() {
 
 GameState.prototype.colorMap = {
   'red': 0xFF0000,
-  'orange': 0xFFCC00,
+  'orange': 0xFF9900,
   'green': 0x33FF00,
   'blue': 0x33333FF,
   'purple': 0x993399
 }
+
+GameState.prototype.remainingColors = {};
+GameState.prototype.addToRemainingColors = function(word) {
+  if (!this.remainingColors[word.text]) {
+    this.remainingColors[word.text] = 1;
+  } else {
+    this.remainingColors[word.text]++;
+  }
+};
+
+GameState.prototype.removeFromRemainingColors = function(word) {
+  this.remainingColors[word.text]--;
+};
+
 
 GameState.prototype.addWordToPool = function() {
     var Word = require('../entities/word');
@@ -60,6 +74,7 @@ GameState.prototype.placeWord = function(x, y) {
         word = this.addWordToPool();
     }
     word.init();
+    this.addToRemainingColors(word);
     word.revive();
     word.reset(x, y);
 
@@ -73,17 +88,17 @@ GameState.prototype.assignRandomColor = function(){
 }
 
 GameState.prototype.buildWordGrid = function() {
-  var stillSpace = true;
+  var isStillSpace = true;
   var lastWord;
   var x = y = 0;
-  while (stillSpace) {
+  while (isStillSpace) {
     lastWord = this.placeWord(x, y);
     x += lastWord.width;
     if (x > this.game.width) {
       x = 0;
       y += lastWord.height;
       if (y + lastWord.height > this.game.height) {
-        stillSpace = false;
+        isStillSpace = false;
       }
     }
   }
@@ -98,8 +113,13 @@ GameState.prototype.hightlighRandomWord = function() {
 };
 
 GameState.prototype.getRandomAvailableColor = function() {
-  // TODO pick color from remaining words map
-  return this.assignRandomColor();
+  var remainingColors = [];
+  for (var colorName in this.remainingColors) {
+    if (this.remainingColors[colorName] > 0) {
+      remainingColors.push(colorName);
+    }
+  }
+  return this.rnd.pick(remainingColors);
 }
 
 GameState.prototype.checkIsGameOver = function(word) {
@@ -114,6 +134,7 @@ GameState.prototype.flashBackground = function() {
   this.flashBackgroundTween = game.add.tween(this.game.stage);
   this.flashBackgroundTween.to({backgroundColor: 0.8 * 0xFFFFFF}, 100, null, true, 0, 1, true);
 };
+
 GameState.prototype.update = function() {
     if (this.game.time.fps !== 0) {
         this.fpsText.setText(this.game.time.fps + ' FPS');

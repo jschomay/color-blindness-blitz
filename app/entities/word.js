@@ -52,6 +52,8 @@ Word.prototype.tapWord = function(){
   if (this.text.toLowerCase() === this.gameState.targetColorWord.toLowerCase()) {
     // right
     this.kill();
+    this.gameState.wordsPool.remove(this);
+    this.gameState.removeFromRemainingColors(this);
   } else {
     // wrong
     this.gameState.flashBackground();
