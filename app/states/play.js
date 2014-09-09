@@ -94,7 +94,7 @@ GameState.prototype.buildWordGrid = function() {
   while (isStillSpace) {
     lastWord = this.placeWord(x, y);
     x += lastWord.width;
-    if (x > this.game.width) {
+    if (x + lastWord.width / 4 > this.game.width) {
       x = 0;
       y += lastWord.height;
       if (y + lastWord.height > this.game.height) {
@@ -105,6 +105,8 @@ GameState.prototype.buildWordGrid = function() {
 };
 
 GameState.prototype.hightlighRandomWord = function() {
+  if (this.wordsPool.length < 1)
+    return;
   var targetWord = this.wordsPool.getRandom();
   this.targetColorWord = this.getRandomAvailableColor();
   this.targetColorHex = this.colorMap[this.targetColorWord];
