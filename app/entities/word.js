@@ -18,9 +18,14 @@ Word.prototype.init = function() {
     this.text = this.gameState.assignRandomColor();
     this.fontSize = 29;
     this.tint = 0x444444;
+    this.highlightTimeout = undefined;
     this.resizeToText();
     this.renderWordTexture(this.text, '#fff');
 }
+
+Word.prototype.resetWord = function() {
+  this.gameState.targetWord.tint = 0x444444;
+};
 
 Word.prototype.renderWordTexture = function(text, color) {
     this.bitmap.context.clearRect(0, 0, this.width, this.height);
@@ -49,24 +54,39 @@ Word.prototype.resizeToText = function() {
 }
 
 Word.prototype.tapWord = function(){
-  if (this.text.toLowerCase() === this.gameState.targetColorWord.toLowerCase()) {
+  if (this.gameState.roundIsOver) {
+    return;
+  }
+  this.resetWord();
+  // round outcome logic
+  if (this.playIsCorrect()) {
     // right
     this.kill();
     this.gameState.wordsPool.remove(this);
     this.gameState.removeFromRemainingColors(this);
   } else {
     // wrong
-    this.gameState.flashBackground();
+    this.gameState.showWrong();
   }
+
+  // end current round
+  this.game.time.events.remove(this.gameState.roundTimeout);
+
+  // queue next round
+  this.gameState.queueNextRound();
+};
+
+Word.prototype.playIsCorrect = function() {
+  return this.text.toLowerCase() === this.gameState.targetColorWord.toLowerCase();
 };
 
 Word.prototype.highlight= function(color, duration) {
-  if (typeof duration === 'undefined') {
-    duration = this.gameState.roundDuration;
-  }
   var previousTint = this.tint;
   this.tint = color;
-  this.game.time.events.add(duration, function(){this.tint = previousTint;}, this);
+  this.gameState.roundTimeout = this.game.time.events.add(duration, function(){
+    this.tint = previousTint
+    this.gameState.queueNextRound();
+  }, this);
   // FIXME tweening the tint doesn't work well at all
   // try doing it in the canvas with hsl and desaturation
   // var highlightTween = game.add.tween(this);

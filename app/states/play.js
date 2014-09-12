@@ -15,10 +15,14 @@ GameState.prototype.create = function() {
 
     // game props
     this.COLORS = ['red','orange','green','blue','purple'];
-    this.roundDuration = 2000;
-    this.highlightDuration = 1000;
+    this.roundNumber = 1;
+    this.roundDuration = 3000;
+    this.nextroundDelay = 1000;
+    this.roundTimeout = undefined;
+    this.targetWord = undefined;
     this.targetColorHex = 0xFFFFFF;
     this.targetColorWord = "white";
+    this.roundIsOver = true;
 
     this.wordsPool = this.game.add.group();
     // start words pool with 10 objects
@@ -33,7 +37,7 @@ GameState.prototype.create = function() {
     // );
 
     this.buildWordGrid();
-    this.game.time.events.add(this.roundDuration, this.hightlighRandomWord, this);
+    this.highlightRandomWord();
 };
 
 GameState.prototype.colorMap = {
@@ -104,14 +108,21 @@ GameState.prototype.buildWordGrid = function() {
   }
 };
 
-GameState.prototype.hightlighRandomWord = function() {
+GameState.prototype.highlightRandomWord = function() {
+  // console.log("start round", this.roundNumber++);
   if (this.wordsPool.length < 1)
     return;
-  var targetWord = this.wordsPool.getRandom();
+
+  this.roundIsOver = false;
+  this.targetWord = this.wordsPool.getRandom();
   this.targetColorWord = this.getRandomAvailableColor();
   this.targetColorHex = this.colorMap[this.targetColorWord];
-  targetWord.highlight(this.targetColorHex, this.highlightDuration);
-  this.game.time.events.add(this.roundDuration, this.hightlighRandomWord, this);
+  this.targetWord.highlight(this.targetColorHex, this.roundDuration);
+};
+
+GameState.prototype.queueNextRound = function() {
+  this.roundIsOver = true;
+  this.game.time.events.add(this.nextroundDelay, this.highlightRandomWord, this);
 };
 
 GameState.prototype.getRandomAvailableColor = function() {
@@ -131,7 +142,7 @@ GameState.prototype.checkIsGameOver = function(word) {
 GameState.prototype.doGameOver = function() {
 };
 
-GameState.prototype.flashBackground = function() {
+GameState.prototype.showWrong = function() {
   // FIXME this can be moved to where the background is defined
   this.flashBackgroundTween = game.add.tween(this.game.stage);
   this.flashBackgroundTween.to({backgroundColor: 0.8 * 0xFFFFFF}, 100, null, true, 0, 1, true);
