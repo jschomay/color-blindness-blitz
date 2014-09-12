@@ -21,6 +21,7 @@ Word.prototype.init = function() {
     this.highlightTimeout = undefined;
     this.resizeToText();
     this.renderWordTexture(this.text, '#fff');
+    this.frozen = false;
 }
 
 Word.prototype.resetWord = function() {
@@ -54,19 +55,21 @@ Word.prototype.resizeToText = function() {
 }
 
 Word.prototype.tapWord = function(){
-  if (this.gameState.roundIsOver) {
+  if (this.gameState.roundIsOver || this.frozen) {
     return;
   }
   this.resetWord();
+  this.gameState.removeFromRemainingColors(this);
+
   // round outcome logic
   if (this.playIsCorrect()) {
     // right
     this.kill();
     this.gameState.wordsPool.remove(this);
-    this.gameState.removeFromRemainingColors(this);
   } else {
     // wrong
     this.gameState.showWrong();
+    this.freeze();
   }
 
   // end current round
@@ -74,6 +77,12 @@ Word.prototype.tapWord = function(){
 
   // queue next round
   this.gameState.queueNextRound();
+};
+
+Word.prototype.freeze = function() {
+  this.frozen = true;
+  this.tint = 0xffffff;
+  this.gameState.missedWordsPool.add(this); // auto removces from wordsPool
 };
 
 Word.prototype.playIsCorrect = function() {

@@ -25,6 +25,7 @@ GameState.prototype.create = function() {
     this.roundIsOver = true;
 
     this.wordsPool = this.game.add.group();
+    this.missedWordsPool = this.game.add.group();
     // start words pool with 10 objects
     for(var i = 0; i < 10; i++) {
         this.addWordToPool();
