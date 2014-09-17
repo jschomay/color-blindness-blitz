@@ -94,6 +94,11 @@ Word.prototype.highlight= function(color, duration) {
   this.tint = color;
   this.gameState.roundTimeout = this.game.time.events.add(duration, function(){
     this.tint = previousTint
+    // player was too slow
+    this.gameState.targetWord.resetWord();
+    this.gameState.removeFromRemainingColors(this.gameState.targetWord);
+    this.gameState.showWrong();
+    this.gameState.targetWord.freeze();
     this.gameState.queueNextRound();
   }, this);
   // FIXME tweening the tint doesn't work well at all
