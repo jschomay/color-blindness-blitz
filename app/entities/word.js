@@ -66,6 +66,8 @@ Word.prototype.tapWord = function(){
     // right
     this.kill();
     this.gameState.wordsPool.remove(this);
+    this.gameState.roundDuration *= this.gameState.roundSpeedIncrease
+    this.gameState.nextRoundDelay *= this.gameState.roundSpeedIncrease
   } else {
     // wrong
     this.gameState.showWrong();

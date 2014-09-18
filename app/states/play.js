@@ -17,7 +17,8 @@ GameState.prototype.create = function() {
     this.COLORS = ['red','orange','green','blue','purple'];
     this.roundNumber = 1;
     this.roundDuration = 3000;
-    this.nextroundDelay = 1000;
+    this.nextRoundDelay = 1000;
+    this.roundSpeedIncrease = 0.95;
     this.roundTimeout = undefined;
     this.targetWord = undefined;
     this.targetColorHex = 0xFFFFFF;
@@ -123,7 +124,7 @@ GameState.prototype.highlightRandomWord = function() {
 
 GameState.prototype.queueNextRound = function() {
   this.roundIsOver = true;
-  this.game.time.events.add(this.nextroundDelay, this.highlightRandomWord, this);
+  this.game.time.events.add(this.nextRoundDelay, this.highlightRandomWord, this);
 };
 
 GameState.prototype.getRandomAvailableColor = function() {
