@@ -46,7 +46,7 @@ GameState.prototype.colorMap = {
   'red': 0xFF0000,
   'orange': 0xFF9900,
   'green': 0x33FF00,
-  'blue': 0x33333FF,
+  'blue': 0x3333FF,
   'purple': 0x993399
 }
 
@@ -146,8 +146,10 @@ GameState.prototype.doGameOver = function() {
 
 GameState.prototype.showWrong = function() {
   // FIXME this can be moved to where the background is defined
+  // var color = 0xFFFFFF;
+  var color = this.targetColorHex;
   this.flashBackgroundTween = game.add.tween(this.game.stage);
-  this.flashBackgroundTween.to({backgroundColor: 0.8 * 0xFFFFFF}, 100, null, true, 0, 1, true);
+  this.flashBackgroundTween.to({backgroundColor: color}, 100, null, true, 0, 3, true);
 };
 
 GameState.prototype.update = function() {
