@@ -39,6 +39,7 @@ GameState.prototype.create = function() {
     // );
 
     this.buildWordGrid();
+    this.game.score.total = this.wordsPool.length;
     this.highlightRandomWord();
 };
 
@@ -124,7 +125,11 @@ GameState.prototype.highlightRandomWord = function() {
 
 GameState.prototype.queueNextRound = function() {
   this.roundIsOver = true;
-  this.game.time.events.add(this.nextRoundDelay, this.highlightRandomWord, this);
+  if (this.wordsPool.length === 0) {
+    this.game.state.start('levelEnd');
+  } else {
+    this.game.time.events.add(this.nextRoundDelay, this.highlightRandomWord, this);
+  }
 };
 
 GameState.prototype.getRandomAvailableColor = function() {
@@ -161,3 +166,7 @@ GameState.prototype.update = function() {
 GameState.prototype.render = function render() {
     // this.wordsPool.forEach(function(word){this.game.debug.spriteInfo(word);window.word = word;},this);
 };
+
+GameState.prototype.shutdown = function() {  
+  this.wordsPool.destroy();
+}

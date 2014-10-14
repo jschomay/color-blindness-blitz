@@ -16,7 +16,8 @@ Word.prototype.constructor = Word;
 // set up instance props upon revive
 Word.prototype.init = function() {
     this.text = this.gameState.assignRandomColor();
-    this.fontSize = 29;
+    this.fontSize = 39;
+    // this.fontSize = 29;
     this.tint = 0x444444;
     this.highlightTimeout = undefined;
     this.resizeToText();
@@ -64,6 +65,7 @@ Word.prototype.tapWord = function(){
   // round outcome logic
   if (this.playIsCorrect()) {
     // right
+    this.game.score.correct++;
     this.kill();
     this.gameState.wordsPool.remove(this);
     this.gameState.roundDuration *= this.gameState.roundSpeedIncrease
