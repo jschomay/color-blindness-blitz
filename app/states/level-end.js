@@ -6,7 +6,7 @@
     },
     create: function() {
       var style = { font: 'bold 45px Arial', fill: '#ffffff', align: 'center'};
-      this.titleText = this.game.add.text(this.game.world.centerX, 100, 'Round Over', style);
+      this.titleText = this.game.add.text(this.game.world.centerX, 100, 'Level '+this.game.pacing.level+'\nFinished', style);
       this.titleText.anchor.setTo(0.5, 0.5);
 
       this.scoreText = game.add.text(this.game.world.centerX, 200, 'Score: '+this.game.score.correct+' / '+this.game.score.total, { font: '16px Arial', fill: '#ffffff', align: 'left'});

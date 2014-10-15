@@ -2,6 +2,7 @@ var game = new Phaser.Game(320, 480, Phaser.AUTO, 'game');
 // var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'game');
 
 game.score = {correct:0,total:0};
+game.pacing = {baseSpeedMultiplier: 1, level: 0, levelSpeedIncrease: 0.75, roundSpeedIncrease: 0.95}
 
 Level = require('./states/level');
 Intro = require('./states/intro');

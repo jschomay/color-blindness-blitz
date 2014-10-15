@@ -68,12 +68,16 @@ Word.prototype.tapWord = function(){
     this.game.score.correct++;
     this.kill();
     this.level.wordsPool.remove(this);
-    this.level.roundDuration *= this.level.roundSpeedIncrease
-    this.level.nextRoundDelay *= this.level.roundSpeedIncrease
+    // speed up
+    this.level.roundDuration *= this.game.pacing.roundSpeedIncrease
+    this.level.nextRoundDelay *= this.game.pacing.roundSpeedIncrease
   } else {
     // wrong
     this.level.showWrong();
     this.freeze();
+    // slow down
+    this.level.roundDuration *= 1/this.game.pacing.roundSpeedIncrease
+    this.level.nextRoundDelay *= 1/this.game.pacing.roundSpeedIncrease
   }
 
   // end current round

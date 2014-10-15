@@ -16,9 +16,8 @@ Level.prototype.create = function() {
     // game props
     this.COLORS = ['red','orange','green','blue','purple'];
     this.roundNumber = 1;
-    this.roundDuration = 3000;
-    this.nextRoundDelay = 1000;
-    this.roundSpeedIncrease = 0.95;
+    this.roundDuration = 3000 * this.game.pacing.baseSpeedMultiplier;
+    this.nextRoundDelay = 1000 * this.game.pacing.baseSpeedMultiplier;
     this.roundTimeout = undefined;
     this.targetWord = undefined;
     this.targetColorHex = 0xFFFFFF;
@@ -125,8 +124,8 @@ Level.prototype.highlightRandomWord = function() {
 
 Level.prototype.queueNextRound = function() {
   this.roundIsOver = true;
-  if (this.wordsPool.length === 0) {
-    this.game.state.start('levelEnd');
+  if (this.checkIsGameOver()) {
+    this.doGameOver();
   } else {
     this.game.time.events.add(this.nextRoundDelay, this.highlightRandomWord, this);
   }
@@ -142,11 +141,15 @@ Level.prototype.getRandomAvailableColor = function() {
   return this.rnd.pick(remainingColors);
 }
 
-Level.prototype.checkIsGameOver = function(word) {
-  return false;
+Level.prototype.checkIsGameOver = function() {
+  return this.wordsPool.length === 0;
 };
 
 Level.prototype.doGameOver = function() {
+  // speed up next round
+  this.game.pacing.baseSpeedMultiplier *= this.game.pacing.levelSpeedIncrease;
+  this.game.pacing.level++;
+  this.game.state.start('levelEnd');
 };
 
 Level.prototype.showWrong = function() {
