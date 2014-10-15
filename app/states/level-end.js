@@ -18,7 +18,7 @@
     update: function() {
       if(this.game.input.activePointer.justPressed()) {
         this.game.score.correct = 0;
-        this.game.state.start('play');
+        this.game.state.start('level');
       }
     }
   };

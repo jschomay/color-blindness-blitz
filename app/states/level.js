@@ -1,8 +1,8 @@
-module.exports = GameState = function(game) {
+module.exports = Level = function(game) {
 };
 
 // Load images and sounds
-GameState.prototype.preload = function() {
+Level.prototype.preload = function() {
     this.game.scale.startFullScreen();
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; //resize your window to see the stage resize too
     // this.game.scale.forceOrientation(false, true, '/portrait-only.jpg');
@@ -10,7 +10,7 @@ GameState.prototype.preload = function() {
 };
 
 // Set up the game and kick it off
-GameState.prototype.create = function() {
+Level.prototype.create = function() {
     this.game.stage.backgroundColor = 0 * 0xFFFFFF;
 
     // game props
@@ -43,7 +43,7 @@ GameState.prototype.create = function() {
     this.highlightRandomWord();
 };
 
-GameState.prototype.colorMap = {
+Level.prototype.colorMap = {
   'red': 0xFF0000,
   'orange': 0xFF9900,
   'green': 0x33FF00,
@@ -51,8 +51,8 @@ GameState.prototype.colorMap = {
   'purple': 0x993399
 }
 
-GameState.prototype.remainingColors = {};
-GameState.prototype.addToRemainingColors = function(word) {
+Level.prototype.remainingColors = {};
+Level.prototype.addToRemainingColors = function(word) {
   if (!this.remainingColors[word.text]) {
     this.remainingColors[word.text] = 1;
   } else {
@@ -60,12 +60,12 @@ GameState.prototype.addToRemainingColors = function(word) {
   }
 };
 
-GameState.prototype.removeFromRemainingColors = function(word) {
+Level.prototype.removeFromRemainingColors = function(word) {
   this.remainingColors[word.text]--;
 };
 
 
-GameState.prototype.addWordToPool = function() {
+Level.prototype.addWordToPool = function() {
     var Word = require('../entities/word');
     var word = new Word(this.game, this, 0, 0);
     word.name = 'word'+this.wordsPool.length;
@@ -73,7 +73,7 @@ GameState.prototype.addWordToPool = function() {
     return word;
 };
 
-GameState.prototype.placeWord = function(x, y) {
+Level.prototype.placeWord = function(x, y) {
     // Get a dead word from the pool
     var word = this.wordsPool.getFirstDead();
     if (word === null) {
@@ -90,11 +90,11 @@ GameState.prototype.placeWord = function(x, y) {
     return word;
 };
 
-GameState.prototype.assignRandomColor = function(){
+Level.prototype.assignRandomColor = function(){
   return this.rnd.pick(this.COLORS);
 }
 
-GameState.prototype.buildWordGrid = function() {
+Level.prototype.buildWordGrid = function() {
   var isStillSpace = true;
   var lastWord;
   var x = y = 0;
@@ -111,7 +111,7 @@ GameState.prototype.buildWordGrid = function() {
   }
 };
 
-GameState.prototype.highlightRandomWord = function() {
+Level.prototype.highlightRandomWord = function() {
   // console.log("start round", this.roundNumber++);
   if (this.wordsPool.length < 1)
     return;
@@ -123,7 +123,7 @@ GameState.prototype.highlightRandomWord = function() {
   this.targetWord.highlight(this.targetColorHex, this.roundDuration);
 };
 
-GameState.prototype.queueNextRound = function() {
+Level.prototype.queueNextRound = function() {
   this.roundIsOver = true;
   if (this.wordsPool.length === 0) {
     this.game.state.start('levelEnd');
@@ -132,7 +132,7 @@ GameState.prototype.queueNextRound = function() {
   }
 };
 
-GameState.prototype.getRandomAvailableColor = function() {
+Level.prototype.getRandomAvailableColor = function() {
   var remainingColors = [];
   for (var colorName in this.remainingColors) {
     if (this.remainingColors[colorName] > 0) {
@@ -142,14 +142,14 @@ GameState.prototype.getRandomAvailableColor = function() {
   return this.rnd.pick(remainingColors);
 }
 
-GameState.prototype.checkIsGameOver = function(word) {
+Level.prototype.checkIsGameOver = function(word) {
   return false;
 };
 
-GameState.prototype.doGameOver = function() {
+Level.prototype.doGameOver = function() {
 };
 
-GameState.prototype.showWrong = function() {
+Level.prototype.showWrong = function() {
   // FIXME this can be moved to where the background is defined
   // var color = 0xFFFFFF;
   var color = this.targetColorHex;
@@ -157,16 +157,16 @@ GameState.prototype.showWrong = function() {
   this.flashBackgroundTween.to({backgroundColor: color}, 100, null, true, 0, 3, true);
 };
 
-GameState.prototype.update = function() {
+Level.prototype.update = function() {
     if (this.game.time.fps !== 0) {
         this.fpsText.setText(this.game.time.fps + ' FPS');
     }
 };
 
-GameState.prototype.render = function render() {
+Level.prototype.render = function render() {
     // this.wordsPool.forEach(function(word){this.game.debug.spriteInfo(word);window.word = word;},this);
 };
 
-GameState.prototype.shutdown = function() {  
+Level.prototype.shutdown = function() {  
   this.wordsPool.destroy();
 }

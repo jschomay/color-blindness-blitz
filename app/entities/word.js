@@ -1,5 +1,5 @@
-module.exports = Word = function(game, gameState, x, y) {
-    this.gameState = gameState;
+module.exports = Word = function(game, level, x, y) {
+    this.level = level;
     this.bitmap = game.add.bitmapData(game.width,game.height); // width and height get reset after word size is calculated
 
     // call super
@@ -15,7 +15,7 @@ Word.prototype.constructor = Word;
 
 // set up instance props upon revive
 Word.prototype.init = function() {
-    this.text = this.gameState.assignRandomColor();
+    this.text = this.level.assignRandomColor();
     this.fontSize = 39;
     // this.fontSize = 29;
     this.tint = 0x444444;
@@ -26,7 +26,7 @@ Word.prototype.init = function() {
 }
 
 Word.prototype.resetWord = function() {
-  this.gameState.targetWord.tint = 0x444444;
+  this.level.targetWord.tint = 0x444444;
 };
 
 Word.prototype.renderWordTexture = function(text, color) {
@@ -56,54 +56,54 @@ Word.prototype.resizeToText = function() {
 }
 
 Word.prototype.tapWord = function(){
-  if (this.gameState.roundIsOver || this.frozen) {
+  if (this.level.roundIsOver || this.frozen) {
     return;
   }
   this.resetWord();
-  this.gameState.removeFromRemainingColors(this);
+  this.level.removeFromRemainingColors(this);
 
   // round outcome logic
   if (this.playIsCorrect()) {
     // right
     this.game.score.correct++;
     this.kill();
-    this.gameState.wordsPool.remove(this);
-    this.gameState.roundDuration *= this.gameState.roundSpeedIncrease
-    this.gameState.nextRoundDelay *= this.gameState.roundSpeedIncrease
+    this.level.wordsPool.remove(this);
+    this.level.roundDuration *= this.level.roundSpeedIncrease
+    this.level.nextRoundDelay *= this.level.roundSpeedIncrease
   } else {
     // wrong
-    this.gameState.showWrong();
+    this.level.showWrong();
     this.freeze();
   }
 
   // end current round
-  this.game.time.events.remove(this.gameState.roundTimeout);
+  this.game.time.events.remove(this.level.roundTimeout);
 
   // queue next round
-  this.gameState.queueNextRound();
+  this.level.queueNextRound();
 };
 
 Word.prototype.freeze = function() {
   this.frozen = true;
   this.tint = 0xffffff;
-  this.gameState.missedWordsPool.add(this); // auto removces from wordsPool
+  this.level.missedWordsPool.add(this); // auto removces from wordsPool
 };
 
 Word.prototype.playIsCorrect = function() {
-  return this.text.toLowerCase() === this.gameState.targetColorWord.toLowerCase();
+  return this.text.toLowerCase() === this.level.targetColorWord.toLowerCase();
 };
 
 Word.prototype.highlight= function(color, duration) {
   var previousTint = this.tint;
   this.tint = color;
-  this.gameState.roundTimeout = this.game.time.events.add(duration, function(){
+  this.level.roundTimeout = this.game.time.events.add(duration, function(){
     this.tint = previousTint
     // player was too slow
-    this.gameState.targetWord.resetWord();
-    this.gameState.removeFromRemainingColors(this.gameState.targetWord);
-    this.gameState.showWrong();
-    this.gameState.targetWord.freeze();
-    this.gameState.queueNextRound();
+    this.level.targetWord.resetWord();
+    this.level.removeFromRemainingColors(this.level.targetWord);
+    this.level.showWrong();
+    this.level.targetWord.freeze();
+    this.level.queueNextRound();
   }, this);
   // FIXME tweening the tint doesn't work well at all
   // try doing it in the canvas with hsl and desaturation
@@ -119,6 +119,6 @@ Word.prototype.update = function() {
 };
 
 Word.prototype.getHexColor = function() {
-  return this.gameState.colorMap[this.text];
+  return this.level.colorMap[this.text];
 }
 
