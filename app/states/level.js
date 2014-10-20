@@ -7,6 +7,9 @@ Level.prototype.preload = function() {
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; //resize your window to see the stage resize too
     // this.game.scale.forceOrientation(false, true, '/portrait-only.jpg');
     this.game.scale.refresh();
+
+    this.load.bitmapFont('cbbfont', 'CBB/CBB.png', 'CBB/CBB.fnt');  
+
 };
 
 // Set up the game and kick it off
@@ -80,9 +83,9 @@ Level.prototype.placeWord = function(x, y) {
         word = this.addWordToPool();
     }
     word.init();
+    word.reset(x, y);
     this.addToRemainingColors(word);
     word.revive();
-    word.reset(x, y);
 
     // console.log("placing word", word.name, word.text, x, y)
 
@@ -120,6 +123,10 @@ Level.prototype.highlightRandomWord = function() {
   this.targetColorWord = this.getRandomAvailableColor();
   this.targetColorHex = this.colorMap[this.targetColorWord];
   this.targetWord.highlight(this.targetColorHex, this.roundDuration);
+};
+
+Level.prototype.resetHighlightedWord = function() {
+  this.targetWord.bitmapText.tint = 0x444444;
 };
 
 Level.prototype.queueNextRound = function() {
@@ -167,7 +174,7 @@ Level.prototype.update = function() {
 };
 
 Level.prototype.render = function render() {
-    // this.wordsPool.forEach(function(word){this.game.debug.spriteInfo(word);window.word = word;},this);
+    // this.wordsPool.forEach(function(word){this.game.debug.spriteBounds(word);window.word = word;},this);
 };
 
 Level.prototype.shutdown = function() {  

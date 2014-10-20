@@ -1,11 +1,9 @@
 module.exports = Word = function(game, level, x, y) {
     this.level = level;
-    this.bitmap = game.add.bitmapData(game.width,game.height); // width and height get reset after word size is calculated
 
     // call super
-    Phaser.Sprite.call(this, game, x, y, this.bitmap);
+    Phaser.Sprite.call(this, game, x, y);
 
-    // set up instance props upon creation (vs upon revive)
     this.kill();
     this.inputEnabled = true;
     this.events.onInputDown.add(this.tapWord, this);
@@ -15,28 +13,15 @@ Word.prototype.constructor = Word;
 
 // set up instance props upon revive
 Word.prototype.init = function() {
-    this.text = this.level.assignRandomColor();
     this.fontSize = 39;
-    // this.fontSize = 29;
-    this.tint = 0x444444;
+    this.text = this.level.assignRandomColor();
+    this.bitmapText = game.add.bitmapText(this.x, this.y, 'cbbfont', this.text.toUpperCase(), this.fontSize);
+    this.addChild(this.bitmapText);
+    this.bitmapText.tint = 0x444444;
     this.highlightTimeout = undefined;
     this.resizeToText();
-    this.renderWordTexture(this.text, '#fff');
     this.frozen = false;
 }
-
-Word.prototype.resetWord = function() {
-  this.level.targetWord.tint = 0x444444;
-};
-
-Word.prototype.renderWordTexture = function(text, color) {
-    this.bitmap.context.clearRect(0, 0, this.width, this.height);
-    this.bitmap.context.fillStyle = color;
-    this.bitmap.context.fillText(text.toUpperCase(), this.bitmap.width / 2, this.bitmap.height / 2);
-
-    this.bitmap.dirty = true;
-    this.bitmap.render()
-};
 
 Word.prototype.setFontContext = function() {
     this.bitmap.context.font = "bold " + this.fontSize + "px  Arial Black, Arial";
@@ -45,21 +30,14 @@ Word.prototype.setFontContext = function() {
 }
 
 Word.prototype.resizeToText = function() {
-    this.setFontContext(); // to make sure we measure the right size
-    // width and height include some padding
-    var width = this.bitmap.context.measureText("M" + this.text.toUpperCase()).width;
-    var height = this.fontSize * 1.5;
-    this.bitmap.resize(width,height);
-    this.setFontContext(); // resize() resets context, so we need to reapply
-    // set sprite size to new context size
-    this.crop({x: 0, y: 0, width: width, height: height});
+    this.crop({x: 0, y: 0, width: this.bitmapText.textWidth * 1.2, height: this.bitmapText.textHeight});
 }
 
 Word.prototype.tapWord = function(){
   if (this.level.roundIsOver || this.frozen) {
     return;
   }
-  this.resetWord();
+  this.level.resetHighlightedWord();
   this.level.removeFromRemainingColors(this);
 
   // round outcome logic
@@ -89,7 +67,7 @@ Word.prototype.tapWord = function(){
 
 Word.prototype.freeze = function() {
   this.frozen = true;
-  this.tint = 0xffffff;
+  this.bitmapText.tint = 0xffffff;
   this.level.missedWordsPool.add(this); // auto removces from wordsPool
 };
 
@@ -97,13 +75,13 @@ Word.prototype.playIsCorrect = function() {
   return this.text.toLowerCase() === this.level.targetColorWord.toLowerCase();
 };
 
-Word.prototype.highlight= function(color, duration) {
-  var previousTint = this.tint;
-  this.tint = color;
+Word.prototype.highlight = function(color, duration) {
+  var previousTint = this.bitmapText.tint;
+  this.bitmapText.tint = color;
   this.level.roundTimeout = this.game.time.events.add(duration, function(){
-    this.tint = previousTint
+    this.bitmapText.tint = previousTint
     // player was too slow
-    this.level.targetWord.resetWord();
+    this.level.resetHighlightedWord();
     this.level.removeFromRemainingColors(this.level.targetWord);
     this.level.showWrong();
     this.level.targetWord.freeze();
