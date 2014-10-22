@@ -97,19 +97,27 @@ Level.prototype.assignRandomColor = function(){
 }
 
 Level.prototype.buildWordGrid = function() {
-  var isStillSpace = true;
-  var lastWord;
-  var x = y = 0;
-  while (isStillSpace) {
-    lastWord = this.placeWord(x, y);
-    x += lastWord.width;
-    if (x + lastWord.width / 4 > this.game.width) {
+  var x = 0;
+  var y = 5;
+  function isStillVeritcalSpace() {return y < this.game.height};
+  function wordOverlaps(word) {
+    var overlap = Math.max(0, x + word.width - this.game.width);
+    var percentCutOff = 100 * overlap / word.width;
+    return percentCutOff > 50;
+  }
+  while (isStillVeritcalSpace()) {
+    currentWord = this.placeWord(x, y);
+    if (wordOverlaps(currentWord)) {
       x = 0;
-      y += lastWord.height;
-      if (y + lastWord.height > this.game.height) {
-        isStillSpace = false;
+      y += currentWord.height;
+      if (isStillVeritcalSpace()) {
+        currentWord.reset(x,y);
+      } else {
+        this.removeFromRemainingColors(currentWord);
+        currentWord.destroy();
       }
     }
+    x += currentWord.width;
   }
 };
 

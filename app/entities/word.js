@@ -14,6 +14,7 @@ Word.prototype.constructor = Word;
 // set up instance props upon revive
 Word.prototype.init = function() {
     this.fontSize = 39;
+    this.textSpacing = 25;
     this.text = this.level.assignRandomColor();
     this.bitmapText = game.add.bitmapText(this.x, this.y, 'cbbfont', this.text.toUpperCase(), this.fontSize);
     this.addChild(this.bitmapText);
@@ -30,7 +31,7 @@ Word.prototype.setFontContext = function() {
 }
 
 Word.prototype.resizeToText = function() {
-    this.crop({x: 0, y: 0, width: this.bitmapText.textWidth * 1.2, height: this.bitmapText.textHeight});
+    this.crop({x: 0, y: 0, width: this.bitmapText.textWidth + this.textSpacing, height: this.bitmapText.textHeight});
 }
 
 Word.prototype.tapWord = function(){
