@@ -21,7 +21,6 @@ Level.prototype.create = function() {
     this.roundNumber = 1;
     this.roundDuration = 3000 * this.game.pacing.baseSpeedMultiplier;
     this.nextRoundDelay = 1000 * this.game.pacing.baseSpeedMultiplier;
-    this.roundTimeout = undefined;
     this.targetWord = undefined;
     this.targetColorHex = 0xFFFFFF;
     this.targetColorWord = "white";
@@ -130,11 +129,7 @@ Level.prototype.highlightRandomWord = function() {
   this.targetWord = this.wordsPool.getRandom();
   this.targetColorWord = this.getRandomAvailableColor();
   this.targetColorHex = this.colorMap[this.targetColorWord];
-  this.targetWord.highlight(this.targetColorHex, this.roundDuration);
-};
-
-Level.prototype.resetHighlightedWord = function() {
-  this.targetWord.bitmapText.tint = 0x444444;
+  this.targetWord.highlight(this.targetColorHex);
 };
 
 Level.prototype.queueNextRound = function() {
