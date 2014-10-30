@@ -77,6 +77,18 @@ Word.prototype.playIsCorrect = function() {
 };
 
 Word.prototype.highlight = function(color, duration) {
+  // set word to color
+  // start fading out
+  // if fadeout duration ends (this.level.roundTimeout)
+  //   show wrong
+  //   kill word
+  //     remove from remaining colors
+  //     reset alpha and freeze?
+  //   queue next round
+  // if player taps a word before duration ends
+  //   stop fadeout tween (and callback)
+  //   reset alpha and tint of highlighted word
+  //   (tapWord does its thing on its own)
   var previousTint = this.bitmapText.tint;
   this.bitmapText.tint = color;
   this.level.roundTimeout = this.game.time.events.add(duration, function(){
@@ -88,14 +100,12 @@ Word.prototype.highlight = function(color, duration) {
     this.level.targetWord.freeze();
     this.level.queueNextRound();
   }, this);
-  // FIXME tweening the tint doesn't work well at all
-  // try doing it in the canvas with hsl and desaturation
-  // var highlightTween = game.add.tween(this);
-  // highlightTween.to({ tint: color}, 1);
-  // highlightTween.start();
-  // if (duration >= 0) {
-  //   this.game.time.events.add(duration, this.highlight, this, previousTint, -1);
-  // }
+
+  // note, could reuse a tween here
+  var highlightTween = game.add.tween(this);
+  highlightTween.to({ alpha: 0.3}, duration);
+  highlightTween.start();
+  // highlightTween.onComplete = function () {console.log('fadeout tween is finished!')}
 }
 
 Word.prototype.update = function() {
