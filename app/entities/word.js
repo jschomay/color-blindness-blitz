@@ -20,7 +20,6 @@ Word.prototype.init = function() {
     this.addChild(this.bitmapText);
     this.bitmapText.tint = 0x444444;
     this.resizeToText();
-    this.frozen = false;
     this.highlightTween = null;
 };
 
@@ -39,14 +38,14 @@ Word.prototype.resetWord = function () {
   this.bitmapText.tint = 0x444444;
 };
 
-Word.prototype.removeFromGame = function () {
+Word.prototype.markedAsMissed = function () {
+  this.kill();
   this.level.removeFromRemainingColors(this);
   this.level.missedWordsPool.add(this); // auto removes from wordsPool
-  this.freeze();
 };
 
 Word.prototype.tapWord = function(){
-  if (this.level.roundIsOver || this.frozen) {
+  if (this.level.roundIsOver || ! this.alive) {
     return;
   }
 
@@ -65,7 +64,7 @@ Word.prototype.tapWord = function(){
     // wrong
     console.log('wrong')
     this.level.showWrong();
-    this.removeFromGame();
+    this.markedAsMissed();
     // slow down
     this.level.roundDuration *= 1/this.game.pacing.roundSpeedIncrease
     this.level.nextRoundDelay *= 1/this.game.pacing.roundSpeedIncrease
@@ -78,11 +77,6 @@ Word.prototype.tapWord = function(){
 
   // queue next round
   this.level.queueNextRound();
-};
-
-Word.prototype.freeze = function() {
-  this.frozen = true;
-  this.bitmapText.tint = 0xffffff;
 };
 
 Word.prototype.playIsCorrect = function() {
@@ -102,7 +96,7 @@ Word.prototype.highlight = function(color) {
     console.log('too slow!')
     this.level.showWrong();
     this.level.targetWord.resetWord();
-    this.level.targetWord.removeFromGame()
+    this.level.targetWord.markedAsMissed()
     this.level.queueNextRound();
   }, this);
   this.highlightTween.start();
