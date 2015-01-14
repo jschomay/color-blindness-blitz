@@ -38,45 +38,67 @@ Word.prototype.resetWord = function () {
   this.bitmapText.tint = 0x444444;
 };
 
-Word.prototype.markedAsMissed = function () {
-  this.kill();
+Word.prototype.outOfPlay = function () {
+  this.alive = false;
   this.level.removeFromRemainingColors(this);
-  this.level.missedWordsPool.add(this); // auto removes from wordsPool
+};
+
+
+Word.prototype.showWrong = function() {
+  this.bitmapText.tint = this.level.targetColorHex;
+  var duration = 1000;
+  var ease = Phaser.Easing.Cubic.Out;
+  var delay = 200;
+  var t = game.add.tween(this).to({alpha: 0, y: game.height + 40, angle: 45}, duration, ease, true, delay);
+  game.add.tween(this.scale).to({x: 0, y: 0}, duration, ease, true, delay);
+  t.onComplete.add(function () {
+    this.level.missedWordsPool.add(this); // auto removes from wordsPool
+    this.level.queueNextRound();
+  }, this);
+};
+
+Word.prototype.showRight = function() {
+  // grow and fade
+  this.bitmapText.tint = this.level.targetColorHex;
+  var duration = 800;
+  var ease = Phaser.Easing.Cubic.Out;
+  var offset =  {};
+  offset.x = this.x - this.width / 5;
+  offset.y = this.y - this.height / 2;
+  var t = game.add.tween(this).to({alpha: 0, x: offset.x, y: offset.y}, duration, ease, true);
+  game.add.tween(this.scale).to({x: 1.5, y: 1.5}, duration, ease, true);
+  t.onComplete.add(function () {
+    this.level.wordsPool.remove(this);
+    this.level.queueNextRound();
+  }, this);
 };
 
 Word.prototype.tapWord = function(){
-  if (this.level.roundIsOver || ! this.alive) {
+  if (this.level.roundIsOver || !this.alive) {
     return;
   }
+
+  this.outOfPlay();
+
+  this.level.resetRound();
 
   // round outcome logic
   if (this.playIsCorrect()) {
     // right
     console.log('correct')
+    this.level.showRight();
+    this.showRight();
     this.game.score.correct++;
-    this.level.removeFromRemainingColors(this);
-    this.kill();
-    this.level.wordsPool.remove(this);
     // speed up
     this.level.roundDuration *= this.game.pacing.roundSpeedIncrease
-    this.level.nextRoundDelay *= this.game.pacing.roundSpeedIncrease
   } else {
     // wrong
     console.log('wrong')
     this.level.showWrong();
-    this.markedAsMissed();
+    this.showWrong();
     // slow down
     this.level.roundDuration *= 1/this.game.pacing.roundSpeedIncrease
-    this.level.nextRoundDelay *= 1/this.game.pacing.roundSpeedIncrease
   }
-
-  // end current round
-  this.level.targetWord.highlightTween.stop();
-  this.level.targetWord.highlightTween = null;
-  this.level.targetWord.resetWord();
-
-  // queue next round
-  this.level.queueNextRound();
 };
 
 Word.prototype.playIsCorrect = function() {
@@ -86,18 +108,19 @@ Word.prototype.playIsCorrect = function() {
 // highlights the word and immediately start fading it out over the round duration
 Word.prototype.highlight = function(color) {
   this.bitmapText.tint = color;
-
+  
   // add new fadeout tween (cant reuse same tween
   // because sometimes it wont start, must be a bug)
   this.highlightTween = game.add.tween(this);
-  this.highlightTween.to({ alpha: 0.1}, this.level.roundDuration);
+  this.highlightTween.to({ alpha: 0}, this.level.roundDuration);
   this.highlightTween.onComplete.add(function () {
     // player was too slow
     console.log('too slow!')
+    this.outOfPlay();
+    this.level.resetRound();
     this.level.showWrong();
-    this.level.targetWord.resetWord();
-    this.level.targetWord.markedAsMissed()
-    this.level.queueNextRound();
+    this.visible = false; // don't want to see the showWrong feedback
+    this.showWrong();
   }, this);
   this.highlightTween.start();
 }

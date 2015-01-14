@@ -20,7 +20,6 @@ Level.prototype.create = function() {
     this.COLORS = ['red','orange','green','blue','purple'];
     this.roundNumber = 1;
     this.roundDuration = 3000 * this.game.pacing.baseSpeedMultiplier;
-    this.nextRoundDelay = 1000 * this.game.pacing.baseSpeedMultiplier;
     this.targetWord = undefined;
     this.targetColorHex = 0xFFFFFF;
     this.targetColorWord = "white";
@@ -41,7 +40,9 @@ Level.prototype.create = function() {
 
     this.buildWordGrid();
     this.game.score.total = this.wordsPool.length;
-    this.highlightRandomWord();
+
+    // start the game!
+    this.queueNextRound();
 };
 
 Level.prototype.colorMap = {
@@ -121,23 +122,31 @@ Level.prototype.buildWordGrid = function() {
 };
 
 Level.prototype.highlightRandomWord = function() {
-  // console.log("start round", this.roundNumber++);
-  if (this.wordsPool.length < 1)
-    return;
-
-  this.roundIsOver = false;
   this.targetWord = this.wordsPool.getRandom();
+  if(!this.targetWord.alive) {
+    console.error('WORD IS DEAD');
+  }
   this.targetColorWord = this.getRandomAvailableColor();
   this.targetColorHex = this.colorMap[this.targetColorWord];
   this.targetWord.highlight(this.targetColorHex);
 };
 
-Level.prototype.queueNextRound = function() {
+Level.prototype.resetRound = function () {
+  // end current round
   this.roundIsOver = true;
+  this.targetWord.highlightTween.stop();
+  this.targetWord.highlightTween = null;
+  this.targetWord.resetWord();
+}
+
+Level.prototype.queueNextRound = function() {
   if (this.checkIsGameOver()) {
+    console.log('level over')
     this.doGameOver();
   } else {
-    this.game.time.events.add(this.nextRoundDelay, this.highlightRandomWord, this);
+    // console.log("start round", this.roundNumber++);
+    this.roundIsOver = false;
+    this.highlightRandomWord();
   }
 };
 
@@ -162,12 +171,12 @@ Level.prototype.doGameOver = function() {
   this.game.state.start('levelEnd');
 };
 
-Level.prototype.showWrong = function() {
-  // FIXME this can be moved to where the background is defined
-  // var color = 0xFFFFFF;
-  var color = this.targetColorHex;
-  this.flashBackgroundTween = game.add.tween(this.game.stage);
-  this.flashBackgroundTween.to({backgroundColor: color}, 100, null, true, 0, 3, true);
+Level.prototype.showWrong = function(cb) {
+  // shake the world
+};
+
+Level.prototype.showRight = function() {
+  // flash background?  zoom?
 };
 
 Level.prototype.update = function() {
