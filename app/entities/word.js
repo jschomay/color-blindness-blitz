@@ -48,8 +48,8 @@ Word.prototype.showWrong = function() {
   this.bitmapText.tint = this.level.targetColorHex;
   var duration = 1000;
   var ease = Phaser.Easing.Cubic.Out;
-  var delay = 200;
-  var t = game.add.tween(this).to({alpha: 0, y: game.height + 40, angle: 45}, duration, ease, true, delay);
+  var delay = 230;
+  var t = game.add.tween(this).to({alpha: 0, angle: 360 * 2, x: this.x + 90, y: this.y + 20}, duration, ease, true, delay);
   game.add.tween(this.scale).to({x: 0, y: 0}, duration, ease, true, delay);
   t.onComplete.add(function () {
     this.level.missedWordsPool.add(this); // auto removes from wordsPool
@@ -63,10 +63,10 @@ Word.prototype.showRight = function() {
   var duration = 800;
   var ease = Phaser.Easing.Cubic.Out;
   var offset =  {};
-  offset.x = this.x - this.width / 5;
-  offset.y = this.y - this.height / 2;
+  offset.x = this.x - this.width / 1;
+  offset.y = this.y - this.height;
   var t = game.add.tween(this).to({alpha: 0, x: offset.x, y: offset.y}, duration, ease, true);
-  game.add.tween(this.scale).to({x: 1.5, y: 1.5}, duration, ease, true);
+  game.add.tween(this.scale).to({x: 4, y: 4}, duration, ease, true);
   t.onComplete.add(function () {
     this.level.wordsPool.remove(this);
     this.level.queueNextRound();
