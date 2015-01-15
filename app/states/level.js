@@ -171,8 +171,16 @@ Level.prototype.doGameOver = function() {
   this.game.state.start('levelEnd');
 };
 
-Level.prototype.showWrong = function(cb) {
+Level.prototype.showWrong = function() {
   // shake the world
+  var shakeWorld = {progress: 0};
+  var amp = 7;
+  var speed = 150;
+  var repeat = 1;
+  var t = game.add.tween(shakeWorld).to({progress: 2 * Math.PI}, speed, null, true, 0, repeat);
+  t.onUpdateCallback(function(tween, p) {
+    this.wordsPool.x = amp * Math.sin(shakeWorld.progress);
+  }, this);
 };
 
 Level.prototype.showRight = function() {
