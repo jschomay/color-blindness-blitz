@@ -183,8 +183,23 @@ Level.prototype.showWrong = function() {
   }, this);
 };
 
+Level.prototype.flashScreen = function() {
+  // flash the target color
+  var flash = {progress: 0};
+  var finalBrightness = 0.5;
+  var speed = 200;
+  var repeat = 1;
+  var r = Phaser.Color.getRed(this.targetColorHex);
+  var g = Phaser.Color.getGreen(this.targetColorHex);
+  var b = Phaser.Color.getBlue(this.targetColorHex);
+  var t = game.add.tween(flash).to({progress: finalBrightness}, speed, null, true, 0, repeat, true);
+  t.onUpdateCallback(function(tween, p) {
+    this.game.stage.backgroundColor = Phaser.Color.getColor(r * flash.progress,g * flash.progress,b * flash.progress);
+  }, this);
+};
+
 Level.prototype.showRight = function() {
-  // flash background?  zoom?
+  // no effect
 };
 
 Level.prototype.update = function() {
