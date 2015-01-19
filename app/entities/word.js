@@ -108,6 +108,7 @@ Word.prototype.playIsCorrect = function() {
 // highlights the word and immediately start fading it out over the round duration
 Word.prototype.highlight = function(color) {
   this.bitmapText.tint = color;
+  this.alpha = 1;
   
   // add new fadeout tween (cant reuse same tween
   // because sometimes it wont start, must be a bug)

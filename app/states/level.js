@@ -17,7 +17,7 @@ Level.prototype.create = function() {
     this.game.stage.backgroundColor = 0 * 0xFFFFFF;
 
     // game props
-    this.COLORS = ['red','orange','green','blue','purple'];
+    this.COLORS = ['red','orange','green','blue','purple', 'brown', 'pink', 'yellow'];
     this.roundNumber = 1;
     this.roundDuration = 3000 * this.game.pacing.baseSpeedMultiplier;
     this.targetWord = undefined;
@@ -47,10 +47,13 @@ Level.prototype.create = function() {
 
 Level.prototype.colorMap = {
   'red': 0xFF0000,
-  'orange': 0xFF9900,
+  'orange': 0xFFAD32,
   'green': 0x33FF00,
   'blue': 0x3333FF,
-  'purple': 0x993399
+  'purple': 0x800080,
+  'brown': 0x663610,
+  'pink': 0xFF7BCB,
+  'yellow': 0xFEFF00
 }
 
 Level.prototype.remainingColors = {};
