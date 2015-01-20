@@ -20,6 +20,8 @@ Level.prototype.create = function() {
     this.COLORS = ['red','orange','green','blue','purple', 'brown', 'pink', 'yellow'];
     this.roundNumber = 1;
     this.roundDuration = 3000 * this.game.pacing.baseSpeedMultiplier;
+    this.wordScoreTween = null;
+    this.wordScore = {score: this.game.pacing.wordScore};
     this.targetWord = undefined;
     this.targetColorHex = 0xFFFFFF;
     this.targetColorWord = "white";
@@ -137,7 +139,12 @@ Level.prototype.highlightRandomWord = function() {
 
 Level.prototype.endRound = function (selectedWord) {
 
-  this.resetRound();
+  this.roundIsOver = true;
+  this.wordScoreTween.stop();
+  this.targetWord.highlightTween.stop();
+  this.targetWord.highlightTween = null;
+  this.targetWord.resetWord();
+
   var cb;
 
   // round outcome logic
@@ -160,7 +167,7 @@ Level.prototype.endRound = function (selectedWord) {
 
     this.feedbackCorrect();
     selectedWord.feedbackCorrect(cb);
-    this.game.score.correct();
+    this.game.score.correct(this.wordScore.score);
     // speed up
     this.roundDuration *= this.game.pacing.roundSpeedIncrease
 
@@ -179,14 +186,6 @@ Level.prototype.endRound = function (selectedWord) {
   }
 };
 
-Level.prototype.resetRound = function () {
-  // end current round
-  this.roundIsOver = true;
-  this.targetWord.highlightTween.stop();
-  this.targetWord.highlightTween = null;
-  this.targetWord.resetWord();
-}
-
 Level.prototype.queueNextRound = function() {
   if (this.checkIsGameOver()) {
     console.log('level over')
@@ -194,6 +193,14 @@ Level.prototype.queueNextRound = function() {
   } else {
     // console.log("start round", this.roundNumber++);
     this.roundIsOver = false;
+
+    // decrease word score the longer it takes
+    this.wordScore = {score: this.game.pacing.wordScore};
+    this.wordScoreTween = this.game.add.tween(this.wordScore);
+    var minScoreFactor = 2;
+    this.wordScoreTween.to({ score: 0}, this.roundDuration * minScoreFactor);
+    this.wordScoreTween.start();
+
     this.highlightRandomWord();
   }
 };
