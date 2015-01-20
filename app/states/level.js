@@ -39,7 +39,8 @@ Level.prototype.create = function() {
     // );
 
     this.buildWordGrid();
-    this.game.score.total = this.wordsPool.length;
+
+    this.game.score.startLevel();
 
     // start the game!
     this.queueNextRound();

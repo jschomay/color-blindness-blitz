@@ -1,15 +1,7 @@
 var game = new Phaser.Game(320, 480, Phaser.AUTO, 'game');
 // var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'game');
 
-game.score = {
-  score: 0,
-  currentStreak: 0,
-  correct: function(timeRemaining) {
-    this.score++;
-  },
-  wrong: function() {
-  }
-};
+game.score = require("./score");
 
 game.pacing = {
   baseSpeedMultiplier: 1,
