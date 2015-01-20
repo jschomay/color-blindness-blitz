@@ -134,6 +134,50 @@ Level.prototype.highlightRandomWord = function() {
   this.targetWord.highlight(this.targetColorHex);
 };
 
+Level.prototype.endRound = function (selectedWord) {
+
+  this.resetRound();
+  var cb;
+
+  // round outcome logic
+  if (selectedWord === null) {
+    // word missed
+    cb = function () {
+      this.missedWordsPool.add(this.targetWord); // auto removes from wordsPool
+      this.queueNextRound();
+    }.bind(this);
+    this.feedbackWrong();
+    this.targetWord.feedbackWrong(cb);
+    this.game.score.wrong();
+
+  } else if (this.playIsCorrect(selectedWord)) {
+    // right
+    cb = function () {
+      this.wordsPool.remove(selectedWord);
+      this.queueNextRound();
+    }.bind(this);
+
+    this.feedbackCorrect();
+    selectedWord.feedbackCorrect(cb);
+    this.game.score.correct();
+    // speed up
+    this.roundDuration *= this.game.pacing.roundSpeedIncrease
+
+  } else {
+    // wrong
+    cb = function () {
+      this.missedWordsPool.add(selectedWord); // auto removes from wordsPool
+      this.queueNextRound();
+    }.bind(this);
+
+    this.feedbackWrong();
+    selectedWord.feedbackWrong(cb);
+    this.game.score.wrong();
+    // slow down
+    this.roundDuration *= 1/this.game.pacing.roundSpeedIncrease
+  }
+};
+
 Level.prototype.resetRound = function () {
   // end current round
   this.roundIsOver = true;
@@ -163,6 +207,10 @@ Level.prototype.getRandomAvailableColor = function() {
   return this.rnd.pick(remainingColors);
 }
 
+Level.prototype.playIsCorrect = function(selectedWord) {
+  return selectedWord.text.toLowerCase() === this.targetColorWord.toLowerCase();
+};
+
 Level.prototype.checkIsGameOver = function() {
   return this.wordsPool.length === 0;
 };
@@ -174,7 +222,7 @@ Level.prototype.doGameOver = function() {
   this.game.state.start('levelEnd');
 };
 
-Level.prototype.showWrong = function() {
+Level.prototype.feedbackWrong = function() {
   // shake the world
   var shakeWorld = {progress: 0};
   var amp = 7;
@@ -201,7 +249,7 @@ Level.prototype.flashScreen = function() {
   }, this);
 };
 
-Level.prototype.showRight = function() {
+Level.prototype.feedbackCorrect = function() {
   // no effect
 };
 

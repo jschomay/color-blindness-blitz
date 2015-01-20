@@ -44,20 +44,17 @@ Word.prototype.outOfPlay = function () {
 };
 
 
-Word.prototype.showWrong = function() {
+Word.prototype.feedbackWrong = function(cb) {
   this.bitmapText.tint = this.level.targetColorHex;
   var duration = 1000;
   var ease = Phaser.Easing.Cubic.Out;
   var delay = 230;
   var t = game.add.tween(this).to({alpha: 0, angle: 360 * 2, x: this.x + 90, y: this.y + 20}, duration, ease, true, delay);
   game.add.tween(this.scale).to({x: 0, y: 0}, duration, ease, true, delay);
-  t.onComplete.add(function () {
-    this.level.missedWordsPool.add(this); // auto removes from wordsPool
-    this.level.queueNextRound();
-  }, this);
+  t.onComplete.add(cb, this);
 };
 
-Word.prototype.showRight = function() {
+Word.prototype.feedbackCorrect = function(cb) {
   // grow and fade
   this.bitmapText.tint = this.level.targetColorHex;
   var duration = 800;
@@ -67,42 +64,15 @@ Word.prototype.showRight = function() {
   offset.y = this.y - this.height;
   var t = game.add.tween(this).to({alpha: 0, x: offset.x, y: offset.y}, duration, ease, true);
   game.add.tween(this.scale).to({x: 4, y: 4}, duration, ease, true);
-  t.onComplete.add(function () {
-    this.level.wordsPool.remove(this);
-    this.level.queueNextRound();
-  }, this);
+  t.onComplete.add(cb, this);
 };
 
 Word.prototype.tapWord = function(){
   if (this.level.roundIsOver || !this.alive) {
     return;
   }
-
   this.outOfPlay();
-
-  this.level.resetRound();
-
-  // round outcome logic
-  if (this.playIsCorrect()) {
-    // right
-    console.log('correct')
-    this.level.showRight();
-    this.showRight();
-    this.game.score.correct++;
-    // speed up
-    this.level.roundDuration *= this.game.pacing.roundSpeedIncrease
-  } else {
-    // wrong
-    console.log('wrong')
-    this.level.showWrong();
-    this.showWrong();
-    // slow down
-    this.level.roundDuration *= 1/this.game.pacing.roundSpeedIncrease
-  }
-};
-
-Word.prototype.playIsCorrect = function() {
-  return this.text.toLowerCase() === this.level.targetColorWord.toLowerCase();
+  this.level.endRound(this);
 };
 
 // highlights the word and immediately start fading it out over the round duration
@@ -116,12 +86,9 @@ Word.prototype.highlight = function(color) {
   this.highlightTween.to({ alpha: 0}, this.level.roundDuration);
   this.highlightTween.onComplete.add(function () {
     // player was too slow
-    console.log('too slow!')
     this.outOfPlay();
-    this.level.resetRound();
-    this.level.showWrong();
-    this.visible = false; // don't want to see the showWrong feedback
-    this.showWrong();
+    this.visible = false; // don't want to see the feedbackWrong
+    this.level.endRound(null);
   }, this);
   this.highlightTween.start();
 }
