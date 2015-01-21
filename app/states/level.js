@@ -20,8 +20,9 @@ Level.prototype.create = function() {
     this.COLORS = ['red','orange','green','blue','purple', 'brown', 'pink', 'yellow'];
     this.roundNumber = 1;
     this.roundDuration = 3000 * this.game.pacing.baseSpeedMultiplier;
-    this.wordScoreTween = null;
-    this.wordScore = {score: this.game.pacing.wordScore};
+    this.roundTimer = {timeRemaining: 1}; // as a percentage of round duration
+    this.roundTimerTween = null;
+    this.wordScore = this.game.pacing.wordScore;
     this.targetWord = undefined;
     this.targetColorHex = 0xFFFFFF;
     this.targetColorWord = "white";
@@ -140,9 +141,7 @@ Level.prototype.highlightRandomWord = function() {
 Level.prototype.endRound = function (selectedWord) {
 
   this.roundIsOver = true;
-  this.wordScoreTween.stop();
-  this.targetWord.highlightTween.stop();
-  this.targetWord.highlightTween = null;
+  this.roundTimerTween.stop();
   this.targetWord.resetWord();
 
   var cb;
@@ -167,7 +166,7 @@ Level.prototype.endRound = function (selectedWord) {
 
     this.feedbackCorrect();
     selectedWord.feedbackCorrect(cb);
-    this.game.score.correct(this.wordScore.score);
+    this.game.score.correct(this.wordScore);
     // speed up
     this.roundDuration *= this.game.pacing.roundSpeedIncrease
 
@@ -194,12 +193,29 @@ Level.prototype.queueNextRound = function() {
     // console.log("start round", this.roundNumber++);
     this.roundIsOver = false;
 
-    // decrease word score the longer it takes
-    this.wordScore = {score: this.game.pacing.wordScore};
-    this.wordScoreTween = this.game.add.tween(this.wordScore);
-    var minScoreFactor = 2;
-    this.wordScoreTween.to({ score: 0}, this.roundDuration * minScoreFactor);
-    this.wordScoreTween.start();
+    // round timer (1 -> 0)
+    // all other factors of the round time (target word
+    // fade out, score) use roundtimer
+    this.roundTimer = {timeRemaining: 1};
+    this.roundTimerTween = this.game.add.tween(this.roundTimer);
+    this.roundTimerTween.to({timeRemaining: 0}, this.roundDuration);
+    this.roundTimerTween.start();
+
+    // update factors depending on round timer
+    this.roundTimerTween.onUpdateCallback(function(){
+        // fade out target word
+        this.targetWord.alpha = this.roundTimer.timeRemaining;
+        // decrease score as time passes
+        this.wordScore = this.game.pacing.wordScore * this.roundTimer.timeRemaining;
+    }, this);
+
+    // when the wround ends
+    this.roundTimerTween.onComplete.add(function () {
+      // if the round ends, it means the player
+      // didn't click anyw word, so send null
+      this.endRound(null);
+      this.targetWord.doMissed();
+    }, this);
 
     this.highlightRandomWord();
   }

@@ -79,24 +79,18 @@ Word.prototype.tapWord = function(){
 Word.prototype.highlight = function(color) {
   this.bitmapText.tint = color;
   this.alpha = 1;
-  
-  // add new fadeout tween (cant reuse same tween
-  // because sometimes it wont start, must be a bug)
-  this.highlightTween = game.add.tween(this);
-  this.highlightTween.to({ alpha: 0}, this.level.roundDuration);
-  this.highlightTween.onComplete.add(function () {
-    // player was too slow
-    this.outOfPlay();
-    this.visible = false; // don't want to see the feedbackWrong
-    this.level.endRound(null);
-  }, this);
-  this.highlightTween.start();
-}
+};
+
+Word.prototype.doMissed = function () {
+  // player was too slow
+  this.outOfPlay();
+  this.visible = false; // don't want to see the feedbackWrong
+};
 
 Word.prototype.update = function() {
 };
 
 Word.prototype.getHexColor = function() {
   return this.level.colorMap[this.text];
-}
+};
 
