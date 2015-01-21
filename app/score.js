@@ -11,8 +11,10 @@ module.exports = {
     // round up to nearest 10
     points = Math.ceil(points/10)*10;
     this.levelScore += points;
-    console.log(points+' points! Total score: '+this.levelScore);
+
+    return points;
   },
   wrong: function() {
+    console.log("No points!  Streak ended!");
   }
 };

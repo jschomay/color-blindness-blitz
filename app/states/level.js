@@ -27,12 +27,16 @@ Level.prototype.create = function() {
     this.targetColorHex = 0xFFFFFF;
     this.targetColorWord = "white";
     this.roundIsOver = true;
-
     this.wordsPool = this.game.add.group();
     this.missedWordsPool = this.game.add.group();
     // start words pool with 10 objects
     for(var i = 0; i < 10; i++) {
         this.addWordToPool();
+    }
+    this.pointsPool = this.game.add.group();
+    // start points pool with 10 objects
+    for(var i = 0; i < 10; i++) {
+        this.addPointsToPool();
     }
     
     // Show FPS
@@ -73,6 +77,15 @@ Level.prototype.removeFromRemainingColors = function(word) {
   this.remainingColors[word.text]--;
 };
 
+Level.prototype.addPointsToPool = function() {
+    var style = { font: '26px Arial', fill: '#fff', align: 'center'};
+    var points = this.game.add.text(0, 0, '', style);
+    points.exists = false;
+    points.visible = false;
+    points.anchor = {x: 0.5, y: 0.5};
+    this.pointsPool.add(points);
+    return points;
+};
 
 Level.prototype.addWordToPool = function() {
     var Word = require('../entities/word');
@@ -166,7 +179,9 @@ Level.prototype.endRound = function (selectedWord) {
 
     this.feedbackCorrect();
     selectedWord.feedbackCorrect(cb);
-    this.game.score.correct(this.wordScore, this.roundTimer.timeRemaining);
+    var points = this.game.score.correct(this.wordScore, this.roundTimer.timeRemaining);
+    // show earned points feedback
+    this.feedbackScore(points, selectedWord);
     // speed up
     this.roundDuration *= this.game.pacing.roundSpeedIncrease
 
@@ -274,6 +289,24 @@ Level.prototype.flashScreen = function() {
 
 Level.prototype.feedbackCorrect = function() {
   // no effect
+};
+
+
+Level.prototype.feedbackScore = function (points, selectedWord) {
+  var pointsFeedback = this.pointsPool.getFirstExists(false);
+  pointsFeedback.x = selectedWord.x - pointsFeedback.width / 2 + selectedWord.width / 2;
+  pointsFeedback.y = selectedWord.y;
+  pointsFeedback.setText("+"+points);
+  pointsFeedback.exists = true;
+  pointsFeedback.visible = true;
+  pointsFeedback.alpha = 0.6;
+  var pointsTween = game.add.tween(pointsFeedback);
+  pointsTween.to({y: pointsFeedback.y - 50, alpha: 0}, 900, null, true);
+  pointsTween.onComplete.add(function(){
+    this.exists = false;
+    this.visible = false;
+    this.alpha = 0.6;
+  }, pointsFeedback);
 };
 
 Level.prototype.update = function() {
