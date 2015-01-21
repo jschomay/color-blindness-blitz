@@ -166,7 +166,7 @@ Level.prototype.endRound = function (selectedWord) {
 
     this.feedbackCorrect();
     selectedWord.feedbackCorrect(cb);
-    this.game.score.correct(this.wordScore);
+    this.game.score.correct(this.wordScore, this.roundTimer.timeRemaining);
     // speed up
     this.roundDuration *= this.game.pacing.roundSpeedIncrease
 
@@ -206,7 +206,6 @@ Level.prototype.queueNextRound = function() {
         // fade out target word
         this.targetWord.alpha = this.roundTimer.timeRemaining;
         // decrease score as time passes
-        this.wordScore = this.game.pacing.wordScore * this.roundTimer.timeRemaining;
     }, this);
 
     // when the wround ends
