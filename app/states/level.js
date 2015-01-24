@@ -54,6 +54,7 @@ Level.prototype.create = function() {
 };
 
 Level.prototype.colorMap = {
+  'white': 0xFFFFFF,
   'red': 0xFF0000,
   'orange': 0xFFAD32,
   'green': 0x33FF00,
@@ -295,7 +296,6 @@ Level.prototype.feedbackCorrect = function() {
   // no effect
 };
 
-
 Level.prototype.feedbackScore = function (points, selectedWord) {
   var pointsFeedback = this.pointsPool.getFirstExists(false);
   pointsFeedback.setStyle({ font: '26px Arial', fill: '#fff', align: 'center'});
@@ -314,9 +314,22 @@ Level.prototype.feedbackScore = function (points, selectedWord) {
   }, pointsFeedback);
 };
 
+Level.prototype.multiplierColors = [
+  "white",
+  "blue",
+  "green",
+  "red",
+  "purple",
+  "orange",
+  "yellow",
+  "pink",
+  "brown",
+];
+
 Level.prototype.feedbackMultiplier = function (multiplier, selectedWord) {
   var multiplierFeedback = this.pointsPool.getFirstExists(false);
   multiplierFeedback.setStyle({ font: 'bold 36px Arial', fill: '#fff', align: 'center'});
+  multiplierFeedback.tint = this.colorMap[this.multiplierColors[this.game.score.scoreMultiplier - 1]];
   multiplierFeedback.x = selectedWord.x - multiplierFeedback.width / 2 + selectedWord.width / 4;
   multiplierFeedback.y = selectedWord.y;
   multiplierFeedback.setText("X"+multiplier);
