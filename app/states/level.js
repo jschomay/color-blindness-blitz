@@ -78,8 +78,7 @@ Level.prototype.removeFromRemainingColors = function(word) {
 };
 
 Level.prototype.addPointsToPool = function() {
-    var style = { font: '26px Arial', fill: '#fff', align: 'center'};
-    var points = this.game.add.text(0, 0, '', style);
+    var points = this.game.add.text(0, 0, '');
     points.exists = false;
     points.visible = false;
     points.anchor = {x: 0.5, y: 0.5};
@@ -179,9 +178,14 @@ Level.prototype.endRound = function (selectedWord) {
 
     this.feedbackCorrect();
     selectedWord.feedbackCorrect(cb);
+    var prevMultiplier = this.game.score.scoreMultiplier;
     var points = this.game.score.correct(this.wordScore, this.roundTimer.timeRemaining);
     // show earned points feedback
     this.feedbackScore(points, selectedWord);
+    // show multiplier if increased
+    if (prevMultiplier < this.game.score.scoreMultiplier) {
+      this.feedbackMultiplier(this.game.score.scoreMultiplier, selectedWord);
+    }
     // speed up
     this.roundDuration *= this.game.pacing.roundSpeedIncrease
 
@@ -294,6 +298,7 @@ Level.prototype.feedbackCorrect = function() {
 
 Level.prototype.feedbackScore = function (points, selectedWord) {
   var pointsFeedback = this.pointsPool.getFirstExists(false);
+  pointsFeedback.setStyle({ font: '26px Arial', fill: '#fff', align: 'center'});
   pointsFeedback.x = selectedWord.x - pointsFeedback.width / 2 + selectedWord.width / 2;
   pointsFeedback.y = selectedWord.y;
   pointsFeedback.setText("+"+points);
@@ -307,6 +312,27 @@ Level.prototype.feedbackScore = function (points, selectedWord) {
     this.visible = false;
     this.alpha = 0.6;
   }, pointsFeedback);
+};
+
+Level.prototype.feedbackMultiplier = function (multiplier, selectedWord) {
+  var multiplierFeedback = this.pointsPool.getFirstExists(false);
+  multiplierFeedback.setStyle({ font: 'bold 36px Arial', fill: '#fff', align: 'center'});
+  multiplierFeedback.x = selectedWord.x - multiplierFeedback.width / 2 + selectedWord.width / 4;
+  multiplierFeedback.y = selectedWord.y;
+  multiplierFeedback.setText("X"+multiplier);
+  multiplierFeedback.exists = true;
+  multiplierFeedback.visible = true;
+  multiplierFeedback.alpha = 0.6;
+  multiplierFeedback.scale = {x: 1, y: 1};
+  var multiplierTween = game.add.tween(multiplierFeedback);
+  multiplierTween.to({y: multiplierFeedback.y - 20, alpha: 0}, 900, null, true);
+  game.add.tween(multiplierFeedback.scale).to({x: 2, y: 2}, 900, null, true);
+  multiplierTween.onComplete.add(function(){
+    this.exists = false;
+    this.visible = false;
+    this.alpha = 0.6;
+    this.scale = {x: 1, y: 1};
+  }, multiplierFeedback);
 };
 
 Level.prototype.update = function() {

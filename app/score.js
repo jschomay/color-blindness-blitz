@@ -16,8 +16,6 @@ module.exports = {
     this.currentStreak++;
     if (this.scoreMultiplier < Math.floor(this.currentStreak / nextMultiplier) + 1) {
       this.scoreMultiplier++;
-      console.log("X"+this.scoreMultiplier);
-      // TODO show visual feedback of new multiplier
     }
 
     // round up to nearest 10 (and apply multiplier)
