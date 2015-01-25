@@ -10,6 +10,8 @@ Level.prototype.preload = function() {
 
     this.load.bitmapFont('cbbfont', 'CBB/CBB.png', 'CBB/CBB.fnt');  
 
+    // background
+    this.game.load.image('color-blindness-test-1', 'http://upload.wikimedia.org/wikipedia/commons/e/e0/Ishihara_9.png');
 };
 
 // Set up the game and kick it off
@@ -27,8 +29,26 @@ Level.prototype.create = function() {
     this.targetColorHex = 0xFFFFFF;
     this.targetColorWord = "white";
     this.roundIsOver = true;
+
+    this.background = this.game.add.sprite(this.game.width / 3, this.game.height / 3, 'color-blindness-test-1');
+    this.background.anchor = {x: 0.5, y: 0.5};
+    this.background.scale = {x: 1.0, y: 1.0};
+    var direction = 1;
+    this.background.update = function() {
+      this.angle += 0.1;
+      if(this.scale.x > 4.0) {
+        direction *= -1;
+      }
+      if(this.scale.x < 1.0) {
+        direction *= -1;
+      }
+      this.scale.x += direction * 0.005;
+      this.scale.y += direction * 0.005;
+    };
+
     this.wordsPool = this.game.add.group();
     this.missedWordsPool = this.game.add.group();
+
     // start words pool with 10 objects
     for(var i = 0; i < 10; i++) {
         this.addWordToPool();

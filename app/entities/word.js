@@ -18,7 +18,7 @@ Word.prototype.init = function() {
     this.text = this.level.assignRandomColor();
     this.bitmapText = game.add.bitmapText(this.x, this.y, 'cbbfont', this.text.toUpperCase(), this.fontSize);
     this.addChild(this.bitmapText);
-    this.bitmapText.tint = 0x444444;
+    this.bitmapText.tint = 0xFFFFFF;
     this.resizeToText();
 };
 
@@ -57,7 +57,7 @@ Word.prototype.resizeToText = function() {
 
 Word.prototype.resetWord = function () {
   this.alpha = 1;
-  this.bitmapText.tint = 0x444444;
+  this.bitmapText.tint = 0xFFFFFF;
 };
 
 Word.prototype.outOfPlay = function () {
