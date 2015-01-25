@@ -20,7 +20,29 @@ Word.prototype.init = function() {
     this.addChild(this.bitmapText);
     this.bitmapText.tint = 0x444444;
     this.resizeToText();
-    this.highlightTween = null;
+};
+
+// nice animation on start up
+Word.prototype.flashWord = function(cb) {
+  this.alpha = 0;
+  var flash = {progress: 0.3};
+  var finalBrightness = 0.9;
+  var speed = 300;
+  // "stagger" the animation (this.z is the word's index in the group)
+  var delay = 25 * this.z;
+  var repeat = 1;
+  var r = Phaser.Color.getRed(this.getHexColor());
+  var g = Phaser.Color.getGreen(this.getHexColor());
+  var b = Phaser.Color.getBlue(this.getHexColor());
+  var t = game.add.tween(flash).to({progress: finalBrightness}, speed, Phaser.Easing.Quadratic.InOut, true, delay, repeat, true);
+  t.onUpdateCallback(function(tween, p) {
+    this.alpha = 1;
+    this.bitmapText.tint = Phaser.Color.getColor(r * flash.progress,g * flash.progress,b * flash.progress);
+  }, this);
+  t.onComplete.add(function(){
+    this.resetWord();
+    cb();
+  }, this);
 };
 
 Word.prototype.setFontContext = function() {
@@ -75,7 +97,7 @@ Word.prototype.tapWord = function(){
   this.level.endRound(this);
 };
 
-// highlights the word and immediately start fading it out over the round duration
+// highlights the word
 Word.prototype.highlight = function(color) {
   this.bitmapText.tint = color;
   this.alpha = 1;

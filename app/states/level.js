@@ -50,7 +50,7 @@ Level.prototype.create = function() {
     this.game.score.startLevel();
 
     // start the game!
-    this.queueNextRound();
+    this.startLevel();
 };
 
 Level.prototype.colorMap = {
@@ -139,6 +139,19 @@ Level.prototype.buildWordGrid = function() {
     }
     x += currentWord.width;
   }
+};
+
+Level.prototype.startLevel = function () {
+  var numAnimationsComplete = 0;
+  var cb = function() {
+    numAnimationsComplete++;
+    if(numAnimationsComplete === this.wordsPool.length) {
+      // when starting animation is finished, start first round
+      // give a brief pause first
+      this.game.time.events.add(1200, this.queueNextRound, this);
+    }
+  }.bind(this);
+  this.wordsPool.callAll("flashWord", null, cb);
 };
 
 Level.prototype.highlightRandomWord = function() {
