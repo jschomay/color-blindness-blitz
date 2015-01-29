@@ -29,10 +29,6 @@ Level.prototype.create = function() {
     this.roundIsOver = true;
     this.wordsPool = this.game.add.group();
     this.missedWordsPool = this.game.add.group();
-    // start words pool with 10 objects
-    for(var i = 0; i < 10; i++) {
-        this.addWordToPool();
-    }
     this.pointsPool = this.game.add.group();
     // start points pool with 10 objects
     for(var i = 0; i < 10; i++) {
@@ -47,7 +43,7 @@ Level.prototype.create = function() {
 
     this.buildWordGrid();
 
-    this.game.score.startLevel();
+    this.game.score.startLevel(this.game, this.wordsPool);
 
     // start the game!
     this.startLevel();

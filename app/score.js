@@ -1,20 +1,23 @@
 module.exports = {
   levelScore: 0,
+  maxLevelScore: 0,
   currentStreak: 0,
   scoreMultiplier: 1,
-  startLevel: function () {
+  multiplierFrequency: 4,
+  startLevel: function (game, wordsPool) {
+    this.game = game;
     this.currentStreak = 0;
     this.scoreMultiplier = 1;
     this.levelScore = 0;
+    this.maxLevelScore = this.calculateMaxLevelScore(wordsPool);
   },
   correct: function(wordScore, timeRemaining) {
     // dampen score value over time quadratically
     var points = wordScore * Phaser.Easing.Quadratic.Out(timeRemaining);
 
-    // should we raise the multiplier?
-    var nextMultiplier = 4; // raise multiplier every 4 consecutive corrects
+    // raise multiplier every Xth word (multiplierFrequency)
     this.currentStreak++;
-    if (this.scoreMultiplier < Math.floor(this.currentStreak / nextMultiplier) + 1) {
+    if (this.currentStreak % this.multiplierFrequency === 0) {
       this.scoreMultiplier++;
     }
 
@@ -28,5 +31,12 @@ module.exports = {
     console.log("No points!  Streak ended!");
     this.scoreMultiplier = 1;
     this.currentStreak = 0;
+  },
+  calculateMaxLevelScore: function(wordsPool) {
+    var maxLevelScore = 0;
+    for (var i = 1; i <= wordsPool.length; i++) {
+      maxLevelScore += 100 * (Math.floor(i / this.multiplierFrequency) + 1);
+    }
+    return maxLevelScore;
   }
 };
