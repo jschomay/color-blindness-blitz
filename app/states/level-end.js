@@ -84,18 +84,11 @@ LevelEnd.prototype.drawProgressBar = function(position){
 };
 
 LevelEnd.prototype.drawStars = function (num, outline) {
-  function drawStar (position, color, alpha) {
-    var star = game.add.graphics(position.x, position.y);
-    star.beginFill(color, alpha);
-    star.drawCircle(0, 0, 30);
-  }
-
   var starColors = [
     "blue",
     "green",
     "red"
   ];
-
   var alpha;
   if (outline) {
     alpha = 0.2;
@@ -103,8 +96,36 @@ LevelEnd.prototype.drawStars = function (num, outline) {
     alpha = 1;
   }
   for (var i = 0; i < num; i++) {
-    drawStar({x: this.game.width * (i + 1) / 4, y: 220}, this.game.COLORS[starColors[i]], alpha);
+    var position = {x: this.game.width * (i + 1) / 4, y: 220};
+    drawStar(position.x, position.y, this.game.COLORS[starColors[i]], alpha);
   }
 };
+
+// thanks to http://stackoverflow.com/questions/25837158/how-to-draw-a-star-by-using-canvas-html5
+function drawStar(cx,cy, color, alpha){
+  var spikes = 5;
+  var outerRadius = 30;
+  var innerRadius = 10;
+  var rot=Math.PI/2*3;
+  var x=cx;
+  var y=cy;
+  var step=Math.PI/spikes;
+  var star = this.game.add.graphics(0,0);
+
+  star.beginFill(color, alpha);
+  star.moveTo(cx,cy-outerRadius);
+  for(i=0;i<spikes;i++){
+    x=cx+Math.cos(rot)*outerRadius;
+    y=cy+Math.sin(rot)*outerRadius;
+    star.lineTo(x,y);
+    rot+=step;
+
+    x=cx+Math.cos(rot)*innerRadius;
+    y=cy+Math.sin(rot)*innerRadius;
+    star.lineTo(x,y);
+    rot+=step;
+  }
+  star.lineTo(cx,cy-outerRadius);
+}
 
 module.exports = LevelEnd;
