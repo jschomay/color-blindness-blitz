@@ -86,8 +86,8 @@ LevelEnd.prototype.drawProgressBar = function(position){
 LevelEnd.prototype.drawStars = function (num, outline) {
   var starColors = [
     "blue",
+    "purple",
     "green",
-    "red"
   ];
   var alpha;
   if (outline) {

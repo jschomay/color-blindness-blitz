@@ -14,14 +14,14 @@ game.pacing = {
 
 game.COLORS = {
   'white': 0xFFFFFF,
-  'red': 0xFF0000,
-  'orange': 0xFFAD32,
+  'red': 0xCC0000,
+  'orange': 0xFF9900,
   'green': 0x33FF00,
   'blue': 0x3333FF,
-  'purple': 0x800080,
-  'brown': 0x663610,
-  'pink': 0xFF7BCB,
-  'yellow': 0xFEFF00
+  'purple': 0x9900CC,
+  'brown': 0x7A5229,
+  'pink': 0xFF5CAD,
+  'yellow': 0xFFFF00
 };
 
 Level = require('./states/level');
