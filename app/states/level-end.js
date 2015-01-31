@@ -81,8 +81,23 @@ LevelEnd.prototype.drawProgressBar = function(position){
 };
 
 LevelEnd.prototype.drawStars = function (num) {
-  // draw num star(s)
-  console.log(num, "stars!");
+  function drawStar (position, color) {
+    var star = game.add.graphics(position.x, position.y);
+    star.beginFill(color);
+    star.lineStyle(5, 0x000000, 1);
+    star.drawCircle(0, 0, 30);
+  }
+
+  var starColors = [
+    "blue",
+    "green",
+    "red"
+  ];
+
+
+  for (var i = 0; i < num; i++) {
+    drawStar({x: this.game.width * (i + 1) / 4, y: 220}, this.game.COLORS[starColors[i]]);
+  }
 };
 
 module.exports = LevelEnd;
