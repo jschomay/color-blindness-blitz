@@ -10,6 +10,9 @@ LevelEnd.prototype = {
       this.titleText = this.game.add.text(this.game.world.centerX, 100, 'Level '+this.game.pacing.level+'\nFinished', style);
       this.titleText.anchor.setTo(0.5, 0.5);
 
+      // draw star outlines
+      this.drawStars(3, true);
+
       // score
       this.scoreText = game.add.text(this.game.world.centerX, 300, 'Score: 0', { font: '36px Arial', fill: '#ffffff', align: 'left'});
       this.scoreText.anchor.setTo(0.5, 0.5);
@@ -80,11 +83,10 @@ LevelEnd.prototype.drawProgressBar = function(position){
     }, this);
 };
 
-LevelEnd.prototype.drawStars = function (num) {
-  function drawStar (position, color) {
+LevelEnd.prototype.drawStars = function (num, outline) {
+  function drawStar (position, color, alpha) {
     var star = game.add.graphics(position.x, position.y);
-    star.beginFill(color);
-    star.lineStyle(5, 0x000000, 1);
+    star.beginFill(color, alpha);
     star.drawCircle(0, 0, 30);
   }
 
@@ -94,9 +96,14 @@ LevelEnd.prototype.drawStars = function (num) {
     "red"
   ];
 
-
+  var alpha;
+  if (outline) {
+    alpha = 0.2;
+  } else {
+    alpha = 1;
+  }
   for (var i = 0; i < num; i++) {
-    drawStar({x: this.game.width * (i + 1) / 4, y: 220}, this.game.COLORS[starColors[i]]);
+    drawStar({x: this.game.width * (i + 1) / 4, y: 220}, this.game.COLORS[starColors[i]], alpha);
   }
 };
 
