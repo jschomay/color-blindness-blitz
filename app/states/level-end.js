@@ -6,20 +6,20 @@ LevelEnd.prototype = {
     },
     create: function() {
       // level #
-      var style = { font: 'bold 45px Arial', fill: '#ffffff', align: 'center'};
+      var style = { font: 'bold 40px Arial', fill: '#ffffff', align: 'center'};
       this.titleText = this.game.add.text(this.game.world.centerX, 100, 'Level '+this.game.pacing.level+'\nFinished', style);
       this.titleText.anchor.setTo(0.5, 0.5);
 
       // score
-      this.scoreText = game.add.text(this.game.world.centerX, 200, 'Score: 0', { font: '16px Arial', fill: '#ffffff', align: 'left'});
+      this.scoreText = game.add.text(this.game.world.centerX, 300, 'Score: 0', { font: '36px Arial', fill: '#ffffff', align: 'left'});
       this.scoreText.anchor.setTo(0.5, 0.5);
 
       // next level
-      this.restartText = game.add.text(this.game.world.centerX, 300, 'Tap to play again', { font: '16px Arial', fill: '#ffffff', align: 'left'});
+      this.restartText = game.add.text(this.game.world.centerX, 400, 'Tap to play again', { font: '16px Arial', fill: '#ffffff', align: 'left'});
       this.restartText.anchor.setTo(0.5, 0.5);
 
       // progress bar
-      this.drawProgressBar();
+      this.drawProgressBar({x: this.game.width * 0.1, y: 350});
 
       // beta notice
       this.betaNotice = game.add.text(this.game.world.centerX, this.game.world.height - 20, 'This is a beta version\nLeave feedback and get updates here', { font: '16px Arial', fill: 'red', align: 'center'});
@@ -35,7 +35,7 @@ LevelEnd.prototype = {
     }
   };
 
-LevelEnd.prototype.drawProgressBar = function(){
+LevelEnd.prototype.drawProgressBar = function(position){
   console.log("you scored", this.game.score.levelScore, 'out of', this.game.score.maxLevelScore);
 
   var percentage;
@@ -46,7 +46,6 @@ LevelEnd.prototype.drawProgressBar = function(){
     percentage = this.game.score.levelScore / this.game.score.maxLevelScore;
   }
 
-  var position = {x: this.game.width * 0.1, y: 250};
   var color = 0xffd900;
 
   var bestScore = game.add.graphics(position.x, position.y);
