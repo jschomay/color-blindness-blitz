@@ -113,6 +113,6 @@ Word.prototype.update = function() {
 };
 
 Word.prototype.getHexColor = function() {
-  return this.level.colorMap[this.text];
+  return this.game.COLORS[this.text];
 };
 

@@ -12,6 +12,18 @@ game.pacing = {
   starBreakPoints: [0.2, 0.5, 0.8]
 };
 
+game.COLORS = {
+  'white': 0xFFFFFF,
+  'red': 0xFF0000,
+  'orange': 0xFFAD32,
+  'green': 0x33FF00,
+  'blue': 0x3333FF,
+  'purple': 0x800080,
+  'brown': 0x663610,
+  'pink': 0xFF7BCB,
+  'yellow': 0xFEFF00
+};
+
 Level = require('./states/level');
 Intro = require('./states/intro');
 LevelEnd = require('./states/level-end');

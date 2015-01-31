@@ -49,18 +49,6 @@ Level.prototype.create = function() {
     this.startLevel();
 };
 
-Level.prototype.colorMap = {
-  'white': 0xFFFFFF,
-  'red': 0xFF0000,
-  'orange': 0xFFAD32,
-  'green': 0x33FF00,
-  'blue': 0x3333FF,
-  'purple': 0x800080,
-  'brown': 0x663610,
-  'pink': 0xFF7BCB,
-  'yellow': 0xFEFF00
-}
-
 Level.prototype.remainingColors = {};
 Level.prototype.addToRemainingColors = function(word) {
   if (!this.remainingColors[word.text]) {
@@ -156,7 +144,7 @@ Level.prototype.highlightRandomWord = function() {
     console.error('WORD IS DEAD');
   }
   this.targetColorWord = this.getRandomAvailableColor();
-  this.targetColorHex = this.colorMap[this.targetColorWord];
+  this.targetColorHex = this.game.COLORS[this.targetColorWord];
   this.targetWord.highlight(this.targetColorHex);
 };
 
@@ -338,7 +326,7 @@ Level.prototype.multiplierColors = [
 Level.prototype.feedbackMultiplier = function (multiplier, selectedWord) {
   var multiplierFeedback = this.pointsPool.getFirstExists(false);
   multiplierFeedback.setStyle({ font: 'bold 36px Arial', fill: '#fff', align: 'center'});
-  multiplierFeedback.tint = this.colorMap[this.multiplierColors[this.game.score.scoreMultiplier - 1]];
+  multiplierFeedback.tint = this.game.COLORS[this.multiplierColors[this.game.score.scoreMultiplier - 1]];
   multiplierFeedback.x = selectedWord.x - multiplierFeedback.width / 2 + selectedWord.width / 4;
   multiplierFeedback.y = selectedWord.y;
   multiplierFeedback.setText("X"+multiplier);
