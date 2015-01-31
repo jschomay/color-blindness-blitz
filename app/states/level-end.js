@@ -69,10 +69,21 @@ LevelEnd.prototype.drawProgressBar = function(){
 
 
   playerScore.scale.x = 0;
+  var score = 0;
+  var stars = 0;
   game.add.tween(playerScore.scale).to({x: 1}, 3500, Phaser.Easing.Quadratic.Out, true)
     .onUpdateCallback(function(){
-        this.scoreText.text =  'Score: ' + Math.round(this.game.score.levelScore * playerScore.scale.x);
+        score = Math.round(this.game.score.levelScore * playerScore.scale.x);
+        this.scoreText.text =  'Score: ' + score;
+        if (score / this.game.score.maxLevelScore >= this.game.pacing.starBreakPoints[stars]) {
+          this.drawStars(++stars);
+        }
     }, this);
+};
+
+LevelEnd.prototype.drawStars = function (num) {
+  // draw num star(s)
+  console.log(num, "stars!");
 };
 
 module.exports = LevelEnd;
