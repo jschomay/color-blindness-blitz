@@ -1,15 +1,9 @@
-module.exports = Level = function(game) {
+module.exports = Level = function() {
 };
 
 // Load images and sounds
 Level.prototype.preload = function() {
-    this.game.scale.startFullScreen();
-    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; //resize your window to see the stage resize too
-    // this.game.scale.forceOrientation(false, true, '/portrait-only.jpg');
-    this.game.scale.refresh();
-
     this.load.bitmapFont('cbbfont', 'CBB/CBB.png', 'CBB/CBB.fnt');  
-
 };
 
 // Set up the game and kick it off
@@ -103,18 +97,21 @@ Level.prototype.assignRandomColor = function(){
 Level.prototype.buildWordGrid = function() {
   var x = 0;
   var y = 5;
-  function isStillVeritcalSpace() {return y < this.game.height};
+  var wordHeight = 0;
+  var currentWord;
+  function isStillVeritcalSpace(word) {return y + wordHeight < this.game.height;}
   function wordOverlaps(word) {
     var overlap = Math.max(0, x + word.width - this.game.width);
     var percentCutOff = 100 * overlap / word.width;
     return percentCutOff > 50;
   }
-  while (isStillVeritcalSpace()) {
+  while (isStillVeritcalSpace.call(this)) {
     currentWord = this.placeWord(x, y);
-    if (wordOverlaps(currentWord)) {
+    wordHeight = currentWord.height * 0.5;
+    if (wordOverlaps.call(this, currentWord)) {
       x = 0;
       y += currentWord.height;
-      if (isStillVeritcalSpace()) {
+      if (isStillVeritcalSpace.call(this)) {
         currentWord.reset(x,y);
       } else {
         this.removeFromRemainingColors(currentWord);
@@ -265,7 +262,7 @@ Level.prototype.feedbackWrong = function() {
   var amp = 7;
   var speed = 150;
   var repeat = 1;
-  var t = game.add.tween(shakeWorld).to({progress: 2 * Math.PI}, speed, null, true, 0, repeat);
+  var t = this.game.add.tween(shakeWorld).to({progress: 2 * Math.PI}, speed, null, true, 0, repeat);
   t.onUpdateCallback(function(tween, p) {
     this.wordsPool.x = amp * Math.sin(shakeWorld.progress);
   }, this);
@@ -280,7 +277,7 @@ Level.prototype.flashScreen = function() {
   var r = Phaser.Color.getRed(this.targetColorHex);
   var g = Phaser.Color.getGreen(this.targetColorHex);
   var b = Phaser.Color.getBlue(this.targetColorHex);
-  var t = game.add.tween(flash).to({progress: finalBrightness}, speed, null, true, 0, repeat, true);
+  var t = this.game.add.tween(flash).to({progress: finalBrightness}, speed, null, true, 0, repeat, true);
   t.onUpdateCallback(function(tween, p) {
     this.game.stage.backgroundColor = Phaser.Color.getColor(r * flash.progress,g * flash.progress,b * flash.progress);
   }, this);
@@ -299,7 +296,7 @@ Level.prototype.feedbackScore = function (points, selectedWord) {
   pointsFeedback.exists = true;
   pointsFeedback.visible = true;
   pointsFeedback.alpha = 0.6;
-  var pointsTween = game.add.tween(pointsFeedback);
+  var pointsTween = this.game.add.tween(pointsFeedback);
   pointsTween.to({y: pointsFeedback.y - 50, alpha: 0}, 900, null, true);
   pointsTween.onComplete.add(function(){
     this.exists = false;
@@ -331,9 +328,9 @@ Level.prototype.feedbackMultiplier = function (multiplier, selectedWord) {
   multiplierFeedback.visible = true;
   multiplierFeedback.alpha = 0.6;
   multiplierFeedback.scale = {x: 1, y: 1};
-  var multiplierTween = game.add.tween(multiplierFeedback);
+  var multiplierTween = this.game.add.tween(multiplierFeedback);
   multiplierTween.to({y: multiplierFeedback.y - 20, alpha: 0}, 900, null, true);
-  game.add.tween(multiplierFeedback.scale).to({x: 2, y: 2}, 900, null, true);
+  this.game.add.tween(multiplierFeedback.scale).to({x: 2, y: 2}, 900, null, true);
   multiplierTween.onComplete.add(function(){
     this.exists = false;
     this.visible = false;

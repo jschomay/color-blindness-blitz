@@ -13,10 +13,12 @@ Word.prototype.constructor = Word;
 
 // set up instance props upon revive
 Word.prototype.init = function() {
-    this.fontSize = 89;
-    this.textSpacing = 25;
+    this.fontSize = 70;
+    this.bitmapText = this.game.add.bitmapText(this.x, this.y, 'cbbfont', 'N', this.fontSize);
+    this.textSpacing = this.bitmapText.textWidth;
     this.text = this.level.assignRandomColor();
-    this.bitmapText = game.add.bitmapText(this.x, this.y, 'cbbfont', this.text.toUpperCase(), this.fontSize);
+    this.bitmapText.setText(this.text.toUpperCase());
+    this.bitmapText.updateText();
     this.addChild(this.bitmapText);
     this.bitmapText.tint = 0x444444;
     this.resizeToText();
@@ -34,7 +36,7 @@ Word.prototype.flashWord = function(cb) {
   var r = Phaser.Color.getRed(this.getHexColor());
   var g = Phaser.Color.getGreen(this.getHexColor());
   var b = Phaser.Color.getBlue(this.getHexColor());
-  var t = game.add.tween(flash).to({progress: finalBrightness}, speed, Phaser.Easing.Quadratic.InOut, true, delay, repeat, true);
+  var t = this.game.add.tween(flash).to({progress: finalBrightness}, speed, Phaser.Easing.Quadratic.InOut, true, delay, repeat, true);
   t.onUpdateCallback(function(tween, p) {
     this.alpha = 1;
     this.bitmapText.tint = Phaser.Color.getColor(r * flash.progress,g * flash.progress,b * flash.progress);
@@ -71,8 +73,8 @@ Word.prototype.feedbackWrong = function(cb) {
   var duration = 1000;
   var ease = Phaser.Easing.Cubic.Out;
   var delay = 230;
-  var t = game.add.tween(this).to({alpha: 0, angle: 360 * 2, x: this.x + 90, y: this.y + 20}, duration, ease, true, delay);
-  game.add.tween(this.scale).to({x: 0, y: 0}, duration, ease, true, delay);
+  var t = this.game.add.tween(this).to({alpha: 0, angle: 360 * 2, x: this.x + 90, y: this.y + 20}, duration, ease, true, delay);
+  this.game.add.tween(this.scale).to({x: 0, y: 0}, duration, ease, true, delay);
   t.onComplete.add(cb, this);
 };
 
@@ -84,8 +86,8 @@ Word.prototype.feedbackCorrect = function(cb) {
   var offset =  {};
   offset.x = this.x - this.width / 1;
   offset.y = this.y - this.height;
-  var t = game.add.tween(this).to({alpha: 0, x: offset.x, y: offset.y}, duration, ease, true);
-  game.add.tween(this.scale).to({x: 4, y: 4}, duration, ease, true);
+  var t = this.game.add.tween(this).to({alpha: 0, x: offset.x, y: offset.y}, duration, ease, true);
+  this.game.add.tween(this.scale).to({x: 4, y: 4}, duration, ease, true);
   t.onComplete.add(cb, this);
 };
 

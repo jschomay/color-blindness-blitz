@@ -1,8 +1,12 @@
-var game = new Phaser.Game(320, 480, Phaser.AUTO, 'game');
-// var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'game');
+// keep a 2 x 3 demention for the game
+gameDimentions = {
+  x: window.innerHeight * 2 / 3,
+  y: window.innerHeight
+};
+var game = new Phaser.Game(gameDimentions.x, gameDimentions.y, Phaser.AUTO, 'game');
 
+// load modules
 game.score = require("./score");
-
 game.pacing = {
   baseSpeedMultiplier: 1,
   level: 1,
@@ -12,6 +16,7 @@ game.pacing = {
   starBreakPoints: [0.2, 0.5, 0.8]
 };
 
+// constants
 game.COLORS = {
   'white': 0xFFFFFF,
   'red': 0xCC0000,
@@ -34,5 +39,3 @@ game.state.add('intro', Intro, true);
 game.state.add('levelStart', LevelStart);
 game.state.add('level', Level);
 game.state.add('levelEnd', LevelEnd);
-
-window.game = game;
