@@ -24,10 +24,14 @@ game.COLORS = {
   'yellow': 0xFFFF00
 };
 
+// load states and start game
 Level = require('./states/level');
 Intro = require('./states/intro');
+LevelStart = require('./states/level-start');
 LevelEnd = require('./states/level-end');
+
 game.state.add('intro', Intro, true);
+game.state.add('levelStart', LevelStart);
 game.state.add('level', Level);
 game.state.add('levelEnd', LevelEnd);
 

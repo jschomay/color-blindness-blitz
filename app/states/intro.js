@@ -19,7 +19,7 @@
     },
     update: function() {
       if(this.game.input.activePointer.justPressed()) {
-        this.game.state.start('level');
+        this.game.state.start('levelStart');
       }
     }
   };
