@@ -256,9 +256,6 @@ Level.prototype.checkIsGameOver = function() {
 };
 
 Level.prototype.doGameOver = function() {
-  // speed up next round
-  this.game.pacing.baseSpeedMultiplier *= this.game.pacing.levelSpeedIncrease;
-  this.game.pacing.level++;
   this.game.state.start('levelEnd');
 };
 

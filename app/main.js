@@ -5,7 +5,7 @@ game.score = require("./score");
 
 game.pacing = {
   baseSpeedMultiplier: 1,
-  level: 0,
+  level: 1,
   levelSpeedIncrease: 0.75,
   roundSpeedIncrease: 0.95,
   wordScore: 100,

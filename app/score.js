@@ -1,5 +1,6 @@
 module.exports = {
   levelScore: 0,
+  levelStars: 0,
   maxLevelScore: 0,
   currentStreak: 0,
   scoreMultiplier: 1,
@@ -9,6 +10,7 @@ module.exports = {
     this.currentStreak = 0;
     this.scoreMultiplier = 1;
     this.levelScore = 0;
+    this.levelStars = 0;
     this.maxLevelScore = this.calculateMaxLevelScore(wordsPool);
   },
   correct: function(wordScore, timeRemaining) {

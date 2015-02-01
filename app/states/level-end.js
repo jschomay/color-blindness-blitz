@@ -17,12 +17,19 @@ LevelEnd.prototype = {
       this.scoreText = game.add.text(this.game.world.centerX, 300, 'Score: 0', { font: '36px Arial', fill: '#ffffff', align: 'left'});
       this.scoreText.anchor.setTo(0.5, 0.5);
 
+      // try again
+      this.tryAgain = game.add.text(this.game.width / 4, 400, 'TRY\nAGAIN', { font: '26px Arial', fill: '#ffffff', align: 'center'});
+      this.tryAgain.anchor.setTo(0.5, 0.5);
+      this.tryAgain.inputEnabled = true;
+
       // next level
-      this.restartText = game.add.text(this.game.world.centerX, 400, 'Tap to play again', { font: '16px Arial', fill: '#ffffff', align: 'left'});
-      this.restartText.anchor.setTo(0.5, 0.5);
+      this.nextLevel = game.add.text(this.game.width * 3 / 4, 400, 'NEXT\nLEVEL', { font: '26px Arial', fill: '#ffffff', align: 'center'});
+      this.nextLevel.anchor.setTo(0.5, 0.5);
+      this.nextLevel.inputEnabled = true;
+      this.nextLevel.alpha = 0.2;
 
       // progress bar
-      this.drawProgressBar({x: this.game.width * 0.1, y: 350});
+      this.drawProgressBar({x: this.game.width * 0.1, y: 330});
 
       // beta notice
       this.betaNotice = game.add.text(this.game.world.centerX, this.game.world.height - 20, 'This is a beta version\nLeave feedback and get updates here', { font: '16px Arial', fill: 'red', align: 'center'});
@@ -31,12 +38,35 @@ LevelEnd.prototype = {
       this.betaNotice.events.onInputDown.add(function(){window.location.href="http://codeperfectionist.com/portfolio/games/color-blindness-blitz/";});
     },
     update: function() {
-      if(this.game.input.activePointer.justPressed()) {
-        this.game.score.score = 0;
-        this.game.state.start('level');
+      // try again
+      if(this.tryAgain.input.justPressed()) {
+        this.tryAgain.input.destroy();
+        this.startLevel();
+      }
+      // next level
+      if(this.game.score.levelStars >= 2 && this.nextLevel.input.justPressed()) {
+        this.nextLevel.input.destroy();
+        this.game.pacing.level++;
+        // speed up next round
+        this.game.pacing.baseSpeedMultiplier *= this.game.pacing.levelSpeedIncrease;
+        this.startLevel();
       }
     }
   };
+
+LevelEnd.prototype.startLevel = function () {
+  // clean things up
+  this.progressTween.stop();
+  this.progressTween = null;
+  this.titleText = null;
+  this.scoreText = null;
+  this.tryAgain = null;
+  this.nextLevel = null;
+  this.betaNotice = null;
+
+  // load next state
+  this.game.state.start('level');
+};
 
 LevelEnd.prototype.drawProgressBar = function(position){
   console.log("you scored", this.game.score.levelScore, 'out of', this.game.score.maxLevelScore);
@@ -72,13 +102,15 @@ LevelEnd.prototype.drawProgressBar = function(position){
 
   playerScore.scale.x = 0;
   var score = 0;
-  var stars = 0;
-  game.add.tween(playerScore.scale).to({x: 1}, 3500, Phaser.Easing.Quadratic.Out, true)
+  this.progressTween = game.add.tween(playerScore.scale).to({x: 1}, 3500, Phaser.Easing.Quadratic.Out, true)
     .onUpdateCallback(function(){
         score = Math.round(this.game.score.levelScore * playerScore.scale.x);
         this.scoreText.text =  'Score: ' + score;
-        if (score / this.game.score.maxLevelScore >= this.game.pacing.starBreakPoints[stars]) {
-          this.drawStars(++stars);
+        if (score / this.game.score.maxLevelScore >= this.game.pacing.starBreakPoints[this.game.score.levelStars]) {
+          this.drawStars(++this.game.score.levelStars);
+          if (this.game.score.levelStars >= 2) {
+            this.nextLevel.alpha = 1;
+          }
         }
     }, this);
 };
