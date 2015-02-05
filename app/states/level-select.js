@@ -6,11 +6,11 @@ LevelSelect.prototype = {
     },
     create: function() {
       this.levelColor = this.game.COLORS.red;
-      this.level = 1;
+      this.level = this.game.currentLevel.level;
 
       // title
       var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(this.levelColor), align: 'center'};
-      this.levelNumber = this.game.add.text(this.game.world.centerX, this.game.height / 10, 'Level '+this.game.pacing.level, style);
+      this.levelNumber = this.game.add.text(this.game.world.centerX, this.game.height / 10, 'Level '+this.level, style);
       this.levelNumber.anchor.setTo(0.5, 0.5);
 
       // sub heading
@@ -23,8 +23,9 @@ LevelSelect.prototype = {
       this.chooseText = this.game.add.text(this.game.world.centerX, this.game.height / 2 - this.game.height / 30, "Choose a level:", style);
       this.chooseText.anchor.setTo(0.5, 0.5);
 
-      // sublevels
-      this.sublevels = this.game.add.group();
+      // subLevels
+      this.subLevels = this.game.add.group();
+      var subLevelNumber = 1;
       var margin = this.game.width * 0.05;
       for (var i = 0; i < 2; i++) {
         for (var j = 0; j < 3; j++) {
@@ -32,7 +33,7 @@ LevelSelect.prototype = {
           var y = this.game.height / 2 + margin / 2 + i * this.game.height / 4 - i * margin / 2;
           var width = this.game.width / 3 - margin;
           var height =this.game.height / 4 - margin;
-          this.sublevels.add(this.makeSublevel(x, y, width, height, this.level + "-" + (i + 1) * (j + 1)));
+          this.subLevels.add(this.makesubLevel(x, y, width, height, subLevelNumber++));
         }
       }
 
@@ -41,39 +42,40 @@ LevelSelect.prototype = {
   };
 
 
-LevelSelect.prototype.makeSublevel = function (x, y, width, height, level) {
-  var sublevel = this.game.add.sprite(x,y);
+LevelSelect.prototype.makesubLevel = function (x, y, width, height, subLevelNumber) {
+  var subLevelBox = this.game.add.sprite(x,y);
 
   // border
   var graphics = this.game.add.graphics(0, 0);
   graphics.lineStyle(1, this.levelColor);
   graphics.drawRect(0, 0, width, height);
-  sublevel.addChild(graphics);
-  sublevel.crop({x: x, y: y, width: width, height: height});
+  subLevelBox.addChild(graphics);
+  subLevelBox.crop({x: x, y: y, width: width, height: height});
 
   // title
   var style = { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(this.levelColor), align: 'center'};
-   var title = this.game.add.text(width / 2, height / 20, level, style);
+   var title = this.game.add.text(width / 2, height / 20, this.level+'-'+subLevelNumber, style);
   title.anchor = {x: 0.5, y: 0};
-  sublevel.addChild(title);
+  subLevelBox.addChild(title);
 
   // on select
-  sublevel.inputEnabled = true;
-  sublevel.events.onInputDown.add(function(){
-    sublevel.input.destroy();
-    this.selectLevel(level);
-  },this);
+  subLevelBox.inputEnabled = true;
+  subLevelBox.events.onInputDown.add(function(){
+    subLevelBox.input.destroy();
+    this.selectLevel(this.level, subLevelNumber);
+ },this);
 
-  return sublevel;
+  return subLevelBox;
 };
 
-LevelSelect.prototype.selectLevel = function (level) {
+LevelSelect.prototype.selectLevel = function (level, subLevel) {
   // clean things up
   this.levelNumber = null;
-  this.sublevels.destroy();
+  this.subLevels.destroy();
+  this.subHeading.destroy();
 
   // select level
-  this.game.pacing.level = level;
+  this.game.levelManager.setLevel(level, subLevel);
 
   // load next state
   this.game.state.start('levelStart');

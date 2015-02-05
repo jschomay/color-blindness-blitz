@@ -7,7 +7,7 @@ LevelStart.prototype = {
     create: function() {
       // level #
       var style = { font: 'bold 40px Arial', fill: '#ffffff', align: 'center'};
-      this.levelNumber = this.game.add.text(this.game.world.centerX, 100, 'Level '+this.game.pacing.level, style);
+      this.levelNumber = this.game.add.text(this.game.world.centerX, 100, 'Level '+this.game.currentLevel.level+'-'+this.game.currentLevel.subLevel, style);
       this.levelNumber.anchor.setTo(0.5, 0.5);
 
       // play

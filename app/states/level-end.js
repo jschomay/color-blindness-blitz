@@ -7,7 +7,7 @@ LevelEnd.prototype = {
     create: function() {
       // level #
       var style = { font: 'bold 40px Arial', fill: '#ffffff', align: 'center'};
-      this.titleText = this.game.add.text(this.game.world.centerX, 80, 'Level '+this.game.pacing.level+'\nFinished', style);
+      this.titleText = this.game.add.text(this.game.world.centerX, 80, 'Level '+this.game.currentLevel.level+'-'+this.game.currentLevel.subLevel+'\nFinished', style);
       this.titleText.anchor.setTo(0.5, 0.5);
 
       // draw star outlines
@@ -34,9 +34,7 @@ LevelEnd.prototype = {
       this.nextLevel.events.onInputDown.add(function(){
         if(this.game.score.levelStars >= 2) {
           this.nextLevel.input.destroy();
-          this.game.pacing.level++;
-          // speed up next round
-          this.game.pacing.baseSpeedMultiplier *= this.game.pacing.levelSpeedIncrease;
+          this.game.levelManager.nextLevel();
           this.startLevel();
         }
       }, this);
@@ -63,7 +61,7 @@ LevelEnd.prototype.startLevel = function () {
   this.betaNotice = null;
 
   // load next state
-  this.game.state.start('levelSelect');
+  this.game.state.start('levelStart');
 };
 
 LevelEnd.prototype.drawProgressBar = function(position){
@@ -104,7 +102,7 @@ LevelEnd.prototype.drawProgressBar = function(position){
     .onUpdateCallback(function(){
         score = Math.round(this.game.score.levelScore * playerScore.scale.x);
         this.scoreText.text =  'Score: ' + score;
-        if (score / this.game.score.maxLevelScore >= this.game.pacing.starBreakPoints[this.game.score.levelStars]) {
+        if (score / this.game.score.maxLevelScore >= this.game.currentLevel.starBreakPoints[this.game.score.levelStars]) {
           this.drawStars(++this.game.score.levelStars);
           if (this.game.score.levelStars >= 2) {
             this.nextLevel.alpha = 1;

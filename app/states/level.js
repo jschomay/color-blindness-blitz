@@ -13,10 +13,10 @@ Level.prototype.create = function() {
     // game props
     this.COLORS = ['red','orange','green','blue','purple', 'brown', 'pink', 'yellow'];
     this.roundNumber = 1;
-    this.roundDuration = 3000 * this.game.pacing.baseSpeedMultiplier;
+    this.roundDuration = 3000 * this.game.currentLevel.baseSpeedMultiplier;
     this.roundTimer = {timeRemaining: 1}; // as a percentage of round duration
     this.roundTimerTween = null;
-    this.wordScore = this.game.pacing.wordScore;
+    this.wordScore = this.game.currentLevel.wordScore;
     this.targetWord = undefined;
     this.targetColorHex = 0xFFFFFF;
     this.targetColorWord = "white";
@@ -182,7 +182,7 @@ Level.prototype.endRound = function (selectedWord) {
       this.feedbackMultiplier(this.game.score.scoreMultiplier, selectedWord);
     }
     // speed up
-    this.roundDuration *= this.game.pacing.roundSpeedIncrease
+    this.roundDuration *= this.game.currentLevel.roundSpeedIncrease
 
   } else {
     // wrong
@@ -195,7 +195,7 @@ Level.prototype.endRound = function (selectedWord) {
     selectedWord.feedbackWrong(cb);
     this.game.score.wrong();
     // slow down
-    this.roundDuration *= 1/this.game.pacing.roundSpeedIncrease
+    this.roundDuration *= 1/this.game.currentLevel.roundSpeedIncrease
   }
 };
 
