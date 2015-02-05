@@ -6,10 +6,22 @@ LevelSelect.prototype = {
     },
     create: function() {
       this.levelColor = this.game.COLORS.red;
-      // level #
+      this.level = 1;
+
+      // title
       var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(this.levelColor), align: 'center'};
-      this.levelNumber = this.game.add.text(this.game.world.centerX, 100, 'Level '+this.game.pacing.level, style);
+      this.levelNumber = this.game.add.text(this.game.world.centerX, this.game.height / 10, 'Level '+this.game.pacing.level, style);
       this.levelNumber.anchor.setTo(0.5, 0.5);
+
+      // sub heading
+      style = { font: '24px Arial', fill: Phaser.Color.RGBtoWebstring(this.levelColor), align: 'center'};
+      this.subHeading = this.game.add.text(this.game.world.centerX, this.game.height / 5, '"Color theory"', style);
+      this.subHeading.anchor.setTo(0.5, 0.5);
+
+      // choose a level
+      style = { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(this.levelColor), align: 'center'};
+      this.chooseText = this.game.add.text(this.game.world.centerX, this.game.height / 2 - this.game.height / 30, "Choose a level:", style);
+      this.chooseText.anchor.setTo(0.5, 0.5);
 
       // sublevels
       this.sublevels = this.game.add.group();
@@ -20,7 +32,7 @@ LevelSelect.prototype = {
           var y = this.game.height / 2 + margin / 2 + i * this.game.height / 4 - i * margin / 2;
           var width = this.game.width / 3 - margin;
           var height =this.game.height / 4 - margin;
-          this.sublevels.add(this.makeSublevel(x, y, width, height, this.game.pacing.level + "-" + (i + 1) * (j + 1)));
+          this.sublevels.add(this.makeSublevel(x, y, width, height, this.level + "-" + (i + 1) * (j + 1)));
         }
       }
 
@@ -29,7 +41,7 @@ LevelSelect.prototype = {
   };
 
 
-LevelSelect.prototype.makeSublevel = function (x, y, width, height, num) {
+LevelSelect.prototype.makeSublevel = function (x, y, width, height, level) {
   var sublevel = this.game.add.sprite(x,y);
 
   // border
@@ -41,7 +53,7 @@ LevelSelect.prototype.makeSublevel = function (x, y, width, height, num) {
 
   // title
   var style = { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(this.levelColor), align: 'center'};
-   var title = this.game.add.text(width / 2, height / 20, num, style);
+   var title = this.game.add.text(width / 2, height / 20, level, style);
   title.anchor = {x: 0.5, y: 0};
   sublevel.addChild(title);
 
@@ -49,16 +61,19 @@ LevelSelect.prototype.makeSublevel = function (x, y, width, height, num) {
   sublevel.inputEnabled = true;
   sublevel.events.onInputDown.add(function(){
     sublevel.input.destroy();
-    this.selectLevel();
+    this.selectLevel(level);
   },this);
 
   return sublevel;
 };
 
-LevelSelect.prototype.selectLevel = function () {
+LevelSelect.prototype.selectLevel = function (level) {
   // clean things up
   this.levelNumber = null;
   this.sublevels.destroy();
+
+  // select level
+  this.game.pacing.level = level;
 
   // load next state
   this.game.state.start('levelStart');
