@@ -30,21 +30,38 @@ LevelSelect.prototype = {
 
 
 LevelSelect.prototype.makeSublevel = function (x, y, width, height, num) {
-  var sublevel = this.game.add.graphics(x, y);
-  sublevel.lineStyle(1, this.levelColor);
-  sublevel.drawRect(0, 0, width, height);
+  var sublevel = this.game.add.sprite(x,y);
+
+  // border
+  var graphics = this.game.add.graphics(0, 0);
+  graphics.lineStyle(1, this.levelColor);
+  graphics.drawRect(0, 0, width, height);
+  sublevel.addChild(graphics);
+  sublevel.crop({x: x, y: y, width: width, height: height});
+
+  // title
   var style = { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(this.levelColor), align: 'center'};
-  sublevel.title = this.game.add.text(x + width / 2, y + height / 20, num, style);
-  sublevel.title.anchor = {x: 0.5, y: 0};
+   var title = this.game.add.text(width / 2, height / 20, num, style);
+  title.anchor = {x: 0.5, y: 0};
+  sublevel.addChild(title);
+
+  // on select
+  sublevel.inputEnabled = true;
+  sublevel.events.onInputDown.add(function(){
+    sublevel.input.destroy();
+    this.selectLevel();
+  },this);
+
   return sublevel;
 };
 
 LevelSelect.prototype.selectLevel = function () {
   // clean things up
   this.levelNumber = null;
+  this.sublevels.destroy();
 
   // load next state
-  this.game.state.start('level-start');
+  this.game.state.start('levelStart');
 };
 
 

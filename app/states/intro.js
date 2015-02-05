@@ -26,7 +26,7 @@
     },
     update: function() {
       if(this.game.input.activePointer.justPressed()) {
-        this.game.state.start('levelStart');
+        this.game.state.start('levelSelect');
       }
     }
   };

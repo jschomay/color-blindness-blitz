@@ -63,7 +63,7 @@ LevelEnd.prototype.startLevel = function () {
   this.betaNotice = null;
 
   // load next state
-  this.game.state.start('levelStart');
+  this.game.state.start('levelSelect');
 };
 
 LevelEnd.prototype.drawProgressBar = function(position){
