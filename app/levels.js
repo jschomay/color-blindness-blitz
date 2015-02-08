@@ -122,5 +122,37 @@ module.exports = [
         0.8
       ]
     }
+  ],
+  [
+    {
+      "level": 3,
+      "subLevel": 1,
+      "levelColor": "red",
+      "levelName": "????",
+      "baseSpeedMultiplier": 1,
+      "levelSpeedIncrease": 0.75,
+      "roundSpeedIncrease": 0.95,
+      "wordScore": 100,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+    {
+      "level": 3,
+      "subLevel": 2,
+      "levelColor": "red",
+      "levelName": "????",
+      "baseSpeedMultiplier": 1,
+      "levelSpeedIncrease": 0.75,
+      "roundSpeedIncrease": 0.95,
+      "wordScore": 100,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    }
   ]
 ];
