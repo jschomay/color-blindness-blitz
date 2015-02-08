@@ -25,6 +25,10 @@ LevelSelect.prototype = {
       this.chooseText = this.game.add.text(this.game.world.centerX, this.game.height / 2 - this.game.height / 30, "Choose a level:", style);
       this.chooseText.anchor.setTo(0.5, 0.5);
 
+      // arrows
+      this.rightArrow = this.addArrow("right");
+      this.leftArrow = this.addArrow("left");
+
       // subLevels
       this.subLevels = this.game.add.group();
       var subLevelNumber = 1;
@@ -65,9 +69,47 @@ LevelSelect.prototype.makesubLevel = function (x, y, width, height, subLevelNumb
   subLevelBox.events.onInputDown.add(function(){
     subLevelBox.input.destroy();
     this.selectLevel(this.level, subLevelNumber);
- },this);
+   },this);
 
   return subLevelBox;
+};
+
+LevelSelect.prototype.addArrow = function (direction) {
+  var x = direction === "right" ? this.game.width - this.game.width / 10 : this.game.width / 20;
+  var y = this.game.width / 2;
+  var arrow = this.game.add.graphics(0, 0);
+  arrow.beginFill(this.levelColorHex);
+  arrow.moveTo(0,0);
+  arrow.lineTo(this.game.width / 20, this.game.width / 20);
+  arrow.lineTo(0, 2 * this.game.width / 20);
+  arrow.lineTo(0, 0);
+  if (direction !== "right") {
+    arrow.scale.x *= -1;
+    arrow.x = x;
+  }
+  var arrowSprite = this.game.add.sprite(x, y);
+  arrowSprite.addChild(arrow);
+
+  // handler
+  if (direction !== "right") {
+    arrowSprite.handler = this.previousLevel;
+  } else {
+    arrowSprite.handler = this.nextLevel;
+  }
+
+  // on select
+  arrowSprite.inputEnabled = true;
+  arrowSprite.events.onInputDown.add(arrowSprite.handler);
+
+  return arrowSprite;
+};
+
+LevelSelect.prototype.nextLevel = function () {
+  console.log("next level")
+};
+
+LevelSelect.prototype.previousLevel = function () {
+  console.log("previous level")
 };
 
 LevelSelect.prototype.selectLevel = function (level, subLevel) {
@@ -75,6 +117,8 @@ LevelSelect.prototype.selectLevel = function (level, subLevel) {
   this.levelNumber = null;
   this.subLevels.destroy();
   this.subHeading.destroy();
+  this.rightArrow.destroy();
+  this.leftArrow.destroy();
 
   // select level
   this.game.levelManager.setLevel(level, subLevel);
