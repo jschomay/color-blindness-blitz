@@ -5,21 +5,23 @@ LevelSelect.prototype = {
 
     },
     create: function() {
-      this.levelColor = this.game.COLORS.red;
+      this.levelColor = this.game.currentLevel.levelColor;
+      this.levelColorHex = this.game.COLORS[this.levelColor];
       this.level = this.game.currentLevel.level;
+      this.levelName = this.game.currentLevel.levelName;
 
       // title
-      var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(this.levelColor), align: 'center'};
+      var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(0xFFFFFF), align: 'center'};
       this.levelNumber = this.game.add.text(this.game.world.centerX, this.game.height / 10, 'Level '+this.level, style);
       this.levelNumber.anchor.setTo(0.5, 0.5);
 
       // sub heading
-      style = { font: '24px Arial', fill: Phaser.Color.RGBtoWebstring(this.levelColor), align: 'center'};
-      this.subHeading = this.game.add.text(this.game.world.centerX, this.game.height / 5, '"Color theory"', style);
+      style = { font: '24px Arial', fill: Phaser.Color.RGBtoWebstring(this.levelColorHex), align: 'center'};
+      this.subHeading = this.game.add.text(this.game.world.centerX, this.game.height / 5, '"'+this.levelName+'"', style);
       this.subHeading.anchor.setTo(0.5, 0.5);
 
       // choose a level
-      style = { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(this.levelColor), align: 'center'};
+      style = { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(0xFFFFFF), align: 'center'};
       this.chooseText = this.game.add.text(this.game.world.centerX, this.game.height / 2 - this.game.height / 30, "Choose a level:", style);
       this.chooseText.anchor.setTo(0.5, 0.5);
 
@@ -47,14 +49,14 @@ LevelSelect.prototype.makesubLevel = function (x, y, width, height, subLevelNumb
 
   // border
   var graphics = this.game.add.graphics(0, 0);
-  graphics.lineStyle(1, this.levelColor);
+  graphics.lineStyle(1, this.levelColorHex);
   graphics.drawRect(0, 0, width, height);
   subLevelBox.addChild(graphics);
   subLevelBox.crop({x: x, y: y, width: width, height: height});
 
   // title
-  var style = { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(this.levelColor), align: 'center'};
-   var title = this.game.add.text(width / 2, height / 20, this.level+'-'+subLevelNumber, style);
+  var style = { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(0xFFFFFF), align: 'center'};
+  var title = this.game.add.text(width / 2, height / 20, this.level+'-'+subLevelNumber, style);
   title.anchor = {x: 0.5, y: 0};
   subLevelBox.addChild(title);
 
