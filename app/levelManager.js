@@ -9,8 +9,11 @@ module.exports = function (game) {
       game.currentLevel = this.levels[this.currentLevel - 1][this.currentSubLevel - 1];
     },
     nextLevel: function() {
-     // TODO - this needs proper logic
-      this.setLevel(this.currentLevel, this.currentSubLevel + 1);
+      if (this.levels[this.currentLevel - 1][this.currentSubLevel]) {
+        this.setLevel(this.currentLevel, this.currentSubLevel + 1);
+      } else {
+        this.setLevel(this.currentLevel + 1, 1);
+      }
     }
-  }
+  };
 };
