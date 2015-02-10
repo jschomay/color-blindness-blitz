@@ -11,9 +11,7 @@ Level.prototype.create = function() {
     this.game.stage.backgroundColor = 0 * 0xFFFFFF;
 
     // game props
-    this.COLORS = ['red','orange','green','blue','purple', 'brown', 'pink', 'yellow'];
     this.roundNumber = 1;
-    this.roundDuration = 3000 * this.game.currentLevel.baseSpeedMultiplier;
     this.roundTimer = {timeRemaining: 1}; // as a percentage of round duration
     this.roundTimerTween = null;
     this.wordScore = this.game.currentLevel.wordScore;
@@ -91,7 +89,7 @@ Level.prototype.placeWord = function(x, y) {
 };
 
 Level.prototype.assignRandomColor = function(){
-  return this.rnd.pick(this.COLORS);
+  return this.rnd.pick(this.game.currentLevel.activeColors);
 }
 
 Level.prototype.buildWordGrid = function() {
@@ -181,8 +179,6 @@ Level.prototype.endRound = function (selectedWord) {
     if (prevMultiplier < this.game.score.scoreMultiplier) {
       this.feedbackMultiplier(this.game.score.scoreMultiplier, selectedWord);
     }
-    // speed up
-    this.roundDuration *= this.game.currentLevel.roundSpeedIncrease
 
   } else {
     // wrong
@@ -194,8 +190,6 @@ Level.prototype.endRound = function (selectedWord) {
     this.feedbackWrong();
     selectedWord.feedbackWrong(cb);
     this.game.score.wrong();
-    // slow down
-    this.roundDuration *= 1/this.game.currentLevel.roundSpeedIncrease
   }
 };
 
@@ -212,7 +206,7 @@ Level.prototype.queueNextRound = function() {
     // fade out, score) use roundtimer
     this.roundTimer = {timeRemaining: 1};
     this.roundTimerTween = this.game.add.tween(this.roundTimer);
-    this.roundTimerTween.to({timeRemaining: 0}, this.roundDuration);
+    this.roundTimerTween.to({timeRemaining: 0}, this.game.currentLevel.roundDuration);
     this.roundTimerTween.start();
 
     // update factors depending on round timer

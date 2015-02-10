@@ -5,9 +5,9 @@ module.exports = [
       "subLevel": 1,
       "levelColor": "blue",
       "levelName": "Color palettes",
-      "baseSpeedMultiplier": 1,
-      "levelSpeedIncrease": 0.75,
-      "roundSpeedIncrease": 0.95,
+      "roundDuration": 3000,
+      "activeColors": ['red','orange','green','blue','purple', 'brown', 'pink', 'yellow'],
+      "fontSize" : 80,
       "wordScore": 100,
       "starBreakPoints": [
         0.2,
