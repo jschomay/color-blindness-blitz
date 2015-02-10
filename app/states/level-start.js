@@ -16,7 +16,16 @@ LevelStart.prototype = {
       this.play.inputEnabled = true;
       this.play.events.onInputDown.add(function(){
         this.play.input.destroy();
-        this.playLevel();
+        this.changeState('level');
+      },this);
+
+      // back
+      this.back = this.game.add.text(this.game.width / 2, 375, 'Change level', { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(this.game.COLORS.white), align: 'center'});
+      this.back.anchor.setTo(0.5, 0.5);
+      this.back.inputEnabled = true;
+      this.back.events.onInputDown.add(function(){
+        this.back.input.destroy();
+        this.changeState('levelSelect');
       },this);
 
       // beta notice
@@ -27,14 +36,14 @@ LevelStart.prototype = {
     }
   };
 
-LevelStart.prototype.playLevel = function () {
+LevelStart.prototype.changeState = function (state) {
   // clean things up
   this.levelNumber = null;
   this.play = null;
   this.betaNotice = null;
 
-  // load next state
-  this.game.state.start('level');
+  // load state
+  this.game.state.start(state);
 };
 
 
