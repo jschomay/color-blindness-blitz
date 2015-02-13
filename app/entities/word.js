@@ -13,7 +13,6 @@ Word.prototype.constructor = Word;
 
 // set up instance props upon revive
 Word.prototype.init = function() {
-    this.game.currentLevel.fontSize = 70;
     this.bitmapText = this.game.add.bitmapText(this.x, this.y, 'cbbfont', 'N', this.game.currentLevel.fontSize);
     this.textSpacing = this.bitmapText.textWidth;
     this.text = this.level.assignRandomColor();
