@@ -8,6 +8,7 @@ var game = new Phaser.Game(gameDimentions.x, gameDimentions.y, Phaser.AUTO, 'gam
 // load modules
 game.score = require("./score");
 game.levelManager = require("./levelManager")(game);
+game.progress = require("./progress");
 game.currentLevel = null;
 game.levelManager.setLevel(1, 1);
 

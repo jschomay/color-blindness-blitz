@@ -5,6 +5,13 @@ LevelEnd.prototype = {
 
     },
     create: function() {
+      // save progress
+      this.game.score.levelStars = this.game.score.getStarsFromScore();
+      this.game.progress.saveLevelProgress(this.game.currentLevel.level, this.game.currentLevel.subLevel, {
+        score: this.game.score.levelScore,
+        stars: this.game.score.levelStars
+      });
+
       // level #
       var style = { font: 'bold 40px Arial', fill: '#ffffff', align: 'center'};
       this.titleText = this.game.add.text(this.game.world.centerX, 80, 'Level '+this.game.currentLevel.level+'-'+this.game.currentLevel.subLevel+'\nFinished', style);
@@ -98,13 +105,15 @@ LevelEnd.prototype.drawProgressBar = function(position){
 
   playerScore.scale.x = 0;
   var score = 0;
-  this.progressTween = this.game.add.tween(playerScore.scale).to({x: 1}, 3500, Phaser.Easing.Quadratic.Out, true)
-    .onUpdateCallback(function(){
+  var stars = 0;
+  this.progressTween = this.game.add.tween(playerScore.scale);
+  this.progressTween.to({x: 1}, 3500, Phaser.Easing.Quadratic.Out, true);
+  this.progressTween.onUpdateCallback(function(){
         score = Math.round(this.game.score.levelScore * playerScore.scale.x);
         this.scoreText.text =  'Score: ' + score;
-        if (score / this.game.score.maxLevelScore >= this.game.currentLevel.starBreakPoints[this.game.score.levelStars]) {
-          this.drawStars(++this.game.score.levelStars);
-          if (this.game.score.levelStars >= 2) {
+        if (score / this.game.score.maxLevelScore >= this.game.currentLevel.starBreakPoints[stars]) {
+          this.drawStars(++stars);
+          if (stars >= 2) {
             this.nextLevel.alpha = 1;
           }
         }
