@@ -10,6 +10,7 @@ game.score = require("./score");
 game.levelManager = require("./levelManager")(game);
 game.progress = require("./progress");
 game.currentLevel = null;
+game.drawStars = require("./lib/draw-stars")(game);
 game.levelManager.setLevel(1, 1);
 
 // constants

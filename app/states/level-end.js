@@ -18,7 +18,8 @@ LevelEnd.prototype = {
       this.titleText.anchor.setTo(0.5, 0.5);
 
       // draw star outlines
-      this.drawStars(3, true);
+      var emptyStarsGraphic = this.game.drawStars.drawEmptyStars(this.game.width);
+      emptyStarsGraphic.y = 200;
 
       // score
       this.scoreText = this.game.add.text(this.game.world.centerX, 280, 'Score: 0', { font: '36px Arial', fill: '#ffffff', align: 'left'});
@@ -106,63 +107,21 @@ LevelEnd.prototype.drawProgressBar = function(position){
   playerScore.scale.x = 0;
   var score = 0;
   var stars = 0;
+  var starsGraphic;
   this.progressTween = this.game.add.tween(playerScore.scale);
   this.progressTween.to({x: 1}, 3500, Phaser.Easing.Quadratic.Out, true);
   this.progressTween.onUpdateCallback(function(){
         score = Math.round(this.game.score.levelScore * playerScore.scale.x);
         this.scoreText.text =  'Score: ' + score;
         if (score / this.game.score.maxLevelScore >= this.game.currentLevel.starBreakPoints[stars]) {
-          this.drawStars(++stars);
+          starsGraphic = null
+          starsGraphic = this.game.drawStars.fillStars(this.game.width, ++stars);
+          starsGraphic.y = 200;
           if (stars >= 2) {
             this.nextLevel.alpha = 1;
           }
         }
     }, this);
 };
-
-LevelEnd.prototype.drawStars = function (num, outline) {
-  var starColors = [
-    "blue",
-    "purple",
-    "green",
-  ];
-  var alpha;
-  if (outline) {
-    alpha = 0.2;
-  } else {
-    alpha = 1;
-  }
-  for (var i = 0; i < num; i++) {
-    var position = {x: this.game.width * (i + 1) / 4, y: 200};
-    drawStar.call(this, position.x, position.y, this.game.COLORS[starColors[i]], alpha);
-  }
-};
-
-// thanks to http://stackoverflow.com/questions/25837158/how-to-draw-a-star-by-using-canvas-html5
-function drawStar(cx,cy, color, alpha){
-  var spikes = 5;
-  var outerRadius = 30;
-  var innerRadius = 10;
-  var rot=Math.PI/2*3;
-  var x=cx;
-  var y=cy;
-  var step=Math.PI/spikes;
-  var star = this.game.add.graphics(0,0);
-
-  star.beginFill(color, alpha);
-  star.moveTo(cx,cy-outerRadius);
-  for(i=0;i<spikes;i++){
-    x=cx+Math.cos(rot)*outerRadius;
-    y=cy+Math.sin(rot)*outerRadius;
-    star.lineTo(x,y);
-    rot+=step;
-
-    x=cx+Math.cos(rot)*innerRadius;
-    y=cy+Math.sin(rot)*innerRadius;
-    star.lineTo(x,y);
-    rot+=step;
-  }
-  star.lineTo(cx,cy-outerRadius);
-}
 
 module.exports = LevelEnd;

@@ -88,15 +88,19 @@ LevelSelect.prototype.makeSubLevel = function (level, x, y, width, height, subLe
 
   // check progress
   var status = this.game.progress.getLevelStatus(level.level, subLevelNumber);
-  var progress = "Locked";
+  var levelProgress = this.game.progress.getLevelProgress(level.level, subLevelNumber);
   if(status === this.game.progress.READY || status === this.game.progress.COMPLETE) {
-    progress = this.game.progress.getLevelProgress(level.level, subLevelNumber).stars+" stars";
+    // stars
+    var stars = this.game.drawStars.drawStars(subLevelBox.width, levelProgress.stars);
+    stars.y = subLevelBox.height * 3 / 5;
+    subLevelBox.addChild(stars);
+  } else {
+    // locked
+    var style = { font: '20px Arial', fill: Phaser.Color.RGBtoWebstring(0xFFFFFF), align: 'center'};
+    var lockedText = this.game.add.text(width / 2, height / 2, "Locked", style);
+    lockedText.anchor = {x: 0.5, y: 0};
+    subLevelBox.addChild(lockedText);
   }
-
-  var style = { font: '20px Arial', fill: Phaser.Color.RGBtoWebstring(0xFFFFFF), align: 'center'};
-  var progressText = this.game.add.text(width / 2, height / 2, progress, style);
-  progressText.anchor = {x: 0.5, y: 0};
-  subLevelBox.addChild(progressText);
 
   // on select
   if(status !== this.game.progress.LOCKED) {
