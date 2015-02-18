@@ -92,11 +92,16 @@ LevelSelect.prototype.makeSubLevel = function (level, x, y, width, height, subLe
   if(status === this.game.progress.READY || status === this.game.progress.COMPLETE) {
     // stars
     var stars = this.game.drawStars.drawStars(subLevelBox.width, levelProgress.stars);
-    stars.y = subLevelBox.height * 3 / 5;
+    stars.y = subLevelBox.height / 2;
     subLevelBox.addChild(stars);
+    // play text
+    var style = { font: '16px Arial', fill: Phaser.Color.RGBtoWebstring(this.game.COLORS['orange']), align: 'center'};
+    var playText = this.game.add.text(width / 2, height * 3 / 4, "Play", style);
+    playText.anchor = {x: 0.5, y: 0};
+    subLevelBox.addChild(playText);
   } else {
     // locked
-    var style = { font: '20px Arial', fill: Phaser.Color.RGBtoWebstring(0xFFFFFF), align: 'center'};
+    var style = { font: '20px Arial', fill: Phaser.Color.RGBtoWebstring(0x444444), align: 'center'};
     var lockedText = this.game.add.text(width / 2, height / 2, "Locked", style);
     lockedText.anchor = {x: 0.5, y: 0};
     subLevelBox.addChild(lockedText);
