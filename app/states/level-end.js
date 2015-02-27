@@ -5,6 +5,7 @@ LevelEnd.prototype = {
 
     },
     create: function() {
+      this.previousScore = this.game.progress.getLevelProgress(this.game.currentLevel.level, this.game.currentLevel.subLevel);
       // save progress
       this.game.score.levelStars = this.game.score.getStarsFromScore();
       this.game.progress.saveLevelProgress(this.game.currentLevel.level, this.game.currentLevel.subLevel, {
@@ -19,10 +20,22 @@ LevelEnd.prototype = {
 
       // draw star outlines
       var emptyStarsGraphic = this.game.drawStars.drawEmptyStars(this.game.width);
-      emptyStarsGraphic.y = 200;
+      emptyStarsGraphic.y = 180;
+
+      // high score
+      var style = { font: 'bold 16px arial', fill: '#ffffff', align: 'center'};
+      var highScoreText;
+      console.log(this.game.score.levelScore , this.previousScore.score);
+      if(this.game.score.levelScore > this.previousScore.score) {
+        highScoreText = "New high score!";
+      } else {
+        highScoreText = "Best score: " + this.previousScore.score;
+      }
+      this.highScoreTextSprite = this.game.add.text(this.game.world.centerX, 280, highScoreText, style);
+      this.highScoreTextSprite.anchor.setTo(0.5, 0.5);
 
       // score
-      this.scoreText = this.game.add.text(this.game.world.centerX, 280, 'Score: 0', { font: '36px Arial', fill: '#ffffff', align: 'left'});
+      this.scoreText = this.game.add.text(this.game.world.centerX, 250, 'Score: 0', { font: '38px Arial', fill: '#ffffff', align: 'left'});
       this.scoreText.anchor.setTo(0.5, 0.5);
 
       // try again
@@ -61,6 +74,7 @@ LevelEnd.prototype = {
 LevelEnd.prototype.startLevel = function () {
   // clean things up
   this.progressTween.stop();
+  this.highScoreTextSprite = null;
   this.progressTween = null;
   this.titleText = null;
   this.scoreText = null;
@@ -116,7 +130,7 @@ LevelEnd.prototype.drawProgressBar = function(position){
         if (score / this.game.score.maxLevelScore >= this.game.currentLevel.starBreakPoints[stars]) {
           starsGraphic = null
           starsGraphic = this.game.drawStars.fillStars(this.game.width, ++stars);
-          starsGraphic.y = 200;
+          starsGraphic.y = 180;
           if (stars >= 2) {
             this.nextLevel.alpha = 1;
           }
