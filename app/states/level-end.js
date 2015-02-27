@@ -25,7 +25,6 @@ LevelEnd.prototype = {
       // high score
       var style = { font: 'bold 16px arial', fill: '#ffffff', align: 'center'};
       var highScoreText;
-      console.log(this.game.score.levelScore , this.previousScore.score);
       if(this.game.score.levelScore > this.previousScore.score) {
         highScoreText = "New high score!";
       } else {

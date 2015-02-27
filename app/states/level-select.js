@@ -31,7 +31,14 @@ LevelSelect.prototype.makeLevel = function (levelIndex, levelData) {
 
   // sub heading
   style = { font: '24px Arial', fill: Phaser.Color.RGBtoWebstring(levelGroup.levelColorHex), align: 'center'};
-  var subHeading = this.game.add.text(this.game.world.centerX, this.game.height / 5, '"'+levelGroup.levelName+'"', style);
+  var status = this.game.progress.getLevelStatus(levelGroup.level, 1);
+  var levelTitleText;
+  if(status === this.game.progress.LOCKED) {
+    levelTitleText = "????";
+  } else {
+    levelTitleText = '"'+levelGroup.levelName+'"';
+  }
+  var subHeading = this.game.add.text(this.game.world.centerX, this.game.height / 5, levelTitleText, style);
   subHeading.anchor.setTo(0.5, 0.5);
   levelGroup.addChild(subHeading);
 
