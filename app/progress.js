@@ -1,4 +1,4 @@
-var progress = [];
+var progress = JSON.parse(localStorage.getItem('ccb_progress')) || [];
 module.exports = {
   saveLevelProgress: function(level, sublevel, data) {
     if(!progress[level - 1]) {
@@ -8,6 +8,7 @@ module.exports = {
     if(this.getLevelProgress(level, sublevel).score < data.score) {
       progress[level - 1][sublevel - 1] = data;
     }
+    localStorage.setItem('ccb_progress', JSON.stringify(progress));
   },
   getLevelProgress: function(level, sublevel) {
     if(!progress[level - 1]) {
