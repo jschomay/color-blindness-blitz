@@ -18,7 +18,7 @@
       this.titleText2.anchor.setTo(0.5, 0.5);
       this.titleText3.anchor.setTo(0.5, 0.5);
 
-      this.instructionsText = this.game.add.text(this.game.world.centerX, this.game.height - 100, 'You must clear all the words from the screen.\n\nWhen a word lights up, tap a word matching the lit up word\'s color, not the color it spells.', { font: '16px Arial', fill: '#ffffff', align: 'left', wordWrap: true, wordWrapWidth: this.game.width * 0.8});
+      this.instructionsText = this.game.add.text(this.game.world.centerX, this.game.height - 100, 'You must clear all the words from the screen.\n\nWhen a word lights up, tap a word matching the lit up word\'s color, not the color it spells.\n\nTap to begin...', { font: '16px Arial', fill: '#ffffff', align: 'left', wordWrap: true, wordWrapWidth: this.game.width * 0.8});
       this.instructionsText.anchor.setTo(0.5, 1);
     },
     update: function() {
