@@ -61,12 +61,6 @@ LevelEnd.prototype = {
 
       // progress bar
       this.drawProgressBar({x: this.game.width * 0.1, y: 310});
-
-      // beta notice
-      this.betaNotice = this.game.add.text(this.game.world.centerX, this.game.world.height - 20, 'This is a beta version\nLeave feedback and get updates here', { font: '16px Arial', fill: 'red', align: 'center'});
-      this.betaNotice.anchor.setTo(0.5, 0.5);
-      this.betaNotice.inputEnabled = true;
-      this.betaNotice.events.onInputDown.add(function(){window.location.href="http://codeperfectionist.com/portfolio/games/color-blindness-blitz/";});
     }
   };
 
@@ -79,7 +73,6 @@ LevelEnd.prototype.startLevel = function () {
   this.scoreText = null;
   this.tryAgain = null;
   this.nextLevel = null;
-  this.betaNotice = null;
 
   // load next state
   this.game.state.start('levelStart');
