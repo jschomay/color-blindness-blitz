@@ -21,7 +21,6 @@ game.COLORS = {
   'green': 0x33FF00,
   'blue': 0x3333FF,
   'purple': 0x9900CC,
-  'brown': 0x7A5229,
   'pink': 0xFF5CAD,
   'yellow': 0xFFFF00
 };

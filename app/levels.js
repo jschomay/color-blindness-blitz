@@ -36,7 +36,7 @@ module.exports = [
       "levelColor": "blue",
       "levelName": "Color palettes",
       "roundDuration": 3000,
-      "activeColors": ['yellow','blue','purple', 'brown'],
+      "activeColors": ['yellow','blue','purple', 'orange'],
       "fontSize" : 50,
       "wordScore": 120,
       "starBreakPoints": [
@@ -51,7 +51,7 @@ module.exports = [
       "levelColor": "blue",
       "levelName": "Color palettes",
       "roundDuration": 3000,
-      "activeColors": ['red','orange','brown', 'yellow'],
+      "activeColors": ['red','orange','pink', 'yellow'],
       "fontSize" : 45,
       "wordScore": 130,
       "starBreakPoints": [
@@ -66,7 +66,7 @@ module.exports = [
       "levelColor": "blue",
       "levelName": "Color palettes",
       "roundDuration": 2000,
-      "activeColors": ['green','blue','purple'],
+      "activeColors": ['green','blue','purple', 'pink'],
       "fontSize" : 40,
       "wordScore": 150,
       "starBreakPoints": [
@@ -80,8 +80,8 @@ module.exports = [
       "subLevel": 6,
       "levelColor": "blue",
       "levelName": "Color palettes",
-      "roundDuration": 1500,
-      "activeColors": ['red','orange','green','blue','purple', 'brown', 'pink', 'yellow'],
+      "roundDuration": 1700,
+      "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
       "fontSize" : 35,
       "wordScore": 100,
       "starBreakPoints": [
@@ -98,7 +98,7 @@ module.exports = [
       "levelColor": "green",
       "levelName": "Green",
       "roundDuration": 3000,
-      "activeColors": ['red','orange','green','blue','purple', 'brown', 'pink', 'yellow'],
+      "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
       "fontSize" : 80,
       "wordScore": 100,
       "starBreakPoints": [
@@ -113,7 +113,7 @@ module.exports = [
       "levelColor": "green",
       "levelName": "Green",
       "roundDuration": 3000,
-      "activeColors": ['red','orange','green','blue','purple', 'brown', 'pink', 'yellow'],
+      "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
       "fontSize" : 80,
       "wordScore": 100,
       "starBreakPoints": [
@@ -130,7 +130,7 @@ module.exports = [
       "levelColor": "red",
       "levelName": "Red",
       "roundDuration": 3000,
-      "activeColors": ['red','orange','green','blue','purple', 'brown', 'pink', 'yellow'],
+      "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
       "fontSize" : 80,
       "wordScore": 100,
       "starBreakPoints": [
@@ -145,7 +145,7 @@ module.exports = [
       "levelColor": "red",
       "levelName": "Red",
       "roundDuration": 3000,
-      "activeColors": ['red','orange','green','blue','purple', 'brown', 'pink', 'yellow'],
+      "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
       "fontSize" : 80,
       "wordScore": 100,
       "starBreakPoints": [
