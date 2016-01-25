@@ -5,16 +5,36 @@ LevelEnd.prototype = {
 
     },
     create: function() {
+      this.previousScore = this.game.progress.getLevelProgress(this.game.currentLevel.level, this.game.currentLevel.subLevel);
+      // save progress
+      this.game.score.levelStars = this.game.score.getStarsFromScore();
+      this.game.progress.saveLevelProgress(this.game.currentLevel.level, this.game.currentLevel.subLevel, {
+        score: this.game.score.levelScore,
+        stars: this.game.score.levelStars
+      });
+
       // level #
       var style = { font: 'bold 40px Arial', fill: '#ffffff', align: 'center'};
-      this.titleText = this.game.add.text(this.game.world.centerX, 80, 'Level '+this.game.pacing.level+'\nFinished', style);
+      this.titleText = this.game.add.text(this.game.world.centerX, 80, 'Level '+this.game.currentLevel.level+'-'+this.game.currentLevel.subLevel+'\nFinished', style);
       this.titleText.anchor.setTo(0.5, 0.5);
 
       // draw star outlines
-      this.drawStars(3, true);
+      var emptyStarsGraphic = this.game.drawStars.drawEmptyStars(this.game.width);
+      emptyStarsGraphic.y = 180;
+
+      // high score
+      var style = { font: 'bold 16px arial', fill: '#ffffff', align: 'center'};
+      var highScoreText;
+      if(this.game.score.levelScore > this.previousScore.score) {
+        highScoreText = "New high score!";
+      } else {
+        highScoreText = "Best score: " + this.previousScore.score;
+      }
+      this.highScoreTextSprite = this.game.add.text(this.game.world.centerX, 280, highScoreText, style);
+      this.highScoreTextSprite.anchor.setTo(0.5, 0.5);
 
       // score
-      this.scoreText = this.game.add.text(this.game.world.centerX, 280, 'Score: 0', { font: '36px Arial', fill: '#ffffff', align: 'left'});
+      this.scoreText = this.game.add.text(this.game.world.centerX, 250, 'Score: 0', { font: '38px Arial', fill: '#ffffff', align: 'left'});
       this.scoreText.anchor.setTo(0.5, 0.5);
 
       // try again
@@ -34,9 +54,7 @@ LevelEnd.prototype = {
       this.nextLevel.events.onInputDown.add(function(){
         if(this.game.score.levelStars >= 2) {
           this.nextLevel.input.destroy();
-          this.game.pacing.level++;
-          // speed up next round
-          this.game.pacing.baseSpeedMultiplier *= this.game.pacing.levelSpeedIncrease;
+          this.game.levelManager.nextLevel();
           this.startLevel();
         }
       }, this);
@@ -55,6 +73,7 @@ LevelEnd.prototype = {
 LevelEnd.prototype.startLevel = function () {
   // clean things up
   this.progressTween.stop();
+  this.highScoreTextSprite = null;
   this.progressTween = null;
   this.titleText = null;
   this.scoreText = null;
@@ -63,7 +82,7 @@ LevelEnd.prototype.startLevel = function () {
   this.betaNotice = null;
 
   // load next state
-  this.game.state.start('levelSelect');
+  this.game.state.start('levelStart');
 };
 
 LevelEnd.prototype.drawProgressBar = function(position){
@@ -100,62 +119,22 @@ LevelEnd.prototype.drawProgressBar = function(position){
 
   playerScore.scale.x = 0;
   var score = 0;
-  this.progressTween = this.game.add.tween(playerScore.scale).to({x: 1}, 3500, Phaser.Easing.Quadratic.Out, true)
-    .onUpdateCallback(function(){
+  var stars = 0;
+  var starsGraphic;
+  this.progressTween = this.game.add.tween(playerScore.scale);
+  this.progressTween.to({x: 1}, 3500, Phaser.Easing.Quadratic.Out, true);
+  this.progressTween.onUpdateCallback(function(){
         score = Math.round(this.game.score.levelScore * playerScore.scale.x);
         this.scoreText.text =  'Score: ' + score;
-        if (score / this.game.score.maxLevelScore >= this.game.pacing.starBreakPoints[this.game.score.levelStars]) {
-          this.drawStars(++this.game.score.levelStars);
-          if (this.game.score.levelStars >= 2) {
+        if (score / this.game.score.maxLevelScore >= this.game.currentLevel.starBreakPoints[stars]) {
+          starsGraphic = null
+          starsGraphic = this.game.drawStars.fillStars(this.game.width, ++stars);
+          starsGraphic.y = 180;
+          if (stars >= 2) {
             this.nextLevel.alpha = 1;
           }
         }
     }, this);
 };
-
-LevelEnd.prototype.drawStars = function (num, outline) {
-  var starColors = [
-    "blue",
-    "purple",
-    "green",
-  ];
-  var alpha;
-  if (outline) {
-    alpha = 0.2;
-  } else {
-    alpha = 1;
-  }
-  for (var i = 0; i < num; i++) {
-    var position = {x: this.game.width * (i + 1) / 4, y: 200};
-    drawStar.call(this, position.x, position.y, this.game.COLORS[starColors[i]], alpha);
-  }
-};
-
-// thanks to http://stackoverflow.com/questions/25837158/how-to-draw-a-star-by-using-canvas-html5
-function drawStar(cx,cy, color, alpha){
-  var spikes = 5;
-  var outerRadius = 30;
-  var innerRadius = 10;
-  var rot=Math.PI/2*3;
-  var x=cx;
-  var y=cy;
-  var step=Math.PI/spikes;
-  var star = this.game.add.graphics(0,0);
-
-  star.beginFill(color, alpha);
-  star.moveTo(cx,cy-outerRadius);
-  for(i=0;i<spikes;i++){
-    x=cx+Math.cos(rot)*outerRadius;
-    y=cy+Math.sin(rot)*outerRadius;
-    star.lineTo(x,y);
-    rot+=step;
-
-    x=cx+Math.cos(rot)*innerRadius;
-    y=cy+Math.sin(rot)*innerRadius;
-    star.lineTo(x,y);
-    rot+=step;
-  }
-  star.lineTo(cx,cy-outerRadius);
-}
 
 module.exports = LevelEnd;

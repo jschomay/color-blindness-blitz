@@ -40,5 +40,16 @@ module.exports = {
       maxLevelScore += 100 * (Math.floor(i / this.multiplierFrequency) + 1);
     }
     return maxLevelScore;
+  },
+  getStarsFromScore: function(score, maxScore){
+    score = score || this.levelScore;
+    maxScore = maxScore || this.maxLevelScore;
+    var stars = 0;
+    for (var i = 0; i < this.game.currentLevel.starBreakPoints.length; i++) {
+      if (score / maxScore >= this.game.currentLevel.starBreakPoints[i]) {
+        stars++;
+      }
+    }
+    return stars;
   }
 };

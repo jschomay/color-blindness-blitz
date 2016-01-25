@@ -7,14 +7,11 @@ var game = new Phaser.Game(gameDimentions.x, gameDimentions.y, Phaser.AUTO, 'gam
 
 // load modules
 game.score = require("./score");
-game.pacing = {
-  baseSpeedMultiplier: 1,
-  level: 1,
-  levelSpeedIncrease: 0.75,
-  roundSpeedIncrease: 0.95,
-  wordScore: 100,
-  starBreakPoints: [0.2, 0.5, 0.8]
-};
+game.levelManager = require("./levelManager")(game);
+game.progress = require("./progress");
+game.currentLevel = null;
+game.drawStars = require("./lib/draw-stars")(game);
+game.levelManager.setLevel(1, 1);
 
 // constants
 game.COLORS = {

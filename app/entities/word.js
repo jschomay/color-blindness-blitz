@@ -13,8 +13,7 @@ Word.prototype.constructor = Word;
 
 // set up instance props upon revive
 Word.prototype.init = function() {
-    this.fontSize = 70;
-    this.bitmapText = this.game.add.bitmapText(this.x, this.y, 'cbbfont', 'N', this.fontSize);
+    this.bitmapText = this.game.add.bitmapText(this.x, this.y, 'cbbfont', 'N', this.game.currentLevel.fontSize);
     this.textSpacing = this.bitmapText.textWidth;
     this.text = this.level.assignRandomColor();
     this.bitmapText.setText(this.text.toUpperCase());
@@ -48,7 +47,7 @@ Word.prototype.flashWord = function(cb) {
 };
 
 Word.prototype.setFontContext = function() {
-    this.bitmap.context.font = "bold " + this.fontSize + "px  Arial Black, Arial";
+    this.bitmap.context.font = "bold " + this.game.currentLevel.fontSize + "px  Arial Black, Arial";
     this.bitmap.context.textAlign = 'center';
     this.bitmap.context.textBaseline = 'middle';
 };
