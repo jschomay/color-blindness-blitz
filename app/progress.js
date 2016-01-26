@@ -36,7 +36,7 @@ module.exports = {
     } else if (level === 1 && sublevel === 1) {
       // very first level/sublevel
       return this.READY;   
-    } else if (sublevel >= 1) {
+    } else if (sublevel > 1) {
       // any sublevel higher than 1
      if (this.getLevelStatus(level, sublevel - 1) === this.COMPLETE) {
        return this.READY;
