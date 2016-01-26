@@ -143,7 +143,7 @@ Level.prototype.highlightRandomWord = function() {
   this.targetWord.highlight(this.targetColorHex);
 };
 
-Level.prototype.endRound = function (selectedWord) {
+Level.prototype.endRound = function (selectedWord, keepInPlay) {
 
   this.roundIsOver = true;
   this.roundTimerTween.stop();
@@ -164,6 +164,16 @@ Level.prototype.endRound = function (selectedWord) {
 
   } else if (this.playIsCorrect(selectedWord)) {
     // right
+    if(keepInPlay) {
+      if(this.game.levelManager.currentLevel === 3) {
+        selectedWord.bitmapText.angle = 180;
+        selectedWord.bitmapText.x += selectedWord.bitmapText.textWidth;
+        selectedWord.bitmapText.y += selectedWord.bitmapText.textHeight/2;
+      }
+      this.game.time.events.add(1000, this.queueNextRound, this);
+      return
+    }
+
     cb = function () {
       this.wordsPool.remove(selectedWord);
       this.queueNextRound();

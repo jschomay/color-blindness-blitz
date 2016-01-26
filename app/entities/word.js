@@ -21,6 +21,11 @@ Word.prototype.init = function() {
     this.addChild(this.bitmapText);
     this.bitmapText.tint = 0x444444;
     this.resizeToText();
+
+    if(this.game.levelManager.currentLevel === 2) {
+      var shuffledColor = this.text[0] + Phaser.Utils.shuffle(this.text.slice(1,-1).split('')).join('') + this.text[this.text.length-1];
+      this.bitmapText.setText(shuffledColor.toUpperCase());
+    }
 };
 
 // nice animation on start up
@@ -94,8 +99,12 @@ Word.prototype.tapWord = function(){
   if (this.level.roundIsOver || !this.alive) {
     return;
   }
-  this.outOfPlay();
-  this.level.endRound(this);
+  if(this.game.levelManager.currentLevel === 3 && this.bitmapText.angle === 0) {
+    this.level.endRound(this, true);
+  } else {
+    this.outOfPlay();
+    this.level.endRound(this);
+  }
 };
 
 // highlights the word
