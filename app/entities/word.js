@@ -99,7 +99,7 @@ Word.prototype.tapWord = function(){
   if (this.level.roundIsOver || !this.alive) {
     return;
   }
-  if(this.game.levelManager.currentLevel === 3 && this.bitmapText.angle === 0) {
+  if(this.game.levelManager.currentLevel === 3 && this.bitmapText.angle === 0 && this.level.playIsCorrect(this)) {
     this.level.endRound(this, true);
   } else {
     this.outOfPlay();
