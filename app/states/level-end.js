@@ -53,6 +53,11 @@ LevelEnd.prototype = {
       this.nextLevel.alpha = 0.2;
       this.nextLevel.events.onInputDown.add(function(){
         if(this.game.score.levelStars >= 2) {
+          if(!this.game.levelManager.isNextLevel()) {
+            this.cleanUp();
+            this.game.state.start('gameWin');
+            return
+          }
           this.nextLevel.input.destroy();
           this.game.levelManager.nextLevel();
           this.startLevel();
@@ -64,7 +69,7 @@ LevelEnd.prototype = {
     }
   };
 
-LevelEnd.prototype.startLevel = function () {
+LevelEnd.prototype.cleanUp = function () {
   // clean things up
   this.progressTween.stop();
   this.highScoreTextSprite = null;
@@ -73,7 +78,10 @@ LevelEnd.prototype.startLevel = function () {
   this.scoreText = null;
   this.tryAgain = null;
   this.nextLevel = null;
+};
 
+LevelEnd.prototype.startLevel = function () {
+  this.cleanUp();
   // load next state
   this.game.state.start('levelStart');
 };
