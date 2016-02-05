@@ -165,8 +165,8 @@ Level.prototype.endRound = function (selectedWord, keepInPlay) {
   } else if (this.playIsCorrect(selectedWord)) {
     // right
     if(keepInPlay) {
-      if(this.game.levelManager.currentLevel >= 3) {
-        // level challenge 3+ - wordds turn upside odwn
+      if(this.game.levelManager.currentLevel >= 4) {
+        // level challenge 4+ - words turn upside odwn
         selectedWord.bitmapText.angle = 180;
         selectedWord.bitmapText.x += selectedWord.bitmapText.textWidth;
         selectedWord.bitmapText.y += selectedWord.bitmapText.textHeight/2;

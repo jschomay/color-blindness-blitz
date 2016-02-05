@@ -14,6 +14,13 @@ Word.prototype.constructor = Word;
 // set up instance props upon revive
 Word.prototype.init = function() {
     this.bitmapText = this.game.add.bitmapText(this.x, this.y, 'cbbfont', 'N', this.game.currentLevel.fontSize);
+
+    if(this.game.levelManager.currentLevel >= 2) {
+      // level 2+ challenge - mix up the sizes
+      var randomFontAdjustment = this.game.rnd.integerInRange(-10, 10);
+      this.bitmapText.fontSize = (parseInt(this.bitmapText.fontSize) + randomFontAdjustment) + 'px';
+    }
+
     this.textSpacing = this.bitmapText.textWidth;
     this.text = this.level.assignRandomColor();
     this.bitmapText.setText(this.text.toUpperCase());
@@ -22,8 +29,9 @@ Word.prototype.init = function() {
     this.bitmapText.tint = 0x444444;
     this.resizeToText();
 
-    if(this.game.levelManager.currentLevel >= 2) {
-      // level challenge 2+ - shuffled color names
+
+    if(this.game.levelManager.currentLevel >= 3) {
+      // level challenge 3+ - shuffled color names
       var shuffledColor = this.text[0] + Phaser.Utils.shuffle(this.text.slice(1,-1).split('')).join('') + this.text[this.text.length-1];
       this.bitmapText.setText(shuffledColor.toUpperCase());
     }
@@ -100,8 +108,8 @@ Word.prototype.tapWord = function(){
   if (this.level.roundIsOver || !this.alive) {
     return;
   }
-  if(this.game.levelManager.currentLevel >= 3 && this.bitmapText.angle === 0 && this.level.playIsCorrect(this)) {
-    // level challenge 3+ - first tap turns words upside down
+  if(this.game.levelManager.currentLevel >= 4 && this.bitmapText.angle === 0 && this.level.playIsCorrect(this)) {
+    // level challenge 4+ - first tap turns words upside down
     this.level.endRound(this, true);
   } else {
     this.outOfPlay();
