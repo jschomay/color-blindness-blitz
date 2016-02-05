@@ -22,7 +22,8 @@ Word.prototype.init = function() {
     this.bitmapText.tint = 0x444444;
     this.resizeToText();
 
-    if(this.game.levelManager.currentLevel === 2) {
+    if(this.game.levelManager.currentLevel >= 2) {
+      // level challenge 2+ - shuffled color names
       var shuffledColor = this.text[0] + Phaser.Utils.shuffle(this.text.slice(1,-1).split('')).join('') + this.text[this.text.length-1];
       this.bitmapText.setText(shuffledColor.toUpperCase());
     }
@@ -99,7 +100,8 @@ Word.prototype.tapWord = function(){
   if (this.level.roundIsOver || !this.alive) {
     return;
   }
-  if(this.game.levelManager.currentLevel === 3 && this.bitmapText.angle === 0 && this.level.playIsCorrect(this)) {
+  if(this.game.levelManager.currentLevel >= 3 && this.bitmapText.angle === 0 && this.level.playIsCorrect(this)) {
+    // level challenge 3+ - first tap turns words upside down
     this.level.endRound(this, true);
   } else {
     this.outOfPlay();
