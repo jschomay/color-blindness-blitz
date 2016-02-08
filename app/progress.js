@@ -1,4 +1,4 @@
-var progress = JSON.parse(localStorage.getItem('ccb_progress') || '[]');
+var progress = JSON.parse(localStorage.getItem('cbb_progress') || '[]');
 module.exports = {
   saveLevelProgress: function(level, sublevel, data) {
     if(!progress[level - 1]) {
