@@ -52,7 +52,7 @@ LevelEnd.prototype = {
       this.nextLevel.inputEnabled = true;
       this.nextLevel.alpha = 0.2;
       this.nextLevel.events.onInputDown.add(function(){
-        if(this.game.score.levelStars >= 2) {
+        if(this.game.score.levelStars >= 1) {
           if(!this.game.levelManager.isNextLevel()) {
             this.cleanUp();
             this.game.state.start('gameWin');
@@ -131,7 +131,7 @@ LevelEnd.prototype.drawProgressBar = function(position){
           starsGraphic = null
           starsGraphic = this.game.drawStars.fillStars(this.game.width, ++stars);
           starsGraphic.y = 180;
-          if (stars >= 2) {
+          if (stars >= 1) {
             this.nextLevel.alpha = 1;
           }
         }

@@ -20,15 +20,15 @@ module.exports = {
     return progress[level - 1][sublevel - 1];
   },
   // level status:
-  // levels with 2+ stars are COMPLETE
-  // levels with < 2 stars are READY
+  // levels with 1+ stars are COMPLETE
+  // levels with < 1 stars are READY
   // levels immediately after a completed level are READY
   // all others are LOCKED
   // execpt very fist level/sublevel starts out READY
   getLevelStatus: function(level, sublevel) {
     if (this.getLevelProgress(level, sublevel).score > 0) {
       // level has a score
-      if(this.getLevelProgress(level, sublevel).stars >= 2) {
+      if(this.getLevelProgress(level, sublevel).stars >= 1) {
         return this.COMPLETE;
       } else {
         return this.READY;
