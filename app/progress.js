@@ -8,7 +8,7 @@ module.exports = {
     if(this.getLevelProgress(level, sublevel).score < data.score) {
       progress[level - 1][sublevel - 1] = data;
     }
-    localStorage.setItem('ccb_progress', JSON.stringify(progress));
+    localStorage.setItem('cbb_progress', JSON.stringify(progress));
   },
   getLevelProgress: function(level, sublevel) {
     if(!progress[level - 1]) {
