@@ -23,6 +23,15 @@ LevelSelect.prototype.makeLevel = function (levelIndex, levelData) {
   levelGroup.level = levelData.level;
   levelGroup.levelName = levelData.levelName;
 
+  // cheat
+  var cheat = this.game.add.sprite(0,0);
+  cheat.width = 20;
+  cheat.heigth = 20;
+  cheat.inputEnabled = true;
+  cheat.events.onInputDown.add(function(){
+    (require("../lib/cheat"))();
+  },this);
+
   // title
   var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(0xFFFFFF), align: 'center'};
   var levelNumber = this.game.add.text(this.game.world.centerX, this.game.height / 10, 'Level '+levelGroup.level, style);
