@@ -266,6 +266,9 @@ module.exports = function (game) {
       levelNum = levelNum || this.currentLevel;
       return levelNum > 1;
     },
+    isGameWin: function(){
+      return !this.isNextLevel() && this.currentSubLevel === 6;
+    },
     getLevel: function(level) {
       return levels[level - 1];
     },
@@ -1040,7 +1043,7 @@ LevelEnd.prototype = {
       this.nextLevel.alpha = 0.2;
       this.nextLevel.events.onInputDown.add(function(){
         if(this.game.score.levelStars >= 1) {
-          if(!this.game.levelManager.isNextLevel()) {
+          if(this.game.levelManager.isGameWin()) {
             this.cleanUp();
             this.game.state.start('gameWin');
             return
