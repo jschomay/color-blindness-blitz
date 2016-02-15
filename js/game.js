@@ -660,7 +660,26 @@ module.exports = [
 
 });
 
-require.register("lib/draw-stars", function(exports, require, module) {
+require.register("lib/cheat", function(exports, require, module) {
+var levels = require("../levels");
+module.exports = function() {
+  if(confirm("Cheat mode activated, this will unlock all levels, but you will lose any existing high scores, do you want to continue?")) {
+    var progress = [];
+    for (var i = 0; i < levels.length; i++) {
+      var levelProgress = [];
+      for (var j = 0; j < levels[0].length; j++) {
+        levelProgress.push({"score": 99, "stars": 1});
+      }
+      progress.push(levelProgress);
+    }
+    localStorage.setItem('cbb_progress', JSON.stringify(progress));
+    window.location.href = window.location.href;
+  }
+}
+
+});
+
+;require.register("lib/draw-stars", function(exports, require, module) {
 module.exports = function(game) {
   function fillStars(width, num, graphics){
     if (typeof graphics === "undefined") {
@@ -1135,6 +1154,15 @@ LevelSelect.prototype.makeLevel = function (levelIndex, levelData) {
   levelGroup.levelColorHex = this.game.COLORS[levelGroup.levelColor];
   levelGroup.level = levelData.level;
   levelGroup.levelName = levelData.levelName;
+
+  // cheat
+  var cheat = this.game.add.sprite(0,0);
+  cheat.width = 20;
+  cheat.heigth = 20;
+  cheat.inputEnabled = true;
+  cheat.events.onInputDown.add(function(){
+    (require("../lib/cheat"))();
+  },this);
 
   // title
   var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(0xFFFFFF), align: 'center'};
