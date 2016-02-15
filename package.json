@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "brunch watch --server",
-    "test": "brunch test"
+    "test": "brunch test",
+    "deploy": "sh deploy.sh"
   },
   "dependencies": {
     "javascript-brunch": ">= 1.0 < 1.8",
