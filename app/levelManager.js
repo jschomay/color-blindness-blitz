@@ -12,6 +12,9 @@ module.exports = function (game) {
       levelNum = levelNum || this.currentLevel;
       return levelNum > 1;
     },
+    isGameWin: function(){
+      return !this.isNextLevel() && this.currentSubLevel === 6;
+    },
     getLevel: function(level) {
       return levels[level - 1];
     },
