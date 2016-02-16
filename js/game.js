@@ -659,6 +659,98 @@ module.exports = [
       ]
     },
   ],
+  [
+    {
+      "level": 5,
+      "subLevel": 1,
+      "levelColor": "purple",
+      "levelName": "Color blind",
+      "roundDuration": 5000,
+      "activeColors": ['red','blue', 'yellow'],
+      "fontSize" : 70,
+      "wordScore": 100,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+    {
+      "level": 5,
+      "subLevel": 2,
+      "levelColor": "purple",
+      "levelName": "Color blind",
+      "roundDuration": 4000,
+      "activeColors": ['orange','green','purple'],
+      "fontSize" : 70,
+      "wordScore": 100,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+    {
+      "level": 5,
+      "subLevel": 4,
+      "levelColor": "purple",
+      "levelName": "Color blind",
+      "roundDuration": 3000,
+      "activeColors": ['yellow','blue','purple', 'orange'],
+      "fontSize" : 50,
+      "wordScore": 120,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+    {
+      "level": 5,
+      "subLevel": 4,
+      "levelColor": "purple",
+      "levelName": "Color blind",
+      "roundDuration": 3000,
+      "activeColors": ['red','orange','pink', 'yellow'],
+      "fontSize" : 45,
+      "wordScore": 130,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+    {
+      "level": 5,
+      "subLevel": 5,
+      "levelColor": "purple",
+      "levelName": "Color blind",
+      "roundDuration": 2000,
+      "activeColors": ['green','blue','purple', 'pink'],
+      "fontSize" : 40,
+      "wordScore": 150,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+    {
+      "level": 5,
+      "subLevel": 6,
+      "levelColor": "purple",
+      "levelName": "Color blind",
+      "roundDuration": 1700,
+      "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
+      "fontSize" : 35,
+      "wordScore": 100,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+  ],
 ];
 
 });
@@ -1378,6 +1470,12 @@ module.exports = Level = function() {
 // Load images and sounds
 Level.prototype.preload = function() {
     this.load.bitmapFont('cbbfont', 'CBB/CBB.png', 'CBB/CBB.fnt');  
+
+    if(this.game.levelManager.currentLevel >= 5) {
+      // background
+      var backgroundNum = this.game.rnd.integerInRange(1, 4);
+      this.game.load.image('color-blindness-test', 'images/color_blindness_test_'+backgroundNum+'.jpg');
+    }
 };
 
 // Set up the game and kick it off
@@ -1393,8 +1491,28 @@ Level.prototype.create = function() {
     this.targetColorHex = 0xFFFFFF;
     this.targetColorWord = "white";
     this.roundIsOver = true;
+
+    if(this.game.levelManager.currentLevel >= 5) {
+      this.background = this.game.add.sprite(this.game.width / 3, this.game.height / 3, 'color-blindness-test');
+      this.background.anchor = {x: 0.5, y: 0.5};
+      this.background.scale = {x: 1.0, y: 1.0};
+      var direction = 1;
+      this.background.update = function() {
+        this.angle += 0.1;
+        if(this.scale.x > 2.0) {
+          direction *= -1;
+        }
+        if(this.scale.x < 1.0) {
+          direction *= -1;
+        }
+        this.scale.x += direction * 0.001;
+        this.scale.y += direction * 0.001;
+      };
+    }
+
     this.wordsPool = this.game.add.group();
     this.missedWordsPool = this.game.add.group();
+
     this.pointsPool = this.game.add.group();
     // start points pool with 10 objects
     for(var i = 0; i < 10; i++) {
