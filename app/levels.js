@@ -367,4 +367,96 @@ module.exports = [
       ]
     },
   ],
+  [
+    {
+      "level": 5,
+      "subLevel": 1,
+      "levelColor": "purple",
+      "levelName": "Color blind",
+      "roundDuration": 5000,
+      "activeColors": ['red','blue', 'yellow'],
+      "fontSize" : 70,
+      "wordScore": 100,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+    {
+      "level": 5,
+      "subLevel": 2,
+      "levelColor": "purple",
+      "levelName": "Color blind",
+      "roundDuration": 4000,
+      "activeColors": ['orange','green','purple'],
+      "fontSize" : 70,
+      "wordScore": 100,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+    {
+      "level": 5,
+      "subLevel": 4,
+      "levelColor": "purple",
+      "levelName": "Color blind",
+      "roundDuration": 3000,
+      "activeColors": ['yellow','blue','purple', 'orange'],
+      "fontSize" : 50,
+      "wordScore": 120,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+    {
+      "level": 5,
+      "subLevel": 4,
+      "levelColor": "purple",
+      "levelName": "Color blind",
+      "roundDuration": 3000,
+      "activeColors": ['red','orange','pink', 'yellow'],
+      "fontSize" : 45,
+      "wordScore": 130,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+    {
+      "level": 5,
+      "subLevel": 5,
+      "levelColor": "purple",
+      "levelName": "Color blind",
+      "roundDuration": 2000,
+      "activeColors": ['green','blue','purple', 'pink'],
+      "fontSize" : 40,
+      "wordScore": 150,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+    {
+      "level": 5,
+      "subLevel": 6,
+      "levelColor": "purple",
+      "levelName": "Color blind",
+      "roundDuration": 1700,
+      "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
+      "fontSize" : 35,
+      "wordScore": 100,
+      "starBreakPoints": [
+        0.2,
+        0.5,
+        0.8
+      ]
+    },
+  ],
 ];

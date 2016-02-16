@@ -4,6 +4,12 @@ module.exports = Level = function() {
 // Load images and sounds
 Level.prototype.preload = function() {
     this.load.bitmapFont('cbbfont', 'CBB/CBB.png', 'CBB/CBB.fnt');  
+
+    if(this.game.levelManager.currentLevel >= 5) {
+      // background
+      var backgroundNum = this.game.rnd.integerInRange(1, 4);
+      this.game.load.image('color-blindness-test', 'images/color_blindness_test_'+backgroundNum+'.jpg');
+    }
 };
 
 // Set up the game and kick it off
@@ -19,8 +25,28 @@ Level.prototype.create = function() {
     this.targetColorHex = 0xFFFFFF;
     this.targetColorWord = "white";
     this.roundIsOver = true;
+
+    if(this.game.levelManager.currentLevel >= 5) {
+      this.background = this.game.add.sprite(this.game.width / 3, this.game.height / 3, 'color-blindness-test');
+      this.background.anchor = {x: 0.5, y: 0.5};
+      this.background.scale = {x: 1.0, y: 1.0};
+      var direction = 1;
+      this.background.update = function() {
+        this.angle += 0.1;
+        if(this.scale.x > 2.0) {
+          direction *= -1;
+        }
+        if(this.scale.x < 1.0) {
+          direction *= -1;
+        }
+        this.scale.x += direction * 0.001;
+        this.scale.y += direction * 0.001;
+      };
+    }
+
     this.wordsPool = this.game.add.group();
     this.missedWordsPool = this.game.add.group();
+
     this.pointsPool = this.game.add.group();
     // start points pool with 10 objects
     for(var i = 0; i < 10; i++) {
