@@ -400,7 +400,7 @@ module.exports = [
     },
     {
       "level": 5,
-      "subLevel": 4,
+      "subLevel": 3,
       "levelColor": "purple",
       "levelName": "Color blind",
       "roundDuration": 3000,
