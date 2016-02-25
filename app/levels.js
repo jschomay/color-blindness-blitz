@@ -3,7 +3,8 @@ module.exports = [
     {
       "level": 1,
       "subLevel": 1,
-      "levelColor": "red",
+      "levelColor": "Red",
+      "altLevelColor": "green",
       "levelName": "Color palettes",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
@@ -18,7 +19,8 @@ module.exports = [
     {
       "level": 1,
       "subLevel": 2,
-      "levelColor": "red",
+      "levelColor": "Red",
+      "altLevelColor": "green",
       "levelName": "Color palettes",
       "roundDuration": 4000,
       "activeColors": ['orange','green','purple'],
@@ -33,7 +35,8 @@ module.exports = [
     {
       "level": 1,
       "subLevel": 3,
-      "levelColor": "red",
+      "levelColor": "Red",
+      "altLevelColor": "green",
       "levelName": "Color palettes",
       "roundDuration": 3000,
       "activeColors": ['yellow','blue','purple', 'orange'],
@@ -48,7 +51,8 @@ module.exports = [
     {
       "level": 1,
       "subLevel": 4,
-      "levelColor": "red",
+      "levelColor": "Red",
+      "altLevelColor": "green",
       "levelName": "Color palettes",
       "roundDuration": 3000,
       "activeColors": ['red','orange','pink', 'yellow'],
@@ -63,7 +67,8 @@ module.exports = [
     {
       "level": 1,
       "subLevel": 5,
-      "levelColor": "red",
+      "levelColor": "Red",
+      "altLevelColor": "green",
       "levelName": "Color palettes",
       "roundDuration": 2000,
       "activeColors": ['green','blue','purple', 'pink'],
@@ -78,7 +83,8 @@ module.exports = [
     {
       "level": 1,
       "subLevel": 6,
-      "levelColor": "red",
+      "levelColor": "Red",
+      "altLevelColor": "green",
       "levelName": "Color palettes",
       "roundDuration": 1700,
       "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
@@ -95,7 +101,8 @@ module.exports = [
     {
       "level": 2,
       "subLevel": 1,
-      "levelColor": "orange",
+      "levelColor": "Orange",
+      "altLevelColor": "blue",
       "levelName": "Big and small",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
@@ -110,7 +117,8 @@ module.exports = [
     {
       "level": 2,
       "subLevel": 2,
-      "levelColor": "orange",
+      "levelColor": "Orange",
+      "altLevelColor": "blue",
       "levelName": "Big and small",
       "roundDuration": 4000,
       "activeColors": ['orange','green','purple'],
@@ -125,7 +133,8 @@ module.exports = [
     {
       "level": 2,
       "subLevel": 3,
-      "levelColor": "orange",
+      "levelColor": "Orange",
+      "altLevelColor": "blue",
       "levelName": "Big and small",
       "roundDuration": 3000,
       "activeColors": ['yellow','blue','purple', 'orange'],
@@ -140,7 +149,8 @@ module.exports = [
     {
       "level": 2,
       "subLevel": 4,
-      "levelColor": "orange",
+      "levelColor": "Orange",
+      "altLevelColor": "blue",
       "levelName": "Big and small",
       "roundDuration": 3000,
       "activeColors": ['red','orange','pink', 'yellow'],
@@ -155,7 +165,8 @@ module.exports = [
     {
       "level": 2,
       "subLevel": 5,
-      "levelColor": "orange",
+      "levelColor": "Orange",
+      "altLevelColor": "blue",
       "levelName": "Big and small",
       "roundDuration": 2000,
       "activeColors": ['green','blue','purple', 'pink'],
@@ -170,7 +181,8 @@ module.exports = [
     {
       "level": 2,
       "subLevel": 6,
-      "levelColor": "orange",
+      "levelColor": "Orange",
+      "altLevelColor": "blue",
       "levelName": "Big and small",
       "roundDuration": 1700,
       "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
@@ -187,7 +199,8 @@ module.exports = [
     {
       "level": 3,
       "subLevel": 1,
-      "levelColor": "green",
+      "levelColor": "Green",
+      "altLevelColor": "red",
       "levelName": "Jumble",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
@@ -202,7 +215,8 @@ module.exports = [
     {
       "level": 3,
       "subLevel": 2,
-      "levelColor": "green",
+      "levelColor": "Green",
+      "altLevelColor": "red",
       "levelName": "Jumble",
       "roundDuration": 4000,
       "activeColors": ['orange','green','purple'],
@@ -217,7 +231,8 @@ module.exports = [
     {
       "level": 3,
       "subLevel": 3,
-      "levelColor": "green",
+      "levelColor": "Green",
+      "altLevelColor": "red",
       "levelName": "Jumble",
       "roundDuration": 3000,
       "activeColors": ['yellow','blue','purple', 'orange'],
@@ -232,7 +247,8 @@ module.exports = [
     {
       "level": 3,
       "subLevel": 4,
-      "levelColor": "green",
+      "levelColor": "Green",
+      "altLevelColor": "red",
       "levelName": "Jumble",
       "roundDuration": 3000,
       "activeColors": ['red','orange','pink', 'yellow'],
@@ -247,7 +263,8 @@ module.exports = [
     {
       "level": 3,
       "subLevel": 5,
-      "levelColor": "green",
+      "levelColor": "Green",
+      "altLevelColor": "red",
       "levelName": "Jumble",
       "roundDuration": 2000,
       "activeColors": ['green','blue','purple', 'pink'],
@@ -262,7 +279,8 @@ module.exports = [
     {
       "level": 3,
       "subLevel": 6,
-      "levelColor": "green",
+      "levelColor": "Green",
+      "altLevelColor": "red",
       "levelName": "Jumble",
       "roundDuration": 1700,
       "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
@@ -279,7 +297,8 @@ module.exports = [
     {
       "level": 4,
       "subLevel": 1,
-      "levelColor": "blue",
+      "levelColor": "Blue",
+      "altLevelColor": "pink",
       "levelName": "Topsy Turvy",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
@@ -294,7 +313,8 @@ module.exports = [
     {
       "level": 4,
       "subLevel": 2,
-      "levelColor": "blue",
+      "levelColor": "Blue",
+      "altLevelColor": "pink",
       "levelName": "Topsy Turvy",
       "roundDuration": 4000,
       "activeColors": ['orange','green','purple'],
@@ -309,7 +329,8 @@ module.exports = [
     {
       "level": 4,
       "subLevel": 3,
-      "levelColor": "blue",
+      "levelColor": "Blue",
+      "altLevelColor": "pink",
       "levelName": "Topsy Turvy",
       "roundDuration": 3000,
       "activeColors": ['yellow','blue','purple', 'orange'],
@@ -324,7 +345,8 @@ module.exports = [
     {
       "level": 4,
       "subLevel": 4,
-      "levelColor": "blue",
+      "levelColor": "Blue",
+      "altLevelColor": "pink",
       "levelName": "Topsy Turvy",
       "roundDuration": 3000,
       "activeColors": ['red','orange','pink', 'yellow'],
@@ -339,7 +361,8 @@ module.exports = [
     {
       "level": 4,
       "subLevel": 5,
-      "levelColor": "blue",
+      "levelColor": "Blue",
+      "altLevelColor": "pink",
       "levelName": "Topsy Turvy",
       "roundDuration": 2000,
       "activeColors": ['green','blue','purple', 'pink'],
@@ -354,7 +377,8 @@ module.exports = [
     {
       "level": 4,
       "subLevel": 6,
-      "levelColor": "blue",
+      "levelColor": "Blue",
+      "altLevelColor": "pink",
       "levelName": "Topsy Turvy",
       "roundDuration": 1700,
       "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
@@ -371,7 +395,8 @@ module.exports = [
     {
       "level": 5,
       "subLevel": 1,
-      "levelColor": "purple",
+      "levelColor": "Purple",
+      "altLevelColor": "orange",
       "levelName": "Color blind",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
@@ -386,7 +411,8 @@ module.exports = [
     {
       "level": 5,
       "subLevel": 2,
-      "levelColor": "purple",
+      "levelColor": "Purple",
+      "altLevelColor": "orange",
       "levelName": "Color blind",
       "roundDuration": 4000,
       "activeColors": ['orange','green','purple'],
@@ -401,7 +427,8 @@ module.exports = [
     {
       "level": 5,
       "subLevel": 3,
-      "levelColor": "purple",
+      "levelColor": "Purple",
+      "altLevelColor": "orange",
       "levelName": "Color blind",
       "roundDuration": 3000,
       "activeColors": ['yellow','blue','purple', 'orange'],
@@ -416,7 +443,8 @@ module.exports = [
     {
       "level": 5,
       "subLevel": 4,
-      "levelColor": "purple",
+      "levelColor": "Purple",
+      "altLevelColor": "orange",
       "levelName": "Color blind",
       "roundDuration": 3000,
       "activeColors": ['red','orange','pink', 'yellow'],
@@ -431,7 +459,8 @@ module.exports = [
     {
       "level": 5,
       "subLevel": 5,
-      "levelColor": "purple",
+      "levelColor": "Purple",
+      "altLevelColor": "orange",
       "levelName": "Color blind",
       "roundDuration": 2000,
       "activeColors": ['green','blue','purple', 'pink'],
@@ -446,7 +475,8 @@ module.exports = [
     {
       "level": 5,
       "subLevel": 6,
-      "levelColor": "purple",
+      "levelColor": "Purple",
+      "altLevelColor": "orange",
       "levelName": "Color blind",
       "roundDuration": 1700,
       "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],

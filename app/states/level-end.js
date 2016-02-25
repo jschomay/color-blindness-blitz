@@ -5,7 +5,13 @@ LevelEnd.prototype = {
 
     },
     create: function() {
+      var currentLevel = this.game.currentLevel.level;
+      var currentSubLevel = this.game.currentLevel.subLevel;
+      var levelData = this.game.levelManager.getLevel(currentLevel)[currentSubLevel-1];
+      var levelColorHex = this.game.COLORS[levelData.altLevelColor];
+
       this.previousScore = this.game.progress.getLevelProgress(this.game.currentLevel.level, this.game.currentLevel.subLevel);
+
       // save progress
       this.game.score.levelStars = this.game.score.getStarsFromScore();
       this.game.progress.saveLevelProgress(this.game.currentLevel.level, this.game.currentLevel.subLevel, {
@@ -14,8 +20,8 @@ LevelEnd.prototype = {
       });
 
       // level #
-      var style = { font: 'bold 40px Arial', fill: '#ffffff', align: 'center'};
-      this.titleText = this.game.add.text(this.game.world.centerX, 80, 'Level '+this.game.currentLevel.level+'-'+this.game.currentLevel.subLevel+'\nFinished', style);
+      var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(levelColorHex), align: 'center'};
+      this.titleText = this.game.add.text(this.game.world.centerX, 80, levelData.levelColor + ' #' +this.game.currentLevel.subLevel+'\nFinished', style);
       this.titleText.anchor.setTo(0.5, 0.5);
 
       // draw star outlines
@@ -23,7 +29,7 @@ LevelEnd.prototype = {
       emptyStarsGraphic.y = 180;
 
       // high score
-      var style = { font: 'bold 16px arial', fill: '#ffffff', align: 'center'};
+      var style = { font: 'bold 16px arial', fill: Phaser.Color.RGBtoWebstring(this.game.COLORS['white']), align: 'center'};
       var highScoreText;
       if(this.game.score.levelScore > this.previousScore.score) {
         highScoreText = "New high score!";
@@ -34,7 +40,7 @@ LevelEnd.prototype = {
       this.highScoreTextSprite.anchor.setTo(0.5, 0.5);
 
       // score
-      this.scoreText = this.game.add.text(this.game.world.centerX, 250, 'Score: 0', { font: '38px Arial', fill: '#ffffff', align: 'left'});
+      this.scoreText = this.game.add.text(this.game.world.centerX, 250, 'Score: 0', { font: '38px Arial', fill: Phaser.Color.RGBtoWebstring(this.game.COLORS['white']), align: 'left'});
       this.scoreText.anchor.setTo(0.5, 0.5);
 
       // try again
