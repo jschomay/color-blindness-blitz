@@ -295,7 +295,8 @@ module.exports = [
     {
       "level": 1,
       "subLevel": 1,
-      "levelColor": "red",
+      "levelColor": "Red",
+      "altLevelColor": "green",
       "levelName": "Color palettes",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
@@ -310,7 +311,8 @@ module.exports = [
     {
       "level": 1,
       "subLevel": 2,
-      "levelColor": "red",
+      "levelColor": "Red",
+      "altLevelColor": "green",
       "levelName": "Color palettes",
       "roundDuration": 4000,
       "activeColors": ['orange','green','purple'],
@@ -325,7 +327,8 @@ module.exports = [
     {
       "level": 1,
       "subLevel": 3,
-      "levelColor": "red",
+      "levelColor": "Red",
+      "altLevelColor": "green",
       "levelName": "Color palettes",
       "roundDuration": 3000,
       "activeColors": ['yellow','blue','purple', 'orange'],
@@ -340,7 +343,8 @@ module.exports = [
     {
       "level": 1,
       "subLevel": 4,
-      "levelColor": "red",
+      "levelColor": "Red",
+      "altLevelColor": "green",
       "levelName": "Color palettes",
       "roundDuration": 3000,
       "activeColors": ['red','orange','pink', 'yellow'],
@@ -355,7 +359,8 @@ module.exports = [
     {
       "level": 1,
       "subLevel": 5,
-      "levelColor": "red",
+      "levelColor": "Red",
+      "altLevelColor": "green",
       "levelName": "Color palettes",
       "roundDuration": 2000,
       "activeColors": ['green','blue','purple', 'pink'],
@@ -370,7 +375,8 @@ module.exports = [
     {
       "level": 1,
       "subLevel": 6,
-      "levelColor": "red",
+      "levelColor": "Red",
+      "altLevelColor": "green",
       "levelName": "Color palettes",
       "roundDuration": 1700,
       "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
@@ -387,7 +393,8 @@ module.exports = [
     {
       "level": 2,
       "subLevel": 1,
-      "levelColor": "orange",
+      "levelColor": "Orange",
+      "altLevelColor": "blue",
       "levelName": "Big and small",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
@@ -402,7 +409,8 @@ module.exports = [
     {
       "level": 2,
       "subLevel": 2,
-      "levelColor": "orange",
+      "levelColor": "Orange",
+      "altLevelColor": "blue",
       "levelName": "Big and small",
       "roundDuration": 4000,
       "activeColors": ['orange','green','purple'],
@@ -417,7 +425,8 @@ module.exports = [
     {
       "level": 2,
       "subLevel": 3,
-      "levelColor": "orange",
+      "levelColor": "Orange",
+      "altLevelColor": "blue",
       "levelName": "Big and small",
       "roundDuration": 3000,
       "activeColors": ['yellow','blue','purple', 'orange'],
@@ -432,7 +441,8 @@ module.exports = [
     {
       "level": 2,
       "subLevel": 4,
-      "levelColor": "orange",
+      "levelColor": "Orange",
+      "altLevelColor": "blue",
       "levelName": "Big and small",
       "roundDuration": 3000,
       "activeColors": ['red','orange','pink', 'yellow'],
@@ -447,7 +457,8 @@ module.exports = [
     {
       "level": 2,
       "subLevel": 5,
-      "levelColor": "orange",
+      "levelColor": "Orange",
+      "altLevelColor": "blue",
       "levelName": "Big and small",
       "roundDuration": 2000,
       "activeColors": ['green','blue','purple', 'pink'],
@@ -462,7 +473,8 @@ module.exports = [
     {
       "level": 2,
       "subLevel": 6,
-      "levelColor": "orange",
+      "levelColor": "Orange",
+      "altLevelColor": "blue",
       "levelName": "Big and small",
       "roundDuration": 1700,
       "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
@@ -479,7 +491,8 @@ module.exports = [
     {
       "level": 3,
       "subLevel": 1,
-      "levelColor": "green",
+      "levelColor": "Green",
+      "altLevelColor": "red",
       "levelName": "Jumble",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
@@ -494,7 +507,8 @@ module.exports = [
     {
       "level": 3,
       "subLevel": 2,
-      "levelColor": "green",
+      "levelColor": "Green",
+      "altLevelColor": "red",
       "levelName": "Jumble",
       "roundDuration": 4000,
       "activeColors": ['orange','green','purple'],
@@ -509,7 +523,8 @@ module.exports = [
     {
       "level": 3,
       "subLevel": 3,
-      "levelColor": "green",
+      "levelColor": "Green",
+      "altLevelColor": "red",
       "levelName": "Jumble",
       "roundDuration": 3000,
       "activeColors": ['yellow','blue','purple', 'orange'],
@@ -524,7 +539,8 @@ module.exports = [
     {
       "level": 3,
       "subLevel": 4,
-      "levelColor": "green",
+      "levelColor": "Green",
+      "altLevelColor": "red",
       "levelName": "Jumble",
       "roundDuration": 3000,
       "activeColors": ['red','orange','pink', 'yellow'],
@@ -539,7 +555,8 @@ module.exports = [
     {
       "level": 3,
       "subLevel": 5,
-      "levelColor": "green",
+      "levelColor": "Green",
+      "altLevelColor": "red",
       "levelName": "Jumble",
       "roundDuration": 2000,
       "activeColors": ['green','blue','purple', 'pink'],
@@ -554,7 +571,8 @@ module.exports = [
     {
       "level": 3,
       "subLevel": 6,
-      "levelColor": "green",
+      "levelColor": "Green",
+      "altLevelColor": "red",
       "levelName": "Jumble",
       "roundDuration": 1700,
       "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
@@ -571,7 +589,8 @@ module.exports = [
     {
       "level": 4,
       "subLevel": 1,
-      "levelColor": "blue",
+      "levelColor": "Blue",
+      "altLevelColor": "pink",
       "levelName": "Topsy Turvy",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
@@ -586,7 +605,8 @@ module.exports = [
     {
       "level": 4,
       "subLevel": 2,
-      "levelColor": "blue",
+      "levelColor": "Blue",
+      "altLevelColor": "pink",
       "levelName": "Topsy Turvy",
       "roundDuration": 4000,
       "activeColors": ['orange','green','purple'],
@@ -601,7 +621,8 @@ module.exports = [
     {
       "level": 4,
       "subLevel": 3,
-      "levelColor": "blue",
+      "levelColor": "Blue",
+      "altLevelColor": "pink",
       "levelName": "Topsy Turvy",
       "roundDuration": 3000,
       "activeColors": ['yellow','blue','purple', 'orange'],
@@ -616,7 +637,8 @@ module.exports = [
     {
       "level": 4,
       "subLevel": 4,
-      "levelColor": "blue",
+      "levelColor": "Blue",
+      "altLevelColor": "pink",
       "levelName": "Topsy Turvy",
       "roundDuration": 3000,
       "activeColors": ['red','orange','pink', 'yellow'],
@@ -631,7 +653,8 @@ module.exports = [
     {
       "level": 4,
       "subLevel": 5,
-      "levelColor": "blue",
+      "levelColor": "Blue",
+      "altLevelColor": "pink",
       "levelName": "Topsy Turvy",
       "roundDuration": 2000,
       "activeColors": ['green','blue','purple', 'pink'],
@@ -646,7 +669,8 @@ module.exports = [
     {
       "level": 4,
       "subLevel": 6,
-      "levelColor": "blue",
+      "levelColor": "Blue",
+      "altLevelColor": "pink",
       "levelName": "Topsy Turvy",
       "roundDuration": 1700,
       "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
@@ -663,7 +687,8 @@ module.exports = [
     {
       "level": 5,
       "subLevel": 1,
-      "levelColor": "purple",
+      "levelColor": "Purple",
+      "altLevelColor": "orange",
       "levelName": "Color blind",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
@@ -678,7 +703,8 @@ module.exports = [
     {
       "level": 5,
       "subLevel": 2,
-      "levelColor": "purple",
+      "levelColor": "Purple",
+      "altLevelColor": "orange",
       "levelName": "Color blind",
       "roundDuration": 4000,
       "activeColors": ['orange','green','purple'],
@@ -692,8 +718,9 @@ module.exports = [
     },
     {
       "level": 5,
-      "subLevel": 4,
-      "levelColor": "purple",
+      "subLevel": 3,
+      "levelColor": "Purple",
+      "altLevelColor": "orange",
       "levelName": "Color blind",
       "roundDuration": 3000,
       "activeColors": ['yellow','blue','purple', 'orange'],
@@ -708,7 +735,8 @@ module.exports = [
     {
       "level": 5,
       "subLevel": 4,
-      "levelColor": "purple",
+      "levelColor": "Purple",
+      "altLevelColor": "orange",
       "levelName": "Color blind",
       "roundDuration": 3000,
       "activeColors": ['red','orange','pink', 'yellow'],
@@ -723,7 +751,8 @@ module.exports = [
     {
       "level": 5,
       "subLevel": 5,
-      "levelColor": "purple",
+      "levelColor": "Purple",
+      "altLevelColor": "orange",
       "levelName": "Color blind",
       "roundDuration": 2000,
       "activeColors": ['green','blue','purple', 'pink'],
@@ -738,7 +767,8 @@ module.exports = [
     {
       "level": 5,
       "subLevel": 6,
-      "levelColor": "purple",
+      "levelColor": "Purple",
+      "altLevelColor": "orange",
       "levelName": "Color blind",
       "roundDuration": 1700,
       "activeColors": ['red','orange','green','blue','purple', 'pink', 'yellow'],
@@ -1087,7 +1117,13 @@ LevelEnd.prototype = {
 
     },
     create: function() {
+      var currentLevel = this.game.currentLevel.level;
+      var currentSubLevel = this.game.currentLevel.subLevel;
+      var levelData = this.game.levelManager.getLevel(currentLevel)[currentSubLevel-1];
+      var levelColorHex = this.game.COLORS[levelData.altLevelColor];
+
       this.previousScore = this.game.progress.getLevelProgress(this.game.currentLevel.level, this.game.currentLevel.subLevel);
+
       // save progress
       this.game.score.levelStars = this.game.score.getStarsFromScore();
       this.game.progress.saveLevelProgress(this.game.currentLevel.level, this.game.currentLevel.subLevel, {
@@ -1096,8 +1132,8 @@ LevelEnd.prototype = {
       });
 
       // level #
-      var style = { font: 'bold 40px Arial', fill: '#ffffff', align: 'center'};
-      this.titleText = this.game.add.text(this.game.world.centerX, 80, 'Level '+this.game.currentLevel.level+'-'+this.game.currentLevel.subLevel+'\nFinished', style);
+      var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(levelColorHex), align: 'center'};
+      this.titleText = this.game.add.text(this.game.world.centerX, 80, levelData.levelColor + ' #' +this.game.currentLevel.subLevel+'\nFinished', style);
       this.titleText.anchor.setTo(0.5, 0.5);
 
       // draw star outlines
@@ -1105,7 +1141,7 @@ LevelEnd.prototype = {
       emptyStarsGraphic.y = 180;
 
       // high score
-      var style = { font: 'bold 16px arial', fill: '#ffffff', align: 'center'};
+      var style = { font: 'bold 16px arial', fill: Phaser.Color.RGBtoWebstring(this.game.COLORS['white']), align: 'center'};
       var highScoreText;
       if(this.game.score.levelScore > this.previousScore.score) {
         highScoreText = "New high score!";
@@ -1116,7 +1152,7 @@ LevelEnd.prototype = {
       this.highScoreTextSprite.anchor.setTo(0.5, 0.5);
 
       // score
-      this.scoreText = this.game.add.text(this.game.world.centerX, 250, 'Score: 0', { font: '38px Arial', fill: '#ffffff', align: 'left'});
+      this.scoreText = this.game.add.text(this.game.world.centerX, 250, 'Score: 0', { font: '38px Arial', fill: Phaser.Color.RGBtoWebstring(this.game.COLORS['white']), align: 'left'});
       this.scoreText.anchor.setTo(0.5, 0.5);
 
       // try again
@@ -1246,7 +1282,7 @@ LevelSelect.prototype.makeLevel = function (levelIndex, levelData) {
   levelGroup.x = this.game.width * levelIndex;
 
   levelGroup.levelColor = levelData.levelColor;
-  levelGroup.levelColorHex = this.game.COLORS[levelGroup.levelColor];
+  levelGroup.levelColorHex = this.game.COLORS[levelData.altLevelColor];
   levelGroup.level = levelData.level;
   levelGroup.levelName = levelData.levelName;
 
@@ -1260,8 +1296,8 @@ LevelSelect.prototype.makeLevel = function (levelIndex, levelData) {
   },this);
 
   // title
-  var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(0xFFFFFF), align: 'center'};
-  var levelNumber = this.game.add.text(this.game.world.centerX, this.game.height / 10, 'Level '+levelGroup.level, style);
+  var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(levelGroup.levelColorHex), align: 'center'};
+  var levelNumber = this.game.add.text(this.game.world.centerX, this.game.height / 10, levelGroup.levelColor + ' Level', style);
   levelNumber.anchor.setTo(0.5, 0.5);
   levelGroup.addChild(levelNumber)
 
@@ -1279,8 +1315,8 @@ LevelSelect.prototype.makeLevel = function (levelIndex, levelData) {
   levelGroup.addChild(subHeading);
 
   // choose a level
-  style = { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(0xFFFFFF), align: 'center'};
-  var chooseText = this.game.add.text(this.game.world.centerX, this.game.height / 2 - this.game.height / 30, "Choose a level:", style);
+  style = { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(levelGroup.levelColorHex), align: 'center'};
+  var chooseText = this.game.add.text(this.game.world.centerX, this.game.height / 2 - this.game.height / 30, "Choose a sublevel:", style);
   chooseText.anchor.setTo(0.5, 0.5);
   levelGroup.addChild(chooseText);
 
@@ -1324,8 +1360,8 @@ LevelSelect.prototype.makeSubLevel = function (level, x, y, width, height, subLe
   subLevelBox.crop({x: x, y: y, width: width, height: height});
 
   // title
-  var style = { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(0xFFFFFF), align: 'center'};
-  var title = this.game.add.text(width / 2, height / 20, level.level+'-'+subLevelNumber, style);
+  var style = { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(level.levelColorHex), align: 'center'};
+  var title = this.game.add.text(width / 2, height / 20, subLevelNumber, style);
   title.anchor = {x: 0.5, y: 0};
   subLevelBox.addChild(title);
 
@@ -1338,7 +1374,7 @@ LevelSelect.prototype.makeSubLevel = function (level, x, y, width, height, subLe
     stars.y = subLevelBox.height / 2;
     subLevelBox.addChild(stars);
     // play text
-    var style = { font: '16px Arial', fill: Phaser.Color.RGBtoWebstring(this.game.COLORS['orange']), align: 'center'};
+    var style = { font: '16px Arial', fill: Phaser.Color.RGBtoWebstring(this.game.COLORS['white']), align: 'center'};
     var playText = this.game.add.text(width / 2, height * 3 / 4, "Play", style);
     playText.anchor = {x: 0.5, y: 0};
     subLevelBox.addChild(playText);
@@ -1424,13 +1460,18 @@ LevelStart.prototype = {
 
     },
     create: function() {
+      var currentLevel = this.game.currentLevel.level;
+      var currentSubLevel = this.game.currentLevel.subLevel;
+      var levelData = this.game.levelManager.getLevel(currentLevel)[currentSubLevel-1];
+      var levelColorHex = this.game.COLORS[levelData.altLevelColor];
+
       // level #
-      var style = { font: 'bold 40px Arial', fill: '#ffffff', align: 'center'};
-      this.levelNumber = this.game.add.text(this.game.world.centerX, 100, 'Level '+this.game.currentLevel.level+'-'+this.game.currentLevel.subLevel, style);
+      var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(levelColorHex), align: 'center'};
+      this.levelNumber = this.game.add.text(this.game.world.centerX, this.game.height / 5, levelData.levelColor + ' #' + this.game.currentLevel.subLevel, style);
       this.levelNumber.anchor.setTo(0.5, 0.5);
 
       // play
-      this.play = this.game.add.text(this.game.width / 2, 300, 'PLAY NOW', { font: 'bold 36px Arial', fill: Phaser.Color.RGBtoWebstring(this.game.COLORS.orange), align: 'center'});
+      this.play = this.game.add.text(this.game.width / 2, this.game.height / 2, 'PLAY NOW', { font: 'bold 36px Arial', fill: Phaser.Color.RGBtoWebstring(this.game.COLORS['white']), align: 'center'});
       this.play.anchor.setTo(0.5, 0.5);
       this.play.inputEnabled = true;
       this.play.events.onInputDown.add(function(){
@@ -1439,7 +1480,7 @@ LevelStart.prototype = {
       },this);
 
       // back
-      this.back = this.game.add.text(this.game.width / 2, 375, 'Change level', { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(this.game.COLORS.white), align: 'center'});
+      this.back = this.game.add.text(this.game.width / 2, this.game.height * 4 / 5, 'Change level', { font: 'bold 20px Arial', fill: Phaser.Color.RGBtoWebstring(levelColorHex), align: 'center'});
       this.back.anchor.setTo(0.5, 0.5);
       this.back.inputEnabled = true;
       this.back.events.onInputDown.add(function(){
