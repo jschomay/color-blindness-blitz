@@ -909,15 +909,19 @@ game.COLORS = {
   'yellow': 0xFFFF00
 };
 
+game.sfx = {};
+
 // load states and start game
 Level = require('./states/level');
+Preload = require('./states/preload');
 Intro = require('./states/intro');
 LevelSelect = require('./states/level-select');
 LevelStart = require('./states/level-start');
 LevelEnd = require('./states/level-end');
 GameWin = require('./states/game-win');
 
-game.state.add('intro', Intro, true);
+game.state.add('preload', Preload, true);
+game.state.add('intro', Intro);
 game.state.add('levelStart', LevelStart);
 game.state.add('levelSelect', LevelSelect);
 game.state.add('level', Level);
@@ -1084,6 +1088,8 @@ require.register("states/game-win", function(exports, require, module) {
       this.game.scale.refresh();
     },
     create: function() {
+      this.game.titleMusic.play('', 0, 1, true);
+
       var style = { font: 'bold 55px Arial', fill: '#ffffff', align: 'center'};
       style.fill = Phaser.Color.RGBtoWebstring(this.game.COLORS.red);
       this.titleText1 = this.game.add.text(this.game.world.centerX, 80, 'Color', style);
@@ -1098,8 +1104,10 @@ require.register("states/game-win", function(exports, require, module) {
       this.instructionsText = this.game.add.text(this.game.world.centerX, this.game.height - 100, 'You must clear all the words from the screen.\n\nWhen a word lights up, tap a word matching the lit up word\'s color, not the color it spells.\n\nTap to begin...', { font: '16px Arial', fill: '#ffffff', align: 'left', wordWrap: true, wordWrapWidth: this.game.width * 0.8});
       this.instructionsText.anchor.setTo(0.5, 1);
     },
+
     update: function() {
       if(this.game.input.activePointer.justPressed()) {
+        this.game.sfx.correct.play();
         this.game.state.start('levelSelect');
       }
     }
@@ -1160,6 +1168,7 @@ LevelEnd.prototype = {
       this.tryAgain.anchor.setTo(0.5, 0.5);
       this.tryAgain.inputEnabled = true;
       this.tryAgain.events.onInputDown.add(function(){
+        this.game.sfx.correct.play();
         this.tryAgain.input.destroy();
         this.startLevel();
       }, this);
@@ -1170,6 +1179,7 @@ LevelEnd.prototype = {
       this.nextLevel.inputEnabled = true;
       this.nextLevel.alpha = 0.2;
       this.nextLevel.events.onInputDown.add(function(){
+        this.game.sfx.correct.play();
         if(this.game.score.levelStars >= 1) {
           if(this.game.levelManager.isGameWin()) {
             this.cleanUp();
@@ -1394,6 +1404,7 @@ LevelSelect.prototype.makeSubLevel = function (level, x, y, width, height, subLe
   if(status !== this.game.progress.LOCKED) {
     subLevelBox.inputEnabled = true;
     subLevelBox.events.onInputDown.add(function(){
+      this.game.sfx.correct.play();
       subLevelBox.input.destroy();
       this.selectLevel(level.level, subLevelNumber);
     },this);
@@ -1479,6 +1490,8 @@ LevelStart.prototype = {
       this.play.anchor.setTo(0.5, 0.5);
       this.play.inputEnabled = true;
       this.play.events.onInputDown.add(function(){
+        this.game.sfx.correct.play();
+        this.game.titleMusic.stop();
         this.play.input.destroy();
         this.changeState('level');
       },this);
@@ -1488,6 +1501,7 @@ LevelStart.prototype = {
       this.back.anchor.setTo(0.5, 0.5);
       this.back.inputEnabled = true;
       this.back.events.onInputDown.add(function(){
+        this.game.sfx.correct.play();
         this.back.input.destroy();
         this.changeState('levelSelect');
       },this);
@@ -1525,6 +1539,10 @@ Level.prototype.preload = function() {
 
 // Set up the game and kick it off
 Level.prototype.create = function() {
+
+    this.music = this.game.add.audio('levelMusic');
+    this.music.play('', 0, 1, true);
+
     this.game.stage.backgroundColor = 0 * 0xFFFFFF;
 
     // game props
@@ -1699,6 +1717,8 @@ Level.prototype.endRound = function (selectedWord, keepInPlay) {
     this.targetWord.feedbackWrong(cb);
     this.game.score.wrong();
 
+    this.game.sfx.incorrect.play();
+
   } else if (this.playIsCorrect(selectedWord)) {
     // right
     if(keepInPlay) {
@@ -1728,6 +1748,8 @@ Level.prototype.endRound = function (selectedWord, keepInPlay) {
       this.feedbackMultiplier(this.game.score.scoreMultiplier, selectedWord);
     }
 
+    this.game.sfx.correct.play();
+
   } else {
     // wrong
     cb = function () {
@@ -1738,6 +1760,8 @@ Level.prototype.endRound = function (selectedWord, keepInPlay) {
     this.feedbackWrong();
     selectedWord.feedbackWrong(cb);
     this.game.score.wrong();
+
+    this.game.sfx.incorrect.play();
   }
 };
 
@@ -1795,7 +1819,10 @@ Level.prototype.checkIsGameOver = function() {
 };
 
 Level.prototype.doGameOver = function() {
+  this.music.stop();
+  this.game.titleMusic.play('', 0, 1, true);
   this.game.state.start('levelEnd');
+  this.game.sfx.finish.play();
 };
 
 Level.prototype.feedbackWrong = function() {
@@ -1893,6 +1920,62 @@ Level.prototype.render = function render() {
 
 Level.prototype.shutdown = function() {  
   this.wordsPool.destroy();
+}
+
+});
+
+;require.register("states/preload", function(exports, require, module) {
+module.exports =  Preload = function() {
+};
+
+Preload.prototype = {
+  preload: function () {
+    // load resources here
+    this.game.load.audio('titleMusic', 'audio/Menu_Loop.ogg');
+    this.game.load.audio('levelMusic', 'audio/MainGame_Loop.ogg');
+    this.game.load.audio('correct', 'audio/correct.ogg');
+    this.game.load.audio('tooslow', 'audio/tooslow.ogg');
+    this.game.load.audio('finish', 'audio/Finish.ogg');
+    this.game.load.audio('incorrect', 'audio/incorrect.ogg');
+
+    // preload bar
+    var bmd = this.game.add.bitmapData(this.game.width * 0.8, 10);
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0,0,this.game.width * 0.8 ,10);
+    bmd.ctx.fillStyle = 'yellow';
+    bmd.ctx.fill();
+    
+    this.progressBar = this.game.add.sprite((this.game.width * 0.1), (this.game.height) / 2.0, bmd);
+
+    this.load.setPreloadSprite(this.progressBar);
+
+    this.loadingText = this.game.add.text(this.game.width / 2 - 40, this.game.height * 1 / 3, 'Loading...', { font: 'bold 20px Arial', fill: '#ffffff', align: 'center'});
+  },
+
+  create: function () {
+    this.progressBar.cropEnabled = false;
+
+    this.game.titleMusic = this.game.add.audio('titleMusic');
+    this.game.sfx.correct = this.game.add.audio('correct');
+    this.game.sfx.tooslow = this.game.add.audio('tooslow');
+    this.game.sfx.finish = this.game.add.audio('finish');
+    this.game.sfx.incorrect = this.game.add.audio('incorrect');
+    console.log(this.game.titleMusic)
+
+    this.loadingText.x -= 40;
+  },
+
+  render: function () {
+    // this.game.debug.soundInfo(this.game.titleMusic, 20, 32);
+  },
+
+  update: function () {
+    if (this.cache.isSoundDecoded('titleMusic') && this.cache.isSoundDecoded('levelMusic')) {
+      this.state.start('intro');
+    } else {
+      this.loadingText.text = 'Preparing assets...';
+    }
+  }
 }
 
 });
