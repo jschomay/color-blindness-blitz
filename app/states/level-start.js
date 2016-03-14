@@ -20,6 +20,8 @@ LevelStart.prototype = {
       this.play.anchor.setTo(0.5, 0.5);
       this.play.inputEnabled = true;
       this.play.events.onInputDown.add(function(){
+        this.game.sfx.correct.play();
+        this.game.titleMusic.stop();
         this.play.input.destroy();
         this.changeState('level');
       },this);
@@ -29,6 +31,7 @@ LevelStart.prototype = {
       this.back.anchor.setTo(0.5, 0.5);
       this.back.inputEnabled = true;
       this.back.events.onInputDown.add(function(){
+        this.game.sfx.correct.play();
         this.back.input.destroy();
         this.changeState('levelSelect');
       },this);

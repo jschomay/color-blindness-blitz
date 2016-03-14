@@ -127,6 +127,7 @@ LevelSelect.prototype.makeSubLevel = function (level, x, y, width, height, subLe
   if(status !== this.game.progress.LOCKED) {
     subLevelBox.inputEnabled = true;
     subLevelBox.events.onInputDown.add(function(){
+      this.game.sfx.correct.play();
       subLevelBox.input.destroy();
       this.selectLevel(level.level, subLevelNumber);
     },this);

@@ -7,6 +7,8 @@
       this.game.scale.refresh();
     },
     create: function() {
+      this.game.titleMusic.play('', 0, 1, true);
+
       var style = { font: 'bold 55px Arial', fill: '#ffffff', align: 'center'};
       style.fill = Phaser.Color.RGBtoWebstring(this.game.COLORS.red);
       this.titleText1 = this.game.add.text(this.game.world.centerX, 80, 'Color', style);
@@ -21,8 +23,10 @@
       this.instructionsText = this.game.add.text(this.game.world.centerX, this.game.height - 100, 'You must clear all the words from the screen.\n\nWhen a word lights up, tap a word matching the lit up word\'s color, not the color it spells.\n\nTap to begin...', { font: '16px Arial', fill: '#ffffff', align: 'left', wordWrap: true, wordWrapWidth: this.game.width * 0.8});
       this.instructionsText.anchor.setTo(0.5, 1);
     },
+
     update: function() {
       if(this.game.input.activePointer.justPressed()) {
+        this.game.sfx.correct.play();
         this.game.state.start('levelSelect');
       }
     }

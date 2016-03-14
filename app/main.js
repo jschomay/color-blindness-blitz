@@ -25,15 +25,19 @@ game.COLORS = {
   'yellow': 0xFFFF00
 };
 
+game.sfx = {};
+
 // load states and start game
 Level = require('./states/level');
+Preload = require('./states/preload');
 Intro = require('./states/intro');
 LevelSelect = require('./states/level-select');
 LevelStart = require('./states/level-start');
 LevelEnd = require('./states/level-end');
 GameWin = require('./states/game-win');
 
-game.state.add('intro', Intro, true);
+game.state.add('preload', Preload, true);
+game.state.add('intro', Intro);
 game.state.add('levelStart', LevelStart);
 game.state.add('levelSelect', LevelSelect);
 game.state.add('level', Level);

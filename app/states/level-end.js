@@ -48,6 +48,7 @@ LevelEnd.prototype = {
       this.tryAgain.anchor.setTo(0.5, 0.5);
       this.tryAgain.inputEnabled = true;
       this.tryAgain.events.onInputDown.add(function(){
+        this.game.sfx.correct.play();
         this.tryAgain.input.destroy();
         this.startLevel();
       }, this);
@@ -58,6 +59,7 @@ LevelEnd.prototype = {
       this.nextLevel.inputEnabled = true;
       this.nextLevel.alpha = 0.2;
       this.nextLevel.events.onInputDown.add(function(){
+        this.game.sfx.correct.play();
         if(this.game.score.levelStars >= 1) {
           if(this.game.levelManager.isGameWin()) {
             this.cleanUp();

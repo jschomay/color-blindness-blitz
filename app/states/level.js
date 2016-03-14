@@ -14,6 +14,10 @@ Level.prototype.preload = function() {
 
 // Set up the game and kick it off
 Level.prototype.create = function() {
+
+    this.music = this.game.add.audio('levelMusic');
+    this.music.play('', 0, 1, true);
+
     this.game.stage.backgroundColor = 0 * 0xFFFFFF;
 
     // game props
@@ -188,6 +192,8 @@ Level.prototype.endRound = function (selectedWord, keepInPlay) {
     this.targetWord.feedbackWrong(cb);
     this.game.score.wrong();
 
+    this.game.sfx.incorrect.play();
+
   } else if (this.playIsCorrect(selectedWord)) {
     // right
     if(keepInPlay) {
@@ -217,6 +223,8 @@ Level.prototype.endRound = function (selectedWord, keepInPlay) {
       this.feedbackMultiplier(this.game.score.scoreMultiplier, selectedWord);
     }
 
+    this.game.sfx.correct.play();
+
   } else {
     // wrong
     cb = function () {
@@ -227,6 +235,8 @@ Level.prototype.endRound = function (selectedWord, keepInPlay) {
     this.feedbackWrong();
     selectedWord.feedbackWrong(cb);
     this.game.score.wrong();
+
+    this.game.sfx.incorrect.play();
   }
 };
 
@@ -284,7 +294,10 @@ Level.prototype.checkIsGameOver = function() {
 };
 
 Level.prototype.doGameOver = function() {
+  this.music.stop();
+  this.game.titleMusic.play('', 0, 1, true);
   this.game.state.start('levelEnd');
+  this.game.sfx.finish.play();
 };
 
 Level.prototype.feedbackWrong = function() {
