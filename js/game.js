@@ -129,8 +129,8 @@ Word.prototype.init = function() {
 
     if(this.game.levelManager.currentLevel >= 2) {
       // level 2+ challenge - mix up the sizes
-      var randomFontAdjustment = this.game.rnd.integerInRange(-10, 10);
-      this.bitmapText.fontSize = (parseInt(this.bitmapText.fontSize) + randomFontAdjustment) + 'px';
+      var randomFontAdjustment = this.game.rnd.realInRange(0.6, 1.4);
+      this.bitmapText.fontSize = (parseInt(this.bitmapText.fontSize) * randomFontAdjustment) + 'px';
     }
 
     this.textSpacing = this.bitmapText.textWidth;
@@ -300,7 +300,7 @@ module.exports = [
       "levelName": "Color palettes",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
-      "fontSize" : 70,
+      "fontSize" : 90,
       "wordScore": 100,
       "starBreakPoints": [
         0.2,
@@ -398,7 +398,7 @@ module.exports = [
       "levelName": "Big and small",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
-      "fontSize" : 70,
+      "fontSize" : 90,
       "wordScore": 100,
       "starBreakPoints": [
         0.2,
@@ -496,7 +496,7 @@ module.exports = [
       "levelName": "Jumble",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
-      "fontSize" : 70,
+      "fontSize" : 90,
       "wordScore": 100,
       "starBreakPoints": [
         0.2,
@@ -594,7 +594,7 @@ module.exports = [
       "levelName": "Topsy Turvy",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
-      "fontSize" : 70,
+      "fontSize" : 90,
       "wordScore": 100,
       "starBreakPoints": [
         0.2,
@@ -692,7 +692,7 @@ module.exports = [
       "levelName": "Color blind",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
-      "fontSize" : 70,
+      "fontSize" : 90,
       "wordScore": 100,
       "starBreakPoints": [
         0.2,
@@ -1088,7 +1088,7 @@ require.register("states/game-win", function(exports, require, module) {
       this.game.scale.refresh();
     },
     create: function() {
-      this.game.titleMusic.play('', 0, 1, true);
+      this.game.titleMusic.play('fromStart', 0, 0.6, true);
 
       var style = { font: 'bold 55px Arial', fill: '#ffffff', align: 'center'};
       style.fill = Phaser.Color.RGBtoWebstring(this.game.COLORS.red);
@@ -1107,7 +1107,7 @@ require.register("states/game-win", function(exports, require, module) {
 
     update: function() {
       if(this.game.input.activePointer.justPressed()) {
-        this.game.sfx.correct.play();
+        this.game.sfx.menuClick.play();
         this.game.state.start('levelSelect');
       }
     }
@@ -1168,7 +1168,7 @@ LevelEnd.prototype = {
       this.tryAgain.anchor.setTo(0.5, 0.5);
       this.tryAgain.inputEnabled = true;
       this.tryAgain.events.onInputDown.add(function(){
-        this.game.sfx.correct.play();
+        this.game.sfx.menuClick.play();
         this.tryAgain.input.destroy();
         this.startLevel();
       }, this);
@@ -1179,7 +1179,7 @@ LevelEnd.prototype = {
       this.nextLevel.inputEnabled = true;
       this.nextLevel.alpha = 0.2;
       this.nextLevel.events.onInputDown.add(function(){
-        this.game.sfx.correct.play();
+        this.game.sfx.menuClick.play();
         if(this.game.score.levelStars >= 1) {
           if(this.game.levelManager.isGameWin()) {
             this.cleanUp();
@@ -1284,10 +1284,8 @@ LevelSelect.prototype = {
         levelData = this.game.levelManager.getLevel(l)[0];
         this.levels.addChild(this.makeLevel(l - 1, levelData));
       }
-
-      // jump to current level (when going back from start screen)
-      var currentLevel = this.game.currentLevel.level;
-      this.levels.x = this.levels.x - this.game.width * (currentLevel - 1);
+      // jump to current level screen
+      this.levels.x = this.levels.x - this.game.width * (this.game.levelManager.currentLevel - 1);
     }
 };
 
@@ -1404,7 +1402,7 @@ LevelSelect.prototype.makeSubLevel = function (level, x, y, width, height, subLe
   if(status !== this.game.progress.LOCKED) {
     subLevelBox.inputEnabled = true;
     subLevelBox.events.onInputDown.add(function(){
-      this.game.sfx.correct.play();
+      this.game.sfx.menuClick.play();
       subLevelBox.input.destroy();
       this.selectLevel(level.level, subLevelNumber);
     },this);
@@ -1444,10 +1442,12 @@ LevelSelect.prototype.addArrow = function (level, direction) {
 };
 
 LevelSelect.prototype.nextLevel = function () {
+  this.game.sfx.correct.play();
   this.game.add.tween(this.levels).to({x: this.levels.x - this.game.width}, 300, Phaser.Easing.Quadratic.InOut, true);
 };
 
 LevelSelect.prototype.previousLevel = function () {
+  this.game.sfx.correct.play();
   this.game.add.tween(this.levels).to({x: this.levels.x + this.game.width}, 300, Phaser.Easing.Quadratic.InOut, true);
 };
 
@@ -1490,7 +1490,7 @@ LevelStart.prototype = {
       this.play.anchor.setTo(0.5, 0.5);
       this.play.inputEnabled = true;
       this.play.events.onInputDown.add(function(){
-        this.game.sfx.correct.play();
+        this.game.sfx.menuClick.play();
         this.game.titleMusic.stop();
         this.play.input.destroy();
         this.changeState('level');
@@ -1501,7 +1501,7 @@ LevelStart.prototype = {
       this.back.anchor.setTo(0.5, 0.5);
       this.back.inputEnabled = true;
       this.back.events.onInputDown.add(function(){
-        this.game.sfx.correct.play();
+        this.game.sfx.menuClick.play();
         this.back.input.destroy();
         this.changeState('levelSelect');
       },this);
@@ -1540,8 +1540,13 @@ Level.prototype.preload = function() {
 // Set up the game and kick it off
 Level.prototype.create = function() {
 
-    this.music = this.game.add.audio('levelMusic');
-    this.music.play('', 0, 1, true);
+    // pick a music loop length so the music isn't hitting the high notes right when the level is ending
+    if((this.game.levelManager.currentLevel > 3 && this.game.levelManager.currentSubLevel > 2) || this.game.levelManager.currentSubLevel > 4) {
+      this.levelMusic = this.game.levelMusic;
+    } else {
+      this.levelMusic = this.game.levelMusicShort;
+    }
+    this.levelMusic.play('fromStart', 0, 1, false);
 
     this.game.stage.backgroundColor = 0 * 0xFFFFFF;
 
@@ -1717,7 +1722,7 @@ Level.prototype.endRound = function (selectedWord, keepInPlay) {
     this.targetWord.feedbackWrong(cb);
     this.game.score.wrong();
 
-    this.game.sfx.incorrect.play();
+    this.game.sfx.incorrect2.play();
 
   } else if (this.playIsCorrect(selectedWord)) {
     // right
@@ -1819,9 +1824,32 @@ Level.prototype.checkIsGameOver = function() {
 };
 
 Level.prototype.doGameOver = function() {
-  this.music.stop();
-  this.game.titleMusic.play('', 0, 1, true);
-  this.game.state.start('levelEnd');
+  // this is needed so level music won't loop if "pre-loop" hasn't finished yet
+  this.levelMusic.currentMarker = '';
+  var musicTween = this.game.add.tween(this.levelMusic).to( { volume: 0 }, 2000, Phaser.Easing.Linear.None, true);
+  musicTween.onComplete.add(function() {
+    this.levelMusic.stop();
+    this.game.state.start('levelEnd');
+  }, this);
+
+  this.game.sfx.finish.onStop.addOnce(function(){
+    this.game.titleMusic.play('fromStart', 0, 0, true);
+    this.game.add.tween(this.game.titleMusic).to( { volume: 0.5 }, 2000, Phaser.Easing.Linear.None, true);
+  }, this);
+
+  var currentLevel = this.game.currentLevel.level;
+  var currentSubLevel = this.game.currentLevel.subLevel;
+  var levelData = this.game.levelManager.getLevel(currentLevel)[currentSubLevel-1];
+  var levelColorHex = this.game.COLORS[levelData.altLevelColor];
+
+  // level #
+  var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(levelColorHex), align: 'center'};
+  var titleText = this.game.add.text(this.game.world.centerX, 80, levelData.levelColor + ' #' +this.game.currentLevel.subLevel+'\nFinished', style);
+  titleText.alpha = 0;
+
+  titleText.anchor.setTo(0.5, 0.5);
+  var titleTween = this.game.add.tween(titleText).to( { alpha: 1 }, 1500, Phaser.Easing.Linear.None, true);
+
   this.game.sfx.finish.play();
 };
 
@@ -1933,10 +1961,13 @@ Preload.prototype = {
     // load resources here
     this.game.load.audio('titleMusic', 'audio/Menu_Loop.ogg');
     this.game.load.audio('levelMusic', 'audio/MainGame_Loop.ogg');
+    this.game.load.audio('levelMusicShort', 'audio/MainGameShort_Loop.ogg');
     this.game.load.audio('correct', 'audio/correct.ogg');
     this.game.load.audio('tooslow', 'audio/tooslow.ogg');
     this.game.load.audio('finish', 'audio/Finish.ogg');
     this.game.load.audio('incorrect', 'audio/incorrect.ogg');
+    this.game.load.audio('incorrect2', 'audio/incorrect2.ogg');
+    this.game.load.audio('menuclick', 'audio/menuclick.ogg');
 
     // preload bar
     var bmd = this.game.add.bitmapData(this.game.width * 0.8, 10);
@@ -1955,12 +1986,40 @@ Preload.prototype = {
   create: function () {
     this.progressBar.cropEnabled = false;
 
-    this.game.titleMusic = this.game.add.audio('titleMusic');
     this.game.sfx.correct = this.game.add.audio('correct');
     this.game.sfx.tooslow = this.game.add.audio('tooslow');
     this.game.sfx.finish = this.game.add.audio('finish');
     this.game.sfx.incorrect = this.game.add.audio('incorrect');
-    console.log(this.game.titleMusic)
+    this.game.sfx.incorrect2 = this.game.add.audio('incorrect2');
+    this.game.sfx.menuClick = this.game.add.audio('menuclick');
+
+    this.game.titleMusic = this.game.add.audio('titleMusic');
+    this.game.titleMusic.addMarker('fromStart', 0, 0, 1, false)
+
+    this.game.levelMusic = this.game.add.audio('levelMusic');
+    this.game.levelMusic = this.game.add.audio('levelMusic');
+    this.game.levelMusic.addMarker('fromStart', 0, 0, 1, false)
+    this.game.levelMusic.addMarker('fromLoop', 19.592, 78.367 - 19.592, 1, false)
+    this.game.levelMusic.onMarkerComplete.addOnce(function(markerName){
+      if(markerName === 'fromStart') {
+        var self = this;
+        // this is needed because onMarkerComplete gets called before stop, which clears currentMarker
+        window.setTimeout(function(){self.game.levelMusic.currentMarker = 'fromLoop'}, 0);
+        this.game.levelMusic.play('fromLoop', 0, 1, true);
+      }
+    }, this)
+
+    this.game.levelMusicShort = this.game.add.audio('levelMusicShort');
+    this.game.levelMusicShort.addMarker('fromStart', 0, 0, 1, false)
+    this.game.levelMusicShort.addMarker('fromLoop', 19.592, 39.184 - 19.592, 1, false)
+    this.game.levelMusicShort.onMarkerComplete.add(function(markerName){
+      if(markerName === 'fromStart') {
+        var self = this;
+        // this is needed because onMarkerComplete gets called before stop, which clears currentMarker
+        window.setTimeout(function(){self.game.levelMusicShort.currentMarker = 'fromLoop'}, 0);
+        this.game.levelMusicShort.play('fromLoop', 0, 1, true);
+      }
+    }, this)
 
     this.loadingText.x -= 40;
   },
