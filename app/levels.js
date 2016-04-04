@@ -8,7 +8,7 @@ module.exports = [
       "levelName": "Color palettes",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
-      "fontSize" : 70,
+      "fontSize" : 90,
       "wordScore": 100,
       "starBreakPoints": [
         0.2,
@@ -106,7 +106,7 @@ module.exports = [
       "levelName": "Big and small",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
-      "fontSize" : 70,
+      "fontSize" : 90,
       "wordScore": 100,
       "starBreakPoints": [
         0.2,
@@ -204,7 +204,7 @@ module.exports = [
       "levelName": "Jumble",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
-      "fontSize" : 70,
+      "fontSize" : 90,
       "wordScore": 100,
       "starBreakPoints": [
         0.2,
@@ -302,7 +302,7 @@ module.exports = [
       "levelName": "Topsy Turvy",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
-      "fontSize" : 70,
+      "fontSize" : 90,
       "wordScore": 100,
       "starBreakPoints": [
         0.2,
@@ -400,7 +400,7 @@ module.exports = [
       "levelName": "Color blind",
       "roundDuration": 5000,
       "activeColors": ['red','blue', 'yellow'],
-      "fontSize" : 70,
+      "fontSize" : 90,
       "wordScore": 100,
       "starBreakPoints": [
         0.2,
