@@ -17,8 +17,8 @@ Word.prototype.init = function() {
 
     if(this.game.levelManager.currentLevel >= 2) {
       // level 2+ challenge - mix up the sizes
-      var randomFontAdjustment = this.game.rnd.integerInRange(-10, 10);
-      this.bitmapText.fontSize = (parseInt(this.bitmapText.fontSize) + randomFontAdjustment) + 'px';
+      var randomFontAdjustment = this.game.rnd.realInRange(0.6, 1.4);
+      this.bitmapText.fontSize = (parseInt(this.bitmapText.fontSize) * randomFontAdjustment) + 'px';
     }
 
     this.textSpacing = this.bitmapText.textWidth;
