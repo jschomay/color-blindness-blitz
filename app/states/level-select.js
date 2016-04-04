@@ -11,6 +11,8 @@ LevelSelect.prototype = {
         levelData = this.game.levelManager.getLevel(l)[0];
         this.levels.addChild(this.makeLevel(l - 1, levelData));
       }
+      // jump to current level screen
+      this.levels.x = this.levels.x - this.game.width * (this.game.levelManager.currentLevel - 1);
     }
 };
 
