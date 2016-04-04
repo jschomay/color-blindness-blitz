@@ -15,8 +15,13 @@ Level.prototype.preload = function() {
 // Set up the game and kick it off
 Level.prototype.create = function() {
 
-    this.music = this.game.add.audio('levelMusic');
-    this.music.play('', 0, 1, true);
+    // pick a music loop length so the music isn't hitting the high notes right when the level is ending
+    if((this.game.levelManager.currentLevel > 3 && this.game.levelManager.currentSubLevel > 2) || this.game.levelManager.currentSubLevel > 4) {
+      this.levelMusic = this.game.levelMusic;
+    } else {
+      this.levelMusic = this.game.levelMusicShort;
+    }
+    this.levelMusic.play('fromStart', 0, 1, false);
 
     this.game.stage.backgroundColor = 0 * 0xFFFFFF;
 
@@ -192,7 +197,7 @@ Level.prototype.endRound = function (selectedWord, keepInPlay) {
     this.targetWord.feedbackWrong(cb);
     this.game.score.wrong();
 
-    this.game.sfx.incorrect.play();
+    this.game.sfx.incorrect2.play();
 
   } else if (this.playIsCorrect(selectedWord)) {
     // right
@@ -294,9 +299,32 @@ Level.prototype.checkIsGameOver = function() {
 };
 
 Level.prototype.doGameOver = function() {
-  this.music.stop();
-  this.game.titleMusic.play('', 0, 1, true);
-  this.game.state.start('levelEnd');
+  // this is needed so level music won't loop if "pre-loop" hasn't finished yet
+  this.levelMusic.currentMarker = '';
+  var musicTween = this.game.add.tween(this.levelMusic).to( { volume: 0 }, 2000, Phaser.Easing.Linear.None, true);
+  musicTween.onComplete.add(function() {
+    this.levelMusic.stop();
+    this.game.state.start('levelEnd');
+  }, this);
+
+  this.game.sfx.finish.onStop.addOnce(function(){
+    this.game.titleMusic.play('fromStart', 0, 0, true);
+    this.game.add.tween(this.game.titleMusic).to( { volume: 0.5 }, 2000, Phaser.Easing.Linear.None, true);
+  }, this);
+
+  var currentLevel = this.game.currentLevel.level;
+  var currentSubLevel = this.game.currentLevel.subLevel;
+  var levelData = this.game.levelManager.getLevel(currentLevel)[currentSubLevel-1];
+  var levelColorHex = this.game.COLORS[levelData.altLevelColor];
+
+  // level #
+  var style = { font: 'bold 40px Arial', fill: Phaser.Color.RGBtoWebstring(levelColorHex), align: 'center'};
+  var titleText = this.game.add.text(this.game.world.centerX, 80, levelData.levelColor + ' #' +this.game.currentLevel.subLevel+'\nFinished', style);
+  titleText.alpha = 0;
+
+  titleText.anchor.setTo(0.5, 0.5);
+  var titleTween = this.game.add.tween(titleText).to( { alpha: 1 }, 1500, Phaser.Easing.Linear.None, true);
+
   this.game.sfx.finish.play();
 };
 

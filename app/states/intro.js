@@ -7,7 +7,7 @@
       this.game.scale.refresh();
     },
     create: function() {
-      this.game.titleMusic.play('', 0, 1, true);
+      this.game.titleMusic.play('fromStart', 0, 0.6, true);
 
       var style = { font: 'bold 55px Arial', fill: '#ffffff', align: 'center'};
       style.fill = Phaser.Color.RGBtoWebstring(this.game.COLORS.red);
@@ -26,7 +26,7 @@
 
     update: function() {
       if(this.game.input.activePointer.justPressed()) {
-        this.game.sfx.correct.play();
+        this.game.sfx.menuClick.play();
         this.game.state.start('levelSelect');
       }
     }
